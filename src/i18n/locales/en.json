@@ -158,5 +158,25 @@
     "daysAgo": "{{count}} d ago",
     "assetsCount": "{{count}} assets",
     "chainsCount": "across {{count}} chains"
+  },
+  "market": {
+    "title": "Market mood",
+    "index": "Crypto Fear & Greed Index",
+    "updatesIn_one": "updates in {{count}} hour",
+    "updatesIn_other": "updates in {{count}} hours",
+    "yesterday": "Yesterday",
+    "lastWeek": "7d ago",
+    "lastMonth": "30d ago",
+    "days_one": "Last {{count}} day",
+    "days_other": "Last {{count}} days",
+    "unavailable": "Couldn't load the market mood. Check your connection.",
+    "retry": "Try again",
+    "levels": {
+      "extremeFear": "Extreme fear",
+      "fear": "Fear",
+      "neutral": "Neutral",
+      "greed": "Greed",
+      "extremeGreed": "Extreme greed"
+    }
   }
 }

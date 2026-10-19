@@ -158,5 +158,25 @@
     "daysAgo": "há {{count}} d",
     "assetsCount": "{{count}} ativos",
     "chainsCount": "em {{count}} redes"
+  },
+  "market": {
+    "title": "Mood do mercado",
+    "index": "Índice Fear & Greed de cripto",
+    "updatesIn_one": "atualiza em {{count}} hora",
+    "updatesIn_other": "atualiza em {{count}} horas",
+    "yesterday": "Ontem",
+    "lastWeek": "Há 7 dias",
+    "lastMonth": "Há 30 dias",
+    "days_one": "Último {{count}} dia",
+    "days_other": "Últimos {{count}} dias",
+    "unavailable": "Não foi possível carregar o mood do mercado. Verifique sua conexão.",
+    "retry": "Tentar de novo",
+    "levels": {
+      "extremeFear": "Medo extremo",
+      "fear": "Medo",
+      "neutral": "Neutro",
+      "greed": "Ganância",
+      "extremeGreed": "Ganância extrema"
+    }
   }
 }
