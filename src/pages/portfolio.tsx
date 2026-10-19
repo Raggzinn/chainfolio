@@ -1,5 +1,6 @@
 import { FlaskConical, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { MarketMoodCard } from "@/features/market/market-mood-card";
 import { ActivityCard } from "@/features/portfolio/activity-card";
 import { AllocationCard } from "@/features/portfolio/allocation-card";
 import { HeroCard } from "@/features/portfolio/hero-card";
@@ -15,16 +16,17 @@ export function PortfolioPage() {
   return (
     <>
       <DemoBanner />
-      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_320px]">
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
         <HeroCard />
         <RiskCard />
       </div>
-      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_420px]">
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
         <TopAssetsCard />
-        <div className="grid gap-5">
-          <AllocationCard />
-          <ActivityCard />
-        </div>
+        <MarketMoodCard />
+      </div>
+      <div className="grid gap-5 lg:grid-cols-2">
+        <AllocationCard />
+        <ActivityCard />
       </div>
     </>
   );
