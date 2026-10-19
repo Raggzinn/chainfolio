@@ -1,0 +1,39 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Dependencies / build
+node_modules
+dist
+dist-ssr
+coverage
+*.local
+
+# Rust / Tauri
+src-tauri/target
+src-tauri/gen/schemas
+
+# Env
+.env
+.env.*
+!.env.example
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea
+.DS_Store
+Thumbs.db
+*.suo
+*.sw?
+
+# AI tooling (local only)
+.claude/
+CLAUDE.md
+CLAUDE.local.md
+AGENTS.md
+.cursor/
+.aider*
