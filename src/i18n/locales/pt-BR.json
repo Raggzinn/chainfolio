@@ -69,7 +69,7 @@
     },
     "wallets": {
       "title": "Carteiras",
-      "description": "Endereços somente leitura em redes EVM, Solana e Bitcoin."
+      "description": "Endereços somente leitura em redes EVM, Solana, Bitcoin, TRON e XRP Ledger."
     },
     "settings": {
       "title": "Configurações",
@@ -109,7 +109,7 @@
     "eyebrow": "Open source · 100% local",
     "title": "Todo o seu patrimônio on-chain.",
     "titleAccent": "Em um só lugar.",
-    "subtitle": "Acompanhe carteiras em Ethereum, suas L2s, Solana e Bitcoin. PnL em tempo real, análise de risco e relatórios de IR, sem abrir mão das suas chaves ou da sua privacidade.",
+    "subtitle": "Acompanhe carteiras em Ethereum, suas L2s, Solana, Bitcoin, TRON e XRP Ledger. PnL em tempo real, análise de risco e relatórios de IR, sem abrir mão das suas chaves ou da sua privacidade.",
     "addWallet": "Adicionar primeira carteira",
     "exploreDemo": "Explorar com dados demo",
     "chipWatchOnly": "Somente leitura, nunca suas chaves",
@@ -168,7 +168,8 @@
     "manageWallets": "Gerenciar",
     "unpriced": "Tokens ocultos",
     "unpricedCount_one": "{{count}} sem preço",
-    "unpricedCount_other": "{{count}} sem preço"
+    "unpricedCount_other": "{{count}} sem preço",
+    "locked": "{{amount}} bloqueado como reserva"
   },
   "market": {
     "title": "Mood do mercado",
@@ -215,12 +216,14 @@
     "addressLabel": "Endereço, nome ou xpub",
     "nameLabel": "Nome",
     "namePlaceholder": "Opcional, ex.: Cold storage",
-    "supported": "EVM (0x… ou .eth), Solana (base58 ou .sol) e Bitcoin (endereço ou xpub/ypub/zpub).",
+    "supported": "EVM (0x… ou .eth), Solana (base58 ou .sol), Bitcoin (endereço ou xpub/ypub/zpub), TRON (T…) e XRP Ledger (r… ou X…).",
     "watchOnlyNote": "Somente leitura: o Chainfolio só lê saldos públicos. Nunca cole uma seed phrase ou chave privada.",
     "families": {
       "evm": "EVM",
       "solana": "Solana",
-      "bitcoin": "Bitcoin"
+      "bitcoin": "Bitcoin",
+      "tron": "TRON",
+      "xrpl": "XRP Ledger"
     },
     "kinds": {
       "address": "Endereço {{family}}",
@@ -252,7 +255,7 @@
     "desktopOnly": "As carteiras ficam no app desktop. Rode o Chainfolio com `pnpm tauri dev` para adicionar uma."
   },
   "errors": {
-    "invalidAddress": "Não é um endereço EVM, Solana ou Bitcoin válido.",
+    "invalidAddress": "Não é um endereço EVM, Solana, Bitcoin, TRON ou XRP Ledger válido.",
     "badChecksum": "Checksum inválido. Confira se há erros de digitação no endereço.",
     "nameNotFound": "Este nome não aponta para nenhum endereço.",
     "duplicate": "Esta carteira já está sendo acompanhada.",

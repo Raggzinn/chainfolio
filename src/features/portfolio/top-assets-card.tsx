@@ -60,6 +60,9 @@ export function TopAssetsCard({ rows }: { rows: AssetRow[] }) {
                   <p className="truncate font-medium text-sm">{a.name}</p>
                   <p className="truncate text-muted-foreground text-xs">
                     {hidden ? "•••" : amount.format(a.balance)} {a.symbol} · {CHAINS[a.chain].name}
+                    {a.locked && !hidden
+                      ? ` · ${t("dashboard.locked", { amount: amount.format(a.locked) })}`
+                      : null}
                   </p>
                 </div>
               </div>

@@ -8,7 +8,7 @@ import { invoke } from "@tauri-apps/api/core";
 
 export type Decimal = string;
 
-export type Family = "evm" | "solana" | "bitcoin";
+export type Family = "evm" | "solana" | "bitcoin" | "tron" | "xrpl";
 
 export type ChainId =
   | "ethereum"
@@ -19,7 +19,9 @@ export type ChainId =
   | "bsc"
   | "avalanche"
   | "solana"
-  | "bitcoin";
+  | "bitcoin"
+  | "tron"
+  | "xrp";
 
 export type InputKind = "address" | "ens" | "sns" | "xpub";
 
@@ -50,6 +52,8 @@ export interface PortfolioAsset {
   name: string;
   logoUrl: string | null;
   amount: Decimal;
+  /** Part of `amount` that can't be spent, e.g. the XRP Ledger reserve. */
+  locked: Decimal | null;
   priceUsd: Decimal;
   valueUsd: Decimal;
   /** Ratio, 0.05 = +5%. */

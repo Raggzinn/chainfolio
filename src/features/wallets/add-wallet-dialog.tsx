@@ -15,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { type Detection, toApiError } from "@/lib/api";
-import { CHAINS } from "@/lib/chains";
+import { CHAINS, FAMILY_SYMBOL } from "@/lib/chains";
 import { useAddWallet, useDetectAddress } from "./queries";
 
 export function AddWalletDialog({
@@ -77,7 +77,7 @@ export function AddWalletDialog({
                 setInput(e.target.value);
                 add.reset();
               }}
-              placeholder="0x…, vitalik.eth, bc1…, zpub…, .sol"
+              placeholder="0x…, vitalik.eth, bc1…, zpub…, .sol, T…, r…"
               autoComplete="off"
               autoCorrect="off"
               spellCheck={false}
@@ -143,11 +143,10 @@ function DetectionHint({ detection, error }: { detection?: Detection; error: unk
     return <p className="text-muted-foreground text-xs">{t("wallets.supported")}</p>;
   }
 
-  const symbol = { evm: "ETH", solana: "SOL", bitcoin: "BTC" }[detection.family];
   return (
     <div className="flex flex-wrap items-center gap-2 text-xs">
       <span className="inline-flex items-center gap-1.5 rounded-full bg-success/12 py-0.5 pr-2.5 pl-0.5 font-medium text-success">
-        <TokenIcon symbol={symbol} size={18} />
+        <TokenIcon symbol={FAMILY_SYMBOL[detection.family]} size={18} />
         {t(`wallets.kinds.${detection.kind}`, {
           family: t(`wallets.families.${detection.family}`),
         })}

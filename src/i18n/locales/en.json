@@ -69,7 +69,7 @@
     },
     "wallets": {
       "title": "Wallets",
-      "description": "Watch-only addresses on EVM chains, Solana and Bitcoin."
+      "description": "Watch-only addresses on EVM chains, Solana, Bitcoin, TRON and the XRP Ledger."
     },
     "settings": {
       "title": "Settings",
@@ -109,7 +109,7 @@
     "eyebrow": "Open source · 100% local",
     "title": "Your entire on-chain wealth.",
     "titleAccent": "One calm place.",
-    "subtitle": "Track wallets across Ethereum, its L2s, Solana and Bitcoin. Real-time PnL, risk insights and tax reports, without giving up your keys or your privacy.",
+    "subtitle": "Track wallets across Ethereum, its L2s, Solana, Bitcoin, TRON and the XRP Ledger. Real-time PnL, risk insights and tax reports, without giving up your keys or your privacy.",
     "addWallet": "Add your first wallet",
     "exploreDemo": "Explore with demo data",
     "chipWatchOnly": "Watch-only, never your keys",
@@ -168,7 +168,8 @@
     "manageWallets": "Manage",
     "unpriced": "Hidden tokens",
     "unpricedCount_one": "{{count}} without a price",
-    "unpricedCount_other": "{{count}} without a price"
+    "unpricedCount_other": "{{count}} without a price",
+    "locked": "{{amount}} locked as reserve"
   },
   "market": {
     "title": "Market mood",
@@ -215,12 +216,14 @@
     "addressLabel": "Address, name or xpub",
     "nameLabel": "Name",
     "namePlaceholder": "Optional, e.g. Cold storage",
-    "supported": "EVM (0x… or .eth), Solana (base58 or .sol) and Bitcoin (address or xpub/ypub/zpub).",
+    "supported": "EVM (0x… or .eth), Solana (base58 or .sol), Bitcoin (address or xpub/ypub/zpub), TRON (T…) and XRP Ledger (r… or X…).",
     "watchOnlyNote": "Watch-only: Chainfolio only reads public balances. Never paste a seed phrase or private key.",
     "families": {
       "evm": "EVM",
       "solana": "Solana",
-      "bitcoin": "Bitcoin"
+      "bitcoin": "Bitcoin",
+      "tron": "TRON",
+      "xrpl": "XRP Ledger"
     },
     "kinds": {
       "address": "{{family}} address",
@@ -252,7 +255,7 @@
     "desktopOnly": "Wallets are stored by the desktop app. Run Chainfolio with `pnpm tauri dev` to add one."
   },
   "errors": {
-    "invalidAddress": "Not a valid EVM, Solana or Bitcoin address.",
+    "invalidAddress": "Not a valid EVM, Solana, Bitcoin, TRON or XRP Ledger address.",
     "badChecksum": "Checksum mismatch. Check for typos in the address.",
     "nameNotFound": "This name doesn't resolve to an address.",
     "duplicate": "This wallet is already being tracked.",

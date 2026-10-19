@@ -25,6 +25,7 @@ const RINGS = [
       { symbol: "BASE", color: "#0052FF" },
       { symbol: "OP", color: "#FF0420" },
       { symbol: "POL", color: "#8247E5" },
+      { symbol: "TRX", color: "#FF060A" },
     ],
   },
   {
@@ -34,6 +35,7 @@ const RINGS = [
       { symbol: "AVAX", color: "#E84142" },
       { symbol: "BNB", color: "#F3BA2F" },
       { symbol: "USDC", color: "#2775CA" },
+      { symbol: "XRP", color: "#7B8794" },
       { symbol: "LINK", color: "#2A5ADA" },
       { symbol: "UNI", color: "#FF007A" },
     ],

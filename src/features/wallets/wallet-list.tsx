@@ -23,11 +23,9 @@ import { Input } from "@/components/ui/input";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useMoney } from "@/hooks/use-money";
 import { toApiError, type WalletSummary } from "@/lib/api";
-import { CHAINS, shortAddress } from "@/lib/chains";
+import { CHAINS, FAMILY_SYMBOL, shortAddress } from "@/lib/chains";
 import { formatRelative } from "@/lib/format";
 import { useIsSyncing, useRefreshBalances, useRemoveWallet, useRenameWallet } from "./queries";
-
-const FAMILY_SYMBOL = { evm: "ETH", solana: "SOL", bitcoin: "BTC" } as const;
 
 export function WalletList({ wallets }: { wallets: WalletSummary[] }) {
   const [renaming, setRenaming] = useState<WalletSummary | null>(null);

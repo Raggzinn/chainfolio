@@ -17,12 +17,25 @@ export const CHAINS: Record<ChainId, ChainInfo> = {
   polygon: { id: "polygon", name: "Polygon", color: "#8247E5" },
   bsc: { id: "bsc", name: "BNB Chain", color: "#F3BA2F" },
   avalanche: { id: "avalanche", name: "Avalanche", color: "#E84142" },
+  tron: { id: "tron", name: "TRON", color: "#FF060A" },
+  xrp: { id: "xrp", name: "XRP Ledger", color: "#7B8794" },
 };
 
 export const FAMILY_NAMES: Record<Family, string> = {
   evm: "EVM",
   solana: "Solana",
   bitcoin: "Bitcoin",
+  tron: "TRON",
+  xrpl: "XRP Ledger",
+};
+
+/** Native coin shown as the icon of a wallet of each family. */
+export const FAMILY_SYMBOL: Record<Family, string> = {
+  evm: "ETH",
+  solana: "SOL",
+  bitcoin: "BTC",
+  tron: "TRX",
+  xrpl: "XRP",
 };
 
 /** Network icon shown for a wallet of each family. */
@@ -30,6 +43,8 @@ export const FAMILY_ICON: Record<Family, ChainId> = {
   evm: "ethereum",
   solana: "solana",
   bitcoin: "bitcoin",
+  tron: "tron",
+  xrpl: "xrp",
 };
 
 /** Brand colors for common tickers; anything else falls back to its chain. */
@@ -53,6 +68,8 @@ const TOKEN_COLORS: Record<string, string> = {
   POL: "#8247E5",
   BNB: "#F3BA2F",
   AVAX: "#E84142",
+  TRX: "#FF060A",
+  XRP: "#7B8794",
   LINK: "#2A5ADA",
   UNI: "#FF007A",
 };

@@ -11,6 +11,8 @@ export interface AssetRow {
   color: string;
   logoUrl?: string | null;
   balance: number;
+  /** Part of `balance` that can't be spent (XRP Ledger reserve). */
+  locked?: number;
   price: number;
   /** Ratio, 0.05 = +5%; `null` when unknown. */
   change24h: number | null;
@@ -45,6 +47,7 @@ export function liveAssetRows(portfolio: Portfolio): AssetRow[] {
       color: tokenColor(a.symbol, a.chain),
       logoUrl: a.logoUrl,
       balance: Number(a.amount),
+      locked: a.locked === null ? undefined : Number(a.locked),
       price: Number(a.priceUsd),
       change24h: a.change24h === null ? null : Number(a.change24h),
       value: Number(a.valueUsd),

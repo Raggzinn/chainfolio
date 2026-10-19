@@ -14,6 +14,7 @@ const portfolio: Portfolio = {
       name: "USD Coin",
       logoUrl: null,
       amount: "100",
+      locked: null,
       priceUsd: "1",
       valueUsd: "100",
       change24h: null,
@@ -25,6 +26,7 @@ const portfolio: Portfolio = {
       name: "Ether",
       logoUrl: null,
       amount: "2",
+      locked: null,
       priceUsd: "2000",
       valueUsd: "4000",
       change24h: "0.25",
@@ -36,6 +38,7 @@ const portfolio: Portfolio = {
       name: "Some token",
       logoUrl: "https://example.com/xyz.png",
       amount: "1",
+      locked: "0.2",
       priceUsd: "0.5",
       valueUsd: "0.5",
       change24h: "-0.1",
@@ -61,6 +64,8 @@ describe("liveAssetRows", () => {
     expect(rows.find((r) => r.symbol === "USDC")?.color).toBe("#2775CA");
     expect(rows.find((r) => r.symbol === "XYZ")?.color).toBe("#8247E5");
     expect(rows.find((r) => r.symbol === "XYZ")?.logoUrl).toBe("https://example.com/xyz.png");
+    expect(rows.find((r) => r.symbol === "XYZ")?.locked).toBe(0.2);
+    expect(rows.find((r) => r.symbol === "USDC")?.locked).toBeUndefined();
   });
 });
 
