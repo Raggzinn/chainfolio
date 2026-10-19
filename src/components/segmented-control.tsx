@@ -13,7 +13,8 @@ export function SegmentedControl<T extends string>({
 }: {
   options: readonly T[];
   labels?: Partial<Record<T, string>>;
-  value: T;
+  /** `undefined` leaves every option unselected and hides the thumb. */
+  value: T | undefined;
   onChange: (value: T) => void;
   className?: string;
   label: string;
@@ -25,10 +26,15 @@ export function SegmentedControl<T extends string>({
   useGSAP(
     () => {
       const target = root.current?.querySelector<HTMLElement>(`[data-value="${value}"]`);
-      if (!target || !thumb.current) return;
+      if (!thumb.current) return;
+      if (!target) {
+        gsap.to(thumb.current, { autoAlpha: 0, duration: 0.2 });
+        return;
+      }
       gsap.to(thumb.current, {
         x: target.offsetLeft,
         width: target.offsetWidth,
+        autoAlpha: 1,
         duration: mounted.current ? 0.45 : 0,
         ease: "expo.out",
       });

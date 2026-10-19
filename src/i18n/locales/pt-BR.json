@@ -178,5 +178,24 @@
       "greed": "Ganância",
       "extremeGreed": "Ganância extrema"
     }
+  },
+  "filters": {
+    "period": "Período",
+    "allAssets": "Todos os ativos",
+    "assetsSelected_one": "{{count}} ativo",
+    "assetsSelected_other": "{{count}} ativos",
+    "selectedValue": "Valor dos ativos selecionados",
+    "custom": "Datas",
+    "pickDates": "Escolha a data inicial e final",
+    "apply": "Aplicar",
+    "inPeriod": "no período",
+    "ranges": {
+      "1D": "hoje",
+      "1W": "na semana",
+      "1M": "no mês",
+      "3M": "em 3 meses",
+      "1Y": "no ano",
+      "ALL": "desde o início"
+    }
   }
 }
