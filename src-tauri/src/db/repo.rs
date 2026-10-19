@@ -191,14 +191,15 @@ pub fn save_sync(conn: &mut Connection, write: &SyncWrite) -> Result<()> {
                 write.quotes.get(&holding.asset.price_key),
             )?;
             tx.execute(
-                "INSERT INTO balances (wallet_id, asset_id, amount, updated_at)
-                 VALUES (?1, ?2, ?3, ?4)
-                 ON CONFLICT (wallet_id, asset_id) DO UPDATE
-                   SET amount = excluded.amount, updated_at = excluded.updated_at",
+                "INSERT INTO balances (wallet_id, asset_id, amount, locked, updated_at)
+                 VALUES (?1, ?2, ?3, ?4, ?5)
+                 ON CONFLICT (wallet_id, asset_id) DO UPDATE SET amount = excluded.amount,
+                   locked = excluded.locked, updated_at = excluded.updated_at",
                 params![
                     chain_balances.wallet_id,
                     holding.asset.id(),
                     holding.amount.to_string(),
+                    holding.locked.map(|l| l.to_string()),
                     now
                 ],
             )?;
@@ -316,6 +317,8 @@ pub struct PortfolioAsset {
     pub name: String,
     pub logo_url: Option<String>,
     pub amount: Decimal,
+    /// Part of `amount` that can't be spent (XRP Ledger reserve).
+    pub locked: Option<Decimal>,
     pub price_usd: Decimal,
     pub value_usd: Decimal,
     pub change_24h: Option<Decimal>,
@@ -355,6 +358,7 @@ struct BalanceRow {
     name: String,
     logo_url: Option<String>,
     amount: Decimal,
+    locked: Option<Decimal>,
     price: Option<Decimal>,
     change: Option<Decimal>,
 }
@@ -366,7 +370,7 @@ fn decimal_column(value: Option<String>) -> Option<Decimal> {
 fn balance_rows(conn: &Connection) -> Result<Vec<BalanceRow>> {
     let mut stmt = conn.prepare(
         "SELECT b.wallet_id, a.id, a.chain, a.symbol, a.name, a.logo_url, b.amount,
-                p.price_usd, p.change_24h
+                p.price_usd, p.change_24h, b.locked
          FROM balances b
          JOIN assets a ON a.id = b.asset_id
          LEFT JOIN prices p ON p.price_key = a.price_key",
@@ -382,11 +386,13 @@ fn balance_rows(conn: &Connection) -> Result<Vec<BalanceRow>> {
             row.get::<_, String>(6)?,
             row.get::<_, Option<String>>(7)?,
             row.get::<_, Option<String>>(8)?,
+            row.get::<_, Option<String>>(9)?,
         ))
     })?;
     let mut out = Vec::new();
     for row in rows {
-        let (wallet_id, asset_id, chain, symbol, name, logo_url, amount, price, change) = row?;
+        let (wallet_id, asset_id, chain, symbol, name, logo_url, amount, price, change, locked) =
+            row?;
         let (Ok(chain), Ok(amount)) = (Chain::from_str(&chain), Decimal::from_str(&amount)) else {
             continue;
         };
@@ -398,6 +404,7 @@ fn balance_rows(conn: &Connection) -> Result<Vec<BalanceRow>> {
             name,
             logo_url,
             amount,
+            locked: decimal_column(locked),
             price: decimal_column(price),
             change: decimal_column(change),
         });
@@ -440,11 +447,15 @@ pub fn portfolio(conn: &Connection) -> Result<Portfolio> {
                 name: row.name,
                 logo_url: row.logo_url,
                 amount: Decimal::ZERO,
+                locked: None,
                 price_usd: price,
                 value_usd: Decimal::ZERO,
                 change_24h: row.change,
             });
         asset.amount += row.amount;
+        if let Some(locked) = row.locked {
+            asset.locked = Some(asset.locked.unwrap_or_default() + locked);
+        }
         asset.value_usd += value;
     }
 
@@ -465,6 +476,7 @@ pub fn portfolio(conn: &Connection) -> Result<Portfolio> {
         .filter(|a| a.value_usd >= DUST_USD)
         .map(|mut a| {
             a.amount = a.amount.normalize();
+            a.locked = a.locked.map(|l| l.normalize());
             a.value_usd = a.value_usd.round_dp(8).normalize();
             a
         })
@@ -546,6 +558,7 @@ mod tests {
         Holding {
             asset,
             amount: Decimal::from_str(amount).unwrap(),
+            locked: None,
         }
     }
 
@@ -655,6 +668,29 @@ mod tests {
         let p = portfolio(&conn).unwrap();
         assert_eq!(p.total_usd, Decimal::from(3000));
         assert_eq!(p.unpriced_count, 0);
+
+        // Locked amounts (XRP reserve) are stored and summed per asset.
+        let x = add(&mut conn, Family::Xrpl, "rX");
+        let mut write = SyncWrite::default();
+        let mut xrp = holding(
+            AssetMeta::native(Chain::Xrp, "XRP", "XRP", 6, "ripple"),
+            "10",
+        );
+        xrp.locked = Some(Decimal::from_str("1.2").unwrap());
+        write.balances.push(ChainBalances {
+            wallet_id: x.id,
+            chain: Chain::Xrp,
+            holdings: vec![xrp],
+        });
+        write
+            .quotes
+            .insert("coingecko:ripple".into(), quote("2", None));
+        save_sync(&mut conn, &write).unwrap();
+        let p = portfolio(&conn).unwrap();
+        let xrp = p.assets.iter().find(|a| a.chain == Chain::Xrp).unwrap();
+        assert_eq!(xrp.locked, Some(Decimal::from_str("1.2").unwrap()));
+        assert_eq!(xrp.value_usd, Decimal::from(20));
+        remove_wallet(&conn, x.id).unwrap();
 
         // Removing a wallet drops its balances.
         remove_wallet(&conn, a.id).unwrap();
