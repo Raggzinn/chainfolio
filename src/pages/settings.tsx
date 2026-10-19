@@ -1,4 +1,5 @@
-import { Check } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
+import { Check, Compass, Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout/page-header";
 import { Panel } from "@/components/panel";
@@ -9,6 +10,7 @@ import { useTheme } from "@/hooks/use-theme";
 import { type Language, SUPPORTED_LANGUAGES } from "@/i18n";
 import { cn } from "@/lib/utils";
 import { CURRENCIES, THEMES, type Theme, usePreferences } from "@/stores/preferences";
+import { useTour } from "@/stores/tour";
 
 export function SettingsPage() {
   const { t, i18n } = useTranslation();
@@ -94,6 +96,8 @@ export function SettingsPage() {
           </SettingRow>
         </div>
       </Panel>
+
+      <HelpPanel />
     </>
   );
 }
@@ -179,5 +183,61 @@ function MiniWindow({ dark }: { dark: boolean }) {
         </div>
       </div>
     </div>
+  );
+}
+
+function HelpPanel() {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const startTour = useTour((s) => s.start);
+  const setWelcomeCompleted = usePreferences((s) => s.setWelcomeCompleted);
+  return (
+    <Panel title={t("settings.help")}>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <HelpAction
+          icon={Compass}
+          title={t("tour.start")}
+          body={t("settings.tourHint")}
+          onClick={() => {
+            navigate({ to: "/" });
+            startTour();
+          }}
+        />
+        <HelpAction
+          icon={Sparkles}
+          title={t("welcome.show")}
+          body={t("settings.welcomeHint")}
+          onClick={() => setWelcomeCompleted(false)}
+        />
+      </div>
+    </Panel>
+  );
+}
+
+function HelpAction({
+  icon: Icon,
+  title,
+  body,
+  onClick,
+}: {
+  icon: typeof Compass;
+  title: string;
+  body: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="flex items-start gap-3 rounded-xl bg-muted p-4 text-left transition-colors hover:bg-accent"
+    >
+      <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/12 text-primary">
+        <Icon className="size-4" />
+      </span>
+      <span>
+        <span className="block font-semibold text-sm">{title}</span>
+        <span className="mt-0.5 block text-muted-foreground text-sm">{body}</span>
+      </span>
+    </button>
   );
 }
