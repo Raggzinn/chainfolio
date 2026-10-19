@@ -178,5 +178,24 @@
       "greed": "Greed",
       "extremeGreed": "Extreme greed"
     }
+  },
+  "filters": {
+    "period": "Period",
+    "allAssets": "All assets",
+    "assetsSelected_one": "{{count}} asset",
+    "assetsSelected_other": "{{count}} assets",
+    "selectedValue": "Value of selected assets",
+    "custom": "Dates",
+    "pickDates": "Pick a start and end date",
+    "apply": "Apply",
+    "inPeriod": "in the period",
+    "ranges": {
+      "1D": "today",
+      "1W": "this week",
+      "1M": "this month",
+      "3M": "in 3 months",
+      "1Y": "this year",
+      "ALL": "all time"
+    }
   }
 }
