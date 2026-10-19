@@ -7,6 +7,7 @@ const host = process.env.TAURI_DEV_HOST;
 
 // https://v2.tauri.app/start/frontend/vite/
 export default defineConfig({
+  define: { __APP_VERSION__: JSON.stringify(process.env.npm_package_version ?? "0.0.0") },
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) },
