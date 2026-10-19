@@ -1,55 +1,52 @@
-import { Link } from "@tanstack/react-router";
-import { Plus, Wallet } from "lucide-react";
+import { FlaskConical, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { EmptyState } from "@/components/layout/empty-state";
-import { PageHeader } from "@/components/layout/page-header";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
-import { formatCurrency } from "@/lib/format";
+import { ActivityCard } from "@/features/portfolio/activity-card";
+import { AllocationCard } from "@/features/portfolio/allocation-card";
+import { HeroCard } from "@/features/portfolio/hero-card";
+import { Onboarding } from "@/features/portfolio/onboarding";
+import { RiskCard } from "@/features/portfolio/risk-card";
+import { TopAssetsCard } from "@/features/portfolio/top-assets-card";
 import { usePreferences } from "@/stores/preferences";
 
 export function PortfolioPage() {
-  const { t, i18n } = useTranslation();
-  const currency = usePreferences((s) => s.currency);
-  const privacyMode = usePreferences((s) => s.privacyMode);
+  const demoMode = usePreferences((s) => s.demoMode);
+  if (!demoMode) return <Onboarding />;
 
   return (
     <>
-      <PageHeader
-        title={t("pages.portfolio.title")}
-        description={t("pages.portfolio.description")}
-        actions={<AddWalletButton />}
-      />
-
-      <Card>
-        <CardHeader>
-          <CardDescription>{t("pages.portfolio.totalValue")}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="tabular font-semibold text-4xl tracking-tight">
-            {formatCurrency(0, currency, i18n.language, { hidden: privacyMode })}
-          </p>
-        </CardContent>
-      </Card>
-
-      <EmptyState
-        icon={Wallet}
-        title={t("empty.noWallets")}
-        description={t("empty.noWalletsHint")}
-        action={<AddWalletButton />}
-      />
+      <DemoBanner />
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_320px]">
+        <HeroCard />
+        <RiskCard />
+      </div>
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_420px]">
+        <TopAssetsCard />
+        <div className="grid gap-5">
+          <AllocationCard />
+          <ActivityCard />
+        </div>
+      </div>
     </>
   );
 }
 
-function AddWalletButton() {
+function DemoBanner() {
   const { t } = useTranslation();
+  const setDemoMode = usePreferences((s) => s.setDemoMode);
   return (
-    <Button asChild>
-      <Link to="/wallets">
-        <Plus />
-        {t("topbar.addWallet")}
-      </Link>
-    </Button>
+    <div className="surface flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm">
+      <span className="flex size-6 items-center justify-center rounded-lg bg-chart-5/15 text-chart-5">
+        <FlaskConical className="size-3.5" />
+      </span>
+      <span className="text-muted-foreground">{t("dashboard.demoBanner")}</span>
+      <button
+        type="button"
+        onClick={() => setDemoMode(false)}
+        className="ml-auto inline-flex items-center gap-1 rounded-lg px-2 py-1 font-medium text-xs transition-colors hover:bg-accent"
+      >
+        <X className="size-3.5" />
+        {t("dashboard.exitDemo")}
+      </button>
+    </div>
   );
 }

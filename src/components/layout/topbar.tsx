@@ -1,47 +1,74 @@
-import { Eye, EyeOff, Moon, RefreshCw, Search, Sun } from "lucide-react";
+import { Command, Eye, EyeOff, Moon, RefreshCw, Search, Sun } from "lucide-react";
+import { useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useTheme } from "@/hooks/use-theme";
+import { gsap } from "@/lib/gsap";
+import { IS_MAC } from "@/lib/platform";
+import { cn } from "@/lib/utils";
 import { usePreferences } from "@/stores/preferences";
+import { WindowControls } from "./window-controls";
 
 export function Topbar({ onOpenCommand }: { onOpenCommand: () => void }) {
   const { t } = useTranslation();
   const { resolvedTheme, toggleTheme } = useTheme();
   const privacyMode = usePreferences((s) => s.privacyMode);
   const togglePrivacyMode = usePreferences((s) => s.togglePrivacyMode);
+  const syncIcon = useRef<SVGSVGElement>(null);
+  const themeIcon = useRef<HTMLSpanElement>(null);
+
+  const spinSync = () => {
+    gsap.fromTo(
+      syncIcon.current,
+      { rotate: 0 },
+      { rotate: 360, duration: 0.9, ease: "power2.inOut" },
+    );
+  };
+
+  const flipTheme = () => {
+    gsap.fromTo(
+      themeIcon.current,
+      { rotate: -90, scale: 0.4, autoAlpha: 0 },
+      { rotate: 0, scale: 1, autoAlpha: 1, duration: 0.5, ease: "back.out(2)" },
+    );
+    toggleTheme();
+  };
 
   return (
-    <header className="sticky top-0 z-10 flex h-14 shrink-0 items-center gap-2 border-b bg-background/80 px-4 backdrop-blur">
-      <SidebarTrigger className="-ml-1" />
-      <Separator orientation="vertical" className="mr-1 data-[orientation=vertical]:h-4" />
-
+    <header data-tauri-drag-region className="flex h-[60px] shrink-0 items-center gap-3 pr-4 pl-5">
       <button
         type="button"
         onClick={onOpenCommand}
-        className="flex h-9 w-full max-w-sm items-center gap-2 rounded-md border bg-muted/40 px-3 text-muted-foreground text-sm transition-colors hover:bg-muted"
+        className="surface group flex h-10 w-full max-w-md items-center gap-2.5 rounded-xl px-3.5 text-muted-foreground text-sm transition-all duration-300 hover:text-foreground hover:ring-1 hover:ring-primary/30"
       >
-        <Search className="size-4" />
+        <Search className="size-4 transition-transform duration-300 group-hover:scale-110" />
         <span className="flex-1 text-left">{t("topbar.search")}</span>
-        <kbd className="rounded border bg-background px-1.5 font-mono text-[10px]">Ctrl K</kbd>
+        <kbd className="flex items-center gap-0.5 rounded-md border bg-background/60 px-1.5 py-0.5 font-mono text-[10px]">
+          {IS_MAC ? <Command className="size-3" /> : "Ctrl"} K
+        </kbd>
       </button>
 
-      <div className="ml-auto flex items-center gap-1">
-        <IconButton label={t("topbar.sync")} onClick={() => {}}>
-          <RefreshCw />
+      <div data-tauri-drag-region className="h-full flex-1" />
+
+      <div className="surface flex items-center gap-0.5 rounded-xl p-1">
+        <IconButton label={t("topbar.sync")} onClick={spinSync}>
+          <RefreshCw ref={syncIcon} />
         </IconButton>
         <IconButton
           label={privacyMode ? t("topbar.privacyOff") : t("topbar.privacyOn")}
           onClick={togglePrivacyMode}
+          active={privacyMode}
         >
           {privacyMode ? <EyeOff /> : <Eye />}
         </IconButton>
-        <IconButton label={t("command.toggleTheme")} onClick={toggleTheme}>
-          {resolvedTheme === "dark" ? <Sun /> : <Moon />}
+        <IconButton label={t("command.toggleTheme")} onClick={flipTheme}>
+          <span ref={themeIcon} className="flex">
+            {resolvedTheme === "dark" ? <Sun /> : <Moon />}
+          </span>
         </IconButton>
       </div>
+
+      <WindowControls />
     </header>
   );
 }
@@ -49,18 +76,29 @@ export function Topbar({ onOpenCommand }: { onOpenCommand: () => void }) {
 function IconButton({
   label,
   onClick,
+  active,
   children,
 }: {
   label: string;
   onClick: () => void;
+  active?: boolean;
   children: React.ReactNode;
 }) {
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button variant="ghost" size="icon" onClick={onClick} aria-label={label}>
+        <button
+          type="button"
+          onClick={onClick}
+          aria-label={label}
+          aria-pressed={active}
+          className={cn(
+            "flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-all duration-200 hover:bg-accent hover:text-foreground active:scale-90 [&_svg]:size-4",
+            active && "bg-primary/15 text-primary",
+          )}
+        >
           {children}
-        </Button>
+        </button>
       </TooltipTrigger>
       <TooltipContent>{label}</TooltipContent>
     </Tooltip>

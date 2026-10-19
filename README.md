@@ -61,13 +61,14 @@ pnpm tauri dev
 ## Roadmap
 
 - [x] Project foundation, theme and app shell
+- [ ] Auto-update and config backup (export / import)
 - [ ] Wallets and balances (EVM, Solana, Bitcoin)
 - [ ] Transactions and portfolio history
 - [ ] PnL engine (FIFO / LIFO / average cost)
 - [ ] Optional tax module (Brazil)
 - [ ] DeFi positions and risk scanner
 - [ ] Alerts, tray and background sync
-- [ ] Encrypted database and backups
+- [ ] Encrypted database
 - [ ] v1.0 release
 - [ ] Centralized exchanges (read-only API and CSV import)
 

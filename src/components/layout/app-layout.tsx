@@ -1,23 +1,51 @@
-import { Outlet } from "@tanstack/react-router";
-import { useState } from "react";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { Outlet, useRouterState } from "@tanstack/react-router";
+import { useRef, useState } from "react";
+import { gsap, MOTION_OK, useGSAP } from "@/lib/gsap";
 import { AppSidebar } from "./app-sidebar";
 import { CommandMenu } from "./command-menu";
 import { Topbar } from "./topbar";
 
 export function AppLayout() {
   const [commandOpen, setCommandOpen] = useState(false);
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const pageRef = useRef<HTMLDivElement>(null);
+
+  // Every page enters with a soft staggered rise of its direct children.
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add(MOTION_OK, () => {
+        gsap.from(pageRef.current?.children ?? [], {
+          y: 18,
+          autoAlpha: 0,
+          filter: "blur(6px)",
+          duration: 0.7,
+          stagger: 0.06,
+          ease: "expo.out",
+          clearProps: "filter,transform",
+        });
+      });
+      return () => mm.revert();
+    },
+    { dependencies: [pathname], scope: pageRef },
+  );
 
   return (
-    <SidebarProvider>
+    <div className="flex h-full">
       <AppSidebar />
-      <SidebarInset>
+      <div className="flex min-w-0 flex-1 flex-col">
         <Topbar onOpenCommand={() => setCommandOpen(true)} />
-        <main className="mx-auto w-full max-w-7xl flex-1 space-y-6 p-6">
-          <Outlet />
+        <main className="flex-1 overflow-x-hidden overflow-y-auto px-5 pb-8">
+          <div
+            ref={pageRef}
+            key={pathname}
+            className="mx-auto w-full max-w-[1320px] space-y-5 pt-1"
+          >
+            <Outlet />
+          </div>
         </main>
-      </SidebarInset>
+      </div>
       <CommandMenu open={commandOpen} onOpenChange={setCommandOpen} />
-    </SidebarProvider>
+    </div>
   );
 }

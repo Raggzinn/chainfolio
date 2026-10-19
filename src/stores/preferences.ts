@@ -12,10 +12,14 @@ interface PreferencesState {
   currency: Currency;
   privacyMode: boolean;
   taxModuleEnabled: boolean;
+  demoMode: boolean;
+  sidebarCollapsed: boolean;
   setTheme: (theme: Theme) => void;
   setCurrency: (currency: Currency) => void;
   togglePrivacyMode: () => void;
   setTaxModuleEnabled: (enabled: boolean) => void;
+  setDemoMode: (enabled: boolean) => void;
+  toggleSidebar: () => void;
 }
 
 /**
@@ -29,10 +33,14 @@ export const usePreferences = create<PreferencesState>()(
       currency: "USD",
       privacyMode: false,
       taxModuleEnabled: false,
+      demoMode: false,
+      sidebarCollapsed: false,
       setTheme: (theme) => set({ theme }),
       setCurrency: (currency) => set({ currency }),
       togglePrivacyMode: () => set((s) => ({ privacyMode: !s.privacyMode })),
       setTaxModuleEnabled: (taxModuleEnabled) => set({ taxModuleEnabled }),
+      setDemoMode: (demoMode) => set({ demoMode }),
+      toggleSidebar: () => set((s) => ({ sidebarCollapsed: !s.sidebarCollapsed })),
     }),
     {
       name: "chainfolio.preferences",
