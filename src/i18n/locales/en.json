@@ -1,0 +1,99 @@
+{
+  "app": {
+    "name": "Chainfolio",
+    "tagline": "Open-source crypto portfolio intelligence"
+  },
+  "nav": {
+    "overview": "Overview",
+    "portfolio": "Portfolio",
+    "assets": "Assets",
+    "transactions": "Transactions",
+    "analytics": "Analytics",
+    "defi": "DeFi & Staking",
+    "insights": "Insights",
+    "risk": "Risk",
+    "taxes": "Taxes",
+    "alerts": "Alerts",
+    "manage": "Manage",
+    "wallets": "Wallets",
+    "settings": "Settings"
+  },
+  "topbar": {
+    "search": "Search or jump to…",
+    "sync": "Sync now",
+    "privacyOn": "Hide balances",
+    "privacyOff": "Show balances",
+    "addWallet": "Add wallet"
+  },
+  "command": {
+    "placeholder": "Type a command or search…",
+    "empty": "No results found.",
+    "navigation": "Navigation",
+    "actions": "Actions",
+    "toggleTheme": "Toggle theme",
+    "togglePrivacy": "Toggle privacy mode"
+  },
+  "pages": {
+    "portfolio": {
+      "title": "Portfolio",
+      "description": "Total value, performance and allocation across all your wallets.",
+      "totalValue": "Total portfolio value"
+    },
+    "assets": {
+      "title": "Assets",
+      "description": "Every token you hold, with cost basis and PnL."
+    },
+    "transactions": {
+      "title": "Transactions",
+      "description": "Unified history across every chain."
+    },
+    "analytics": {
+      "title": "Analytics",
+      "description": "Allocation, realized and unrealized PnL, and benchmarks."
+    },
+    "defi": {
+      "title": "DeFi & Staking",
+      "description": "Lending, liquidity and staking positions with yield."
+    },
+    "risk": {
+      "title": "Risk",
+      "description": "Concentration, depeg exposure, suspicious tokens and approvals."
+    },
+    "taxes": {
+      "title": "Taxes",
+      "description": "Brazilian income tax reports (IR): monthly exemption, capital gains and annual holdings."
+    },
+    "alerts": {
+      "title": "Alerts",
+      "description": "Price, portfolio and on-chain activity alerts."
+    },
+    "wallets": {
+      "title": "Wallets",
+      "description": "Watch-only addresses on EVM chains, Solana and Bitcoin."
+    },
+    "settings": {
+      "title": "Settings",
+      "description": "Preferences, data sources and security."
+    }
+  },
+  "empty": {
+    "noWallets": "No wallets yet",
+    "noWalletsHint": "Add a public address, ENS/SNS name or xpub to start tracking. Chainfolio never asks for private keys.",
+    "comingSoon": "This section is under construction."
+  },
+  "settings": {
+    "general": "General",
+    "language": "Language",
+    "languageHint": "Interface language.",
+    "theme": "Theme",
+    "themeHint": "Dark is the default.",
+    "themeDark": "Dark",
+    "themeLight": "Light",
+    "themeSystem": "System",
+    "currency": "Base currency",
+    "currencyHint": "All values are converted to this currency.",
+    "modules": "Modules",
+    "taxModule": "Tax module",
+    "taxModuleHint": "Enables Brazilian tax reports (IR). Estimates only, not a substitute for an accountant."
+  }
+}
