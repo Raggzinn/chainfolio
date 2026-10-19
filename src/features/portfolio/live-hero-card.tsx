@@ -28,7 +28,10 @@ export function LiveHeroCard({ portfolio }: { portfolio: Portfolio }) {
     .filter((c) => c.value > 0);
 
   return (
-    <section className="surface relative flex flex-col overflow-hidden rounded-3xl">
+    <section
+      data-tour="portfolio"
+      className="surface relative flex flex-col overflow-hidden rounded-3xl"
+    >
       <div className="flex flex-wrap items-start justify-between gap-6 p-6">
         <div className="space-y-3">
           <p className="font-medium text-muted-foreground text-sm">{t("dashboard.totalValue")}</p>
