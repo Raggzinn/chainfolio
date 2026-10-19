@@ -1,0 +1,99 @@
+{
+  "app": {
+    "name": "Chainfolio",
+    "tagline": "Inteligência open source para seu portfólio cripto"
+  },
+  "nav": {
+    "overview": "Visão geral",
+    "portfolio": "Portfólio",
+    "assets": "Ativos",
+    "transactions": "Transações",
+    "analytics": "Analytics",
+    "defi": "DeFi e Staking",
+    "insights": "Insights",
+    "risk": "Risco",
+    "taxes": "Impostos",
+    "alerts": "Alertas",
+    "manage": "Gerenciar",
+    "wallets": "Carteiras",
+    "settings": "Configurações"
+  },
+  "topbar": {
+    "search": "Buscar ou ir para…",
+    "sync": "Sincronizar agora",
+    "privacyOn": "Ocultar saldos",
+    "privacyOff": "Mostrar saldos",
+    "addWallet": "Adicionar carteira"
+  },
+  "command": {
+    "placeholder": "Digite um comando ou busque…",
+    "empty": "Nenhum resultado.",
+    "navigation": "Navegação",
+    "actions": "Ações",
+    "toggleTheme": "Alternar tema",
+    "togglePrivacy": "Alternar modo privacidade"
+  },
+  "pages": {
+    "portfolio": {
+      "title": "Portfólio",
+      "description": "Valor total, desempenho e alocação de todas as suas carteiras.",
+      "totalValue": "Valor total do portfólio"
+    },
+    "assets": {
+      "title": "Ativos",
+      "description": "Todos os tokens que você possui, com custo médio e PnL."
+    },
+    "transactions": {
+      "title": "Transações",
+      "description": "Histórico unificado de todas as redes."
+    },
+    "analytics": {
+      "title": "Analytics",
+      "description": "Alocação, PnL realizado e não realizado, e benchmarks."
+    },
+    "defi": {
+      "title": "DeFi e Staking",
+      "description": "Posições de empréstimo, liquidez e staking com rendimento."
+    },
+    "risk": {
+      "title": "Risco",
+      "description": "Concentração, exposição a depeg, tokens suspeitos e aprovações."
+    },
+    "taxes": {
+      "title": "Impostos",
+      "description": "Relatórios de IR: isenção mensal, ganho de capital e bens e direitos."
+    },
+    "alerts": {
+      "title": "Alertas",
+      "description": "Alertas de preço, portfólio e atividade on-chain."
+    },
+    "wallets": {
+      "title": "Carteiras",
+      "description": "Endereços somente leitura em redes EVM, Solana e Bitcoin."
+    },
+    "settings": {
+      "title": "Configurações",
+      "description": "Preferências, fontes de dados e segurança."
+    }
+  },
+  "empty": {
+    "noWallets": "Nenhuma carteira ainda",
+    "noWalletsHint": "Adicione um endereço público, nome ENS/SNS ou xpub para começar. O Chainfolio nunca pede chaves privadas.",
+    "comingSoon": "Esta seção está em construção."
+  },
+  "settings": {
+    "general": "Geral",
+    "language": "Idioma",
+    "languageHint": "Idioma da interface.",
+    "theme": "Tema",
+    "themeHint": "Escuro é o padrão.",
+    "themeDark": "Escuro",
+    "themeLight": "Claro",
+    "themeSystem": "Sistema",
+    "currency": "Moeda base",
+    "currencyHint": "Todos os valores são convertidos para esta moeda.",
+    "modules": "Módulos",
+    "taxModule": "Módulo de impostos",
+    "taxModuleHint": "Ativa os relatórios de IR. São estimativas e não substituem um contador."
+  }
+}
