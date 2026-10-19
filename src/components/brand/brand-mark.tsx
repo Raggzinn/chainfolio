@@ -13,9 +13,9 @@ export function BrandMark({ className }: { className?: string }) {
         </linearGradient>
       </defs>
       <rect width="32" height="32" rx="8" fill={`url(#${id})`} />
-      <rect x="8" y="17" width="4" height="7" rx="1.5" fill="#fff" fillOpacity=".7" />
-      <rect x="14" y="12" width="4" height="12" rx="1.5" fill="#fff" fillOpacity=".85" />
-      <rect x="20" y="8" width="4" height="16" rx="1.5" fill="#fff" />
+      <rect x="8" y="17" width="4" height="7" rx="1.5" fill="#F5F7FA" fillOpacity=".7" />
+      <rect x="14" y="12" width="4" height="12" rx="1.5" fill="#F5F7FA" fillOpacity=".85" />
+      <rect x="20" y="8" width="4" height="16" rx="1.5" fill="#F5F7FA" />
     </svg>
   );
 }
