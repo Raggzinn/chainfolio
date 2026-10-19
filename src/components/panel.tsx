@@ -6,16 +6,22 @@ export function Panel({
   subtitle,
   action,
   className,
+  tourId,
   children,
 }: {
   title?: React.ReactNode;
   subtitle?: React.ReactNode;
   action?: React.ReactNode;
   className?: string;
+  /** Marks the panel as a product tour target. */
+  tourId?: string;
   children: React.ReactNode;
 }) {
   return (
-    <section className={cn("surface relative overflow-hidden rounded-2xl p-5", className)}>
+    <section
+      data-tour={tourId}
+      className={cn("surface relative overflow-hidden rounded-2xl p-5", className)}
+    >
       {(title || action) && (
         <header className="mb-4 flex items-start justify-between gap-4">
           <div className="space-y-0.5">

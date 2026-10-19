@@ -1,4 +1,5 @@
-import { Command, Eye, EyeOff, Moon, RefreshCw, Search, Sun } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
+import { CircleHelp, Command, Eye, EyeOff, Moon, RefreshCw, Search, Sun } from "lucide-react";
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -8,6 +9,7 @@ import { gsap } from "@/lib/gsap";
 import { IS_MAC } from "@/lib/platform";
 import { cn } from "@/lib/utils";
 import { usePreferences } from "@/stores/preferences";
+import { useTour } from "@/stores/tour";
 import { WindowControls } from "./window-controls";
 
 export function Topbar({ onOpenCommand }: { onOpenCommand: () => void }) {
@@ -21,6 +23,8 @@ export function Topbar({ onOpenCommand }: { onOpenCommand: () => void }) {
   const syncing = useIsSyncing();
   const syncIcon = useRef<SVGSVGElement>(null);
   const themeIcon = useRef<HTMLSpanElement>(null);
+  const startTour = useTour((s) => s.start);
+  const navigate = useNavigate();
 
   const spinSync = () => {
     gsap.fromTo(
@@ -44,6 +48,7 @@ export function Topbar({ onOpenCommand }: { onOpenCommand: () => void }) {
     <header data-tauri-drag-region className="flex h-[60px] shrink-0 items-center gap-3 pr-4 pl-5">
       <button
         type="button"
+        data-tour="search"
         onClick={onOpenCommand}
         className="surface group flex h-10 w-full max-w-md items-center gap-2.5 rounded-xl px-3.5 text-muted-foreground text-sm transition-all duration-300 hover:text-foreground hover:ring-1 hover:ring-primary/30"
       >
@@ -61,6 +66,7 @@ export function Topbar({ onOpenCommand }: { onOpenCommand: () => void }) {
           <RefreshCw ref={syncIcon} className={cn(syncing && "animate-spin")} />
         </IconButton>
         <IconButton
+          tourId="privacy"
           label={privacyMode ? t("topbar.privacyOff") : t("topbar.privacyOn")}
           onClick={togglePrivacyMode}
           active={privacyMode}
@@ -71,6 +77,15 @@ export function Topbar({ onOpenCommand }: { onOpenCommand: () => void }) {
           <span ref={themeIcon} className="flex">
             {resolvedTheme === "dark" ? <Sun /> : <Moon />}
           </span>
+        </IconButton>
+        <IconButton
+          label={t("tour.start")}
+          onClick={() => {
+            navigate({ to: "/" });
+            startTour();
+          }}
+        >
+          <CircleHelp />
         </IconButton>
       </div>
 
@@ -83,9 +98,11 @@ function IconButton({
   label,
   onClick,
   active,
+  tourId,
   children,
 }: {
   label: string;
+  tourId?: string;
   onClick: () => void;
   active?: boolean;
   children: React.ReactNode;
@@ -95,6 +112,7 @@ function IconButton({
       <TooltipTrigger asChild>
         <button
           type="button"
+          data-tour={tourId}
           onClick={onClick}
           aria-label={label}
           aria-pressed={active}

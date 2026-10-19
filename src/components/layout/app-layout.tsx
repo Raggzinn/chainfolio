@@ -1,5 +1,7 @@
 import { Outlet, useRouterState } from "@tanstack/react-router";
 import { useRef, useState } from "react";
+import { ProductTour } from "@/features/onboarding/product-tour";
+import { WelcomeScreen } from "@/features/onboarding/welcome-screen";
 import { useAutoRefresh } from "@/features/wallets/queries";
 import { gsap, MOTION_OK, useGSAP } from "@/lib/gsap";
 import { AppSidebar } from "./app-sidebar";
@@ -48,6 +50,8 @@ export function AppLayout() {
         </main>
       </div>
       <CommandMenu open={commandOpen} onOpenChange={setCommandOpen} />
+      <WelcomeScreen />
+      <ProductTour />
     </div>
   );
 }

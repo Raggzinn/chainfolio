@@ -14,12 +14,15 @@ interface PreferencesState {
   taxModuleEnabled: boolean;
   demoMode: boolean;
   sidebarCollapsed: boolean;
+  /** Set once the first-run welcome flow is finished or skipped. */
+  welcomeCompleted: boolean;
   setTheme: (theme: Theme) => void;
   setCurrency: (currency: Currency) => void;
   togglePrivacyMode: () => void;
   setTaxModuleEnabled: (enabled: boolean) => void;
   setDemoMode: (enabled: boolean) => void;
   toggleSidebar: () => void;
+  setWelcomeCompleted: (completed: boolean) => void;
 }
 
 /**
@@ -35,12 +38,14 @@ export const usePreferences = create<PreferencesState>()(
       taxModuleEnabled: false,
       demoMode: false,
       sidebarCollapsed: false,
+      welcomeCompleted: false,
       setTheme: (theme) => set({ theme }),
       setCurrency: (currency) => set({ currency }),
       togglePrivacyMode: () => set((s) => ({ privacyMode: !s.privacyMode })),
       setTaxModuleEnabled: (taxModuleEnabled) => set({ taxModuleEnabled }),
       setDemoMode: (demoMode) => set({ demoMode }),
       toggleSidebar: () => set((s) => ({ sidebarCollapsed: !s.sidebarCollapsed })),
+      setWelcomeCompleted: (welcomeCompleted) => set({ welcomeCompleted }),
     }),
     {
       name: "chainfolio.preferences",

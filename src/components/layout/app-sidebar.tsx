@@ -99,6 +99,7 @@ export function AppSidebar() {
 
         <nav
           ref={navRef}
+          data-tour="navigation"
           className="relative flex-1 space-y-5 overflow-y-auto overflow-x-hidden px-3 py-3"
         >
           <div
@@ -124,6 +125,9 @@ export function AppSidebar() {
                     key={item.key}
                     to={item.to}
                     data-nav={item.key}
+                    data-tour={
+                      item.key === "wallets" || item.key === "settings" ? item.key : undefined
+                    }
                     className={cn(
                       "group relative flex h-10 items-center gap-3 rounded-xl px-3 font-medium text-sm transition-colors duration-200",
                       active ? "text-foreground" : "text-muted-foreground hover:text-foreground",

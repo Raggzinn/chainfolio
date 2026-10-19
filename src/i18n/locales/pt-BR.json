@@ -96,7 +96,10 @@
     "taxModule": "Módulo de impostos",
     "taxModuleHint": "Ativa os relatórios de IR. São estimativas e não substituem um contador.",
     "demoMode": "Modo demo",
-    "demoModeHint": "Preenche o app com um portfólio de exemplo para explorar todas as telas."
+    "demoModeHint": "Preenche o app com um portfólio de exemplo para explorar todas as telas.",
+    "help": "Ajuda",
+    "tourHint": "Um passeio de um minuto pelo app.",
+    "welcomeHint": "Refaz a configuração inicial."
   },
   "sidebar": {
     "watchOnly": "Somente leitura",
@@ -208,6 +211,129 @@
       "3M": "em 3 meses",
       "1Y": "no ano",
       "ALL": "desde o início"
+    }
+  },
+  "welcome": {
+    "skip": "Pular",
+    "back": "Voltar",
+    "next": "Próximo",
+    "start": "Começar",
+    "show": "Mostrar boas-vindas",
+    "welcome": {
+      "title": "Bem-vindo ao Chainfolio",
+      "subtitle": "Todo o seu portfólio on-chain em um lugar tranquilo e privado. Vamos configurar tudo — leva menos de um minuto.",
+      "chains": {
+        "title": "Todas as redes",
+        "body": "Ethereum, L2s, Solana, Bitcoin, TRON e XRP."
+      },
+      "pnl": {
+        "title": "PnL real",
+        "body": "FIFO, LIFO ou custo médio, sempre atualizado."
+      },
+      "risk": {
+        "title": "Análise de risco",
+        "body": "Concentração, depegs, golpes e aprovações."
+      }
+    },
+    "privacy": {
+      "title": "Privado por padrão",
+      "subtitle": "O Chainfolio funciona sem conta e nunca toca nos seus fundos.",
+      "watchOnly": {
+        "title": "Somente leitura",
+        "body": "Você adiciona endereços públicos. Nunca pedimos chave privada ou seed phrase e não conseguimos mover fundos."
+      },
+      "local": {
+        "title": "Fica no seu dispositivo",
+        "body": "Carteiras, saldos e configurações ficam em um banco local. Sem servidores, sem telemetria."
+      },
+      "openSource": {
+        "title": "Open source",
+        "body": "Licença MIT. Qualquer pessoa pode ler, auditar e melhorar o código."
+      }
+    },
+    "personalize": {
+      "title": "Do seu jeito",
+      "subtitle": "Dá para mudar tudo isso depois em Configurações.",
+      "preview": "Prévia ao vivo"
+    },
+    "modules": {
+      "title": "Módulos opcionais",
+      "subtitle": "Ative só o que você precisa.",
+      "taxBody": "Relatórios de IR: isenção mensal de R$ 35 mil, ganho de capital e bens e direitos. São estimativas.",
+      "later": "Mais módulos (alertas, DeFi) chegam conforme o app evolui.",
+      "previewTitle": "Vendas mensais de cripto",
+      "previewSubtitle": "Vendas de até R$ 35 mil por mês são isentas de IR.",
+      "exempt": "Isento",
+      "taxable": "Tributável"
+    },
+    "ready": {
+      "title": "Tudo pronto",
+      "subtitle": "Como você quer começar?",
+      "wallet": {
+        "title": "Adicionar primeira carteira",
+        "body": "Cole um endereço público, nome ENS ou xpub."
+      },
+      "tour": {
+        "title": "Fazer um tour rápido",
+        "body": "Conheça cada parte do app em cerca de um minuto."
+      },
+      "demo": {
+        "title": "Explorar com dados demo",
+        "body": "Teste o dashboard com um portfólio de exemplo."
+      }
+    },
+    "steps": "Etapas da configuração",
+    "keyboardHint": "Dica: use ← → para navegar entre as etapas",
+    "stepLabels": {
+      "welcome": "Boas-vindas",
+      "privacy": "Privacidade",
+      "personalize": "Personalizar",
+      "modules": "Módulos",
+      "ready": "Começar"
+    }
+  },
+  "tour": {
+    "start": "Fazer o tour",
+    "finish": "Concluir",
+    "close": "Fechar tour",
+    "progress": "{{current}} de {{total}}",
+    "steps": {
+      "navigation": {
+        "title": "Navegação",
+        "body": "Tudo fica aqui: portfólio, ativos, transações, DeFi, analytics, risco e alertas. Recolha o menu lá embaixo para ganhar espaço."
+      },
+      "search": {
+        "title": "Busca e comandos",
+        "body": "Aperte Ctrl K em qualquer lugar para ir a uma página ou executar ações como trocar o tema ou ocultar saldos."
+      },
+      "privacy": {
+        "title": "Modo privacidade",
+        "body": "Um clique esconde todos os saldos. Útil para compartilhar a tela ou usar em público."
+      },
+      "portfolio": {
+        "title": "Seu portfólio",
+        "body": "Valor total e desempenho ao longo do tempo. Passe o mouse no gráfico para ver o valor em qualquer dia."
+      },
+      "filters": {
+        "title": "Períodos e filtros",
+        "body": "Troque o período, escolha datas específicas ou filtre o gráfico pelos ativos que importam."
+      },
+      "risk": {
+        "title": "Score de risco",
+        "body": "Uma nota de 0 a 100 baseada em concentração, exposição a depeg de stablecoins e aprovações abertas."
+      },
+      "mood": {
+        "title": "Mood do mercado",
+        "body": "O índice Fear & Greed de cripto de hoje, comparado com ontem, a semana e o mês passados."
+      },
+      "wallets": {
+        "title": "Suas carteiras",
+        "body": "Adicione endereços públicos aqui. O Chainfolio lê saldos e histórico — nunca pede chaves."
+      },
+      "settings": {
+        "title": "Configurações",
+        "body": "Idioma, tema, moeda base, módulos opcionais e este tour sempre que você precisar."
+      }
     }
   },
   "wallets": {

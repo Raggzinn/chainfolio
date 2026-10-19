@@ -2,45 +2,9 @@ import { Link } from "@tanstack/react-router";
 import { Code2, HardDrive, Plus, ShieldCheck, Sparkles } from "lucide-react";
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { BrandMark } from "@/components/brand/brand-mark";
-import { TokenIcon } from "@/components/token-icon";
+import { TokenOrbit } from "@/components/token-orbit";
 import { gsap, MOTION_OK, useGSAP } from "@/lib/gsap";
 import { usePreferences } from "@/stores/preferences";
-
-const RINGS = [
-  {
-    radius: 92,
-    duration: 28,
-    tokens: [
-      { symbol: "ETH", color: "#627EEA" },
-      { symbol: "BTC", color: "#F7931A" },
-      { symbol: "SOL", color: "#9945FF" },
-    ],
-  },
-  {
-    radius: 150,
-    duration: 44,
-    tokens: [
-      { symbol: "ARB", color: "#28A0F0" },
-      { symbol: "BASE", color: "#0052FF" },
-      { symbol: "OP", color: "#FF0420" },
-      { symbol: "POL", color: "#8247E5" },
-      { symbol: "TRX", color: "#FF060A" },
-    ],
-  },
-  {
-    radius: 208,
-    duration: 64,
-    tokens: [
-      { symbol: "AVAX", color: "#E84142" },
-      { symbol: "BNB", color: "#F3BA2F" },
-      { symbol: "USDC", color: "#2775CA" },
-      { symbol: "XRP", color: "#7B8794" },
-      { symbol: "LINK", color: "#2A5ADA" },
-      { symbol: "UNI", color: "#FF007A" },
-    ],
-  },
-];
 
 export function Onboarding() {
   const { t } = useTranslation();
@@ -52,31 +16,7 @@ export function Onboarding() {
       const mm = gsap.matchMedia();
       mm.add(MOTION_OK, () => {
         const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
-        tl.from("[data-core]", { scale: 0.4, autoAlpha: 0, duration: 1.2 })
-          .from("[data-ring]", { scale: 0.6, autoAlpha: 0, duration: 1.4, stagger: 0.12 }, "<0.1")
-          .from("[data-copy] > *", { y: 24, autoAlpha: 0, duration: 0.9, stagger: 0.08 }, "<0.2");
-
-        // Rings spin forever; tokens counter-rotate to stay upright.
-        gsap.utils.toArray<HTMLElement>("[data-ring]").forEach((ring, i) => {
-          const duration = RINGS[i]?.duration ?? 40;
-          const dir = i % 2 ? -1 : 1;
-          gsap.to(ring, { rotate: 360 * dir, duration, ease: "none", repeat: -1 });
-          gsap.to(ring.querySelectorAll("[data-token]"), {
-            rotate: -360 * dir,
-            duration,
-            ease: "none",
-            repeat: -1,
-          });
-        });
-
-        gsap.to("[data-pulse]", {
-          scale: 1.6,
-          autoAlpha: 0,
-          duration: 2.4,
-          ease: "sine.out",
-          repeat: -1,
-          stagger: 0.8,
-        });
+        tl.from("[data-copy] > *", { y: 24, autoAlpha: 0, duration: 0.9, stagger: 0.08 }, 0.2);
       });
       return () => mm.revert();
     },
@@ -124,44 +64,7 @@ export function Onboarding() {
         </ul>
       </div>
 
-      <div className="relative mx-auto flex aspect-square w-full max-w-[480px] items-center justify-center">
-        {RINGS.map((ring) => (
-          <div
-            key={ring.radius}
-            data-ring
-            className="absolute rounded-full border border-foreground/[0.08] border-dashed"
-            style={{ width: ring.radius * 2, height: ring.radius * 2 }}
-          >
-            {ring.tokens.map((token, i) => {
-              const angle = (360 / ring.tokens.length) * i;
-              return (
-                <div
-                  key={token.symbol}
-                  className="absolute top-1/2 left-1/2"
-                  style={{
-                    transform: `rotate(${angle}deg) translateX(${ring.radius}px) rotate(${-angle}deg)`,
-                  }}
-                >
-                  <div data-token className="-translate-x-1/2 -translate-y-1/2">
-                    <TokenIcon symbol={token.symbol} color={token.color} size={44} />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        ))}
-        <div data-core className="relative flex size-28 items-center justify-center">
-          <span
-            data-pulse
-            className="absolute inset-0 rounded-[26px] border-2 border-brand-blue/50"
-          />
-          <span
-            data-pulse
-            className="absolute inset-0 rounded-[26px] border-2 border-brand-mint/50"
-          />
-          <BrandMark className="relative size-28" />
-        </div>
-      </div>
+      <TokenOrbit parallax className="mx-auto" />
     </div>
   );
 }

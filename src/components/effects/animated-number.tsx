@@ -24,11 +24,17 @@ export function AnimatedNumber({
   // Read the latest formatter without restarting the tween when its identity changes.
   const formatRef = useRef(format);
   formatRef.current = format;
+  // A count-up still running when the value gets hidden must never write over the mask.
+  const tween = useRef<gsap.core.Tween | null>(null);
+  const hiddenRef = useRef(hidden);
+  hiddenRef.current = hidden;
 
   useGSAP(
     () => {
       const el = ref.current;
       if (!el) return;
+      tween.current?.kill();
+      tween.current = null;
       if (hidden) {
         el.textContent = MASK;
         return;
@@ -38,12 +44,12 @@ export function AnimatedNumber({
         el.textContent = formatRef.current(value);
         return;
       }
-      gsap.to(current.current, {
+      tween.current = gsap.to(current.current, {
         n: value,
         duration,
         ease: "expo.out",
         onUpdate: () => {
-          el.textContent = formatRef.current(current.current.n);
+          if (!hiddenRef.current) el.textContent = formatRef.current(current.current.n);
         },
       });
     },

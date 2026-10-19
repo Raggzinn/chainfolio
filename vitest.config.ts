@@ -1,4 +1,4 @@
-import { defineConfig, mergeConfig } from "vitest/config";
+import { configDefaults, defineConfig, mergeConfig } from "vitest/config";
 import viteConfig from "./vite.config";
 
 export default mergeConfig(
@@ -9,6 +9,8 @@ export default mergeConfig(
       globals: true,
       setupFiles: ["./src/test/setup.ts"],
       css: false,
+      // Local agent worktrees live inside the checkout; never run their copies of the tests.
+      exclude: [...configDefaults.exclude, ".claude/**"],
     },
   }),
 );
