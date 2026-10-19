@@ -61,7 +61,7 @@ export function RiskCard() {
   );
 
   return (
-    <Panel title={t("dashboard.risk")} subtitle={t("dashboard.riskHint")}>
+    <Panel tourId="risk" title={t("dashboard.risk")} subtitle={t("dashboard.riskHint")}>
       <div ref={scope} className="flex flex-col items-center gap-5">
         <div className="relative" style={{ width: SIZE, height: SIZE }}>
           <svg width={SIZE} height={SIZE} className="rotate-[135deg]" aria-hidden="true">

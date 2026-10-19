@@ -1,5 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
-import { Eye, SunMoon } from "lucide-react";
+import { Compass, Eye, Sparkles, SunMoon } from "lucide-react";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/command";
 import { useTheme } from "@/hooks/use-theme";
 import { usePreferences } from "@/stores/preferences";
+import { useTour } from "@/stores/tour";
 import { visibleNavGroups } from "./nav-items";
 
 export function CommandMenu({
@@ -27,6 +28,8 @@ export function CommandMenu({
   const { toggleTheme } = useTheme();
   const taxModuleEnabled = usePreferences((s) => s.taxModuleEnabled);
   const togglePrivacyMode = usePreferences((s) => s.togglePrivacyMode);
+  const setWelcomeCompleted = usePreferences((s) => s.setWelcomeCompleted);
+  const startTour = useTour((s) => s.start);
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -68,6 +71,21 @@ export function CommandMenu({
           <CommandItem onSelect={() => run(togglePrivacyMode)}>
             <Eye />
             {t("command.togglePrivacy")}
+          </CommandItem>
+          <CommandItem
+            onSelect={() =>
+              run(() => {
+                navigate({ to: "/" });
+                startTour();
+              })
+            }
+          >
+            <Compass />
+            {t("tour.start")}
+          </CommandItem>
+          <CommandItem onSelect={() => run(() => setWelcomeCompleted(false))}>
+            <Sparkles />
+            {t("welcome.show")}
           </CommandItem>
         </CommandGroup>
       </CommandList>

@@ -18,7 +18,8 @@ export default defineConfig({
     strictPort: true,
     host: host || false,
     hmr: host ? { protocol: "ws", host, port: 1421 } : undefined,
-    watch: { ignored: ["**/src-tauri/**"] },
+    // Ignore the Rust side and any local agent worktrees inside the checkout.
+    watch: { ignored: ["**/src-tauri/**", "**/.claude/**"] },
   },
   envPrefix: ["VITE_", "TAURI_ENV_*"],
   build: {
