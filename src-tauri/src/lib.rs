@@ -3,6 +3,8 @@ mod chains;
 mod commands;
 mod db;
 mod error;
+#[cfg(test)]
+mod live_tests;
 mod prices;
 mod state;
 mod sync;
