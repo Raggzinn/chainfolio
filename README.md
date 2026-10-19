@@ -1,90 +1,101 @@
-<p align="center">
+<h1 align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset=".github/assets/lockup-dark.svg">
     <img alt="Chainfolio" src=".github/assets/lockup-light.svg" width="400">
   </picture>
+</h1>
+
+<p align="center">
+  Open-source crypto portfolio intelligence.<br>
+  Wallets, PnL, risk and taxes in one place — 100% local, watch-only, no sign-up.
 </p>
 
 <p align="center">
-  Inteligência open source para o seu portfólio cripto.<br>
-  Carteiras, PnL, risco e impostos em um só lugar — 100% local, somente leitura, sem cadastro.
+  <a href="https://github.com/Raggzinn/chainfolio/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/Raggzinn/chainfolio/ci.yml?branch=main&label=CI&style=flat-square&labelColor=1C1D20"></a>
+  <a href="https://github.com/Raggzinn/chainfolio/releases"><img alt="Release" src="https://img.shields.io/github/v/release/Raggzinn/chainfolio?include_prereleases&label=release&color=1E6BFF&style=flat-square&labelColor=1C1D20"></a>
+  <a href="LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-1E6BFF?style=flat-square&labelColor=1C1D20"></a>
+  <img alt="Platforms" src="https://img.shields.io/badge/platforms-Windows%20%C2%B7%20macOS%20%C2%B7%20Linux-19E3A1?style=flat-square&labelColor=1C1D20">
+  <a href="https://github.com/Raggzinn/chainfolio/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/Raggzinn/chainfolio?color=19E3A1&style=flat-square&labelColor=1C1D20"></a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/Raggzinn/chainfolio/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/Raggzinn/chainfolio/actions/workflows/ci.yml/badge.svg"></a>
-  <a href="LICENSE"><img alt="Licença MIT" src="https://img.shields.io/badge/licen%C3%A7a-MIT-1E6BFF"></a>
-  <img alt="Plataformas" src="https://img.shields.io/badge/Windows%20%7C%20macOS%20%7C%20Linux-1C1D20">
-  <img alt="Tauri 2" src="https://img.shields.io/badge/Tauri-2-19E3A1">
+  <a href="https://tauri.app"><img alt="Tauri 2" src="https://img.shields.io/badge/Tauri%202-24C8D8?style=flat-square&labelColor=1C1D20&logo=tauri&logoColor=F5F7FA"></a>
+  <a href="https://www.rust-lang.org"><img alt="Rust" src="https://img.shields.io/badge/Rust-CE422B?style=flat-square&labelColor=1C1D20&logo=rust&logoColor=F5F7FA"></a>
+  <a href="https://react.dev"><img alt="React 19" src="https://img.shields.io/badge/React%2019-149ECA?style=flat-square&labelColor=1C1D20&logo=react&logoColor=F5F7FA"></a>
+  <a href="https://www.typescriptlang.org"><img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&labelColor=1C1D20&logo=typescript&logoColor=F5F7FA"></a>
+  <a href="https://vite.dev"><img alt="Vite" src="https://img.shields.io/badge/Vite-646CFF?style=flat-square&labelColor=1C1D20&logo=vite&logoColor=F5F7FA"></a>
+  <a href="https://tailwindcss.com"><img alt="Tailwind CSS 4" src="https://img.shields.io/badge/Tailwind%20CSS%204-06B6D4?style=flat-square&labelColor=1C1D20&logo=tailwindcss&logoColor=F5F7FA"></a>
+  <a href="https://ui.shadcn.com"><img alt="shadcn/ui" src="https://img.shields.io/badge/shadcn%2Fui-1C1D20?style=flat-square&labelColor=1C1D20&logo=shadcnui&logoColor=F5F7FA"></a>
+  <a href="https://gsap.com"><img alt="GSAP" src="https://img.shields.io/badge/GSAP-0AE448?style=flat-square&labelColor=1C1D20&logo=greensock&logoColor=F5F7FA"></a>
+  <a href="https://sqlite.org"><img alt="SQLite" src="https://img.shields.io/badge/SQLite-0F80CC?style=flat-square&labelColor=1C1D20&logo=sqlite&logoColor=F5F7FA"></a>
 </p>
 
 <p align="center">
-  <a href="README.en.md">English</a> ·
-  <a href="#funcionalidades">Funcionalidades</a> ·
-  <a href="#rodando-localmente">Rodando localmente</a> ·
+  <a href="README.pt-BR.md">Português</a> ·
+  <a href="#features">Features</a> ·
+  <a href="#running-locally">Running locally</a> ·
   <a href="#roadmap">Roadmap</a> ·
-  <a href="CONTRIBUTING.md">Contribuindo</a>
+  <a href="CONTRIBUTING.md">Contributing</a>
 </p>
 
-> **Seus dados nunca saem do seu computador.** Sem servidores, sem telemetria e sem pedir chave privada ou seed phrase.
+> **Your data never leaves your computer.** No servers, no telemetry, and never a private key or seed phrase.
 
-> [!NOTE]
-> O Chainfolio está no início do desenvolvimento. Mudanças incompatíveis podem acontecer até a v1.0.
 
 ---
 
-## Funcionalidades
+## Tech stack
 
-- **Multichain** — Ethereum e suas L2s (Arbitrum, Base, Optimism, Polygon), BSC, Avalanche, Solana e Bitcoin via xpub
-- **PnL em tempo real** — realizado e não realizado, por FIFO, LIFO ou custo médio
-- **Transações unificadas** — histórico único de todas as redes, classificado automaticamente, com detecção de transferências entre suas próprias carteiras
-- **Alocação** — por ativo, rede, categoria e protocolo, com benchmark contra BTC e ETH
-- **DeFi e staking** — Aave, Compound, Uniswap v3, Lido, Rocket Pool, Marinade, Jito e staking nativo
-- **Score de risco** — concentração, exposição a depeg de stablecoins, tokens golpe e aprovações ilimitadas
-- **Mood do mercado** — índice Fear & Greed do dia, com histórico de 30 dias
-- **Alertas** — preço, variação do portfólio e atividade on-chain como notificações nativas
-- **Impostos (opcional)** — relatórios de IR: isenção mensal de R$ 35 mil, ganho de capital e bens e direitos
-- **Modo privacidade** — esconde todos os valores com um clique
-- **Modo demo** — portfólio de exemplo para explorar o app sem adicionar carteira
-- **Tema claro e escuro**, em português e inglês, com moeda base em USD, BRL ou EUR
-
----
-
-## Redes suportadas
-
-| Rede | Como adicionar | O que é lido |
-|------|----------------|--------------|
-| Ethereum + L2s, BSC, Avalanche | Endereço `0x…` ou nome ENS | Tokens, transações, posições DeFi, aprovações |
-| Solana | Endereço ou nome SNS | Tokens SPL, transações, staking |
-| Bitcoin | Endereço ou xpub / ypub / zpub | Saldo e transações de todos os endereços da carteira |
-
-Tudo é **somente leitura**: o Chainfolio nunca assina transações nem pede chaves.
-
----
-
-## Tecnologias
-
-| Categoria | Stack |
-|-----------|-------|
+| Category | Stack |
+|----------|-------|
 | Desktop | [Tauri 2](https://tauri.app/) (Rust) |
 | Frontend | [React 19](https://react.dev/) + [Vite](https://vite.dev/) |
-| Linguagem | [TypeScript](https://www.typescriptlang.org/) + [Rust](https://www.rust-lang.org/) |
-| Estilização | [Tailwind CSS 4](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/) |
-| Animações | [GSAP](https://gsap.com/) |
-| Dados | [TanStack Query](https://tanstack.com/query) + [TanStack Router](https://tanstack.com/router) |
-| Gráficos | [Recharts](https://recharts.org/) |
-| Ícones | [Lucide](https://lucide.dev/) + [Web3 Icons](https://github.com/0xa3k5/web3icons) |
-| Banco local | SQLite (criptografado com SQLCipher, opcional) |
-| Qualidade | [Biome](https://biomejs.dev/) + [Vitest](https://vitest.dev/) + Clippy |
+| Language | [TypeScript](https://www.typescriptlang.org/) + [Rust](https://www.rust-lang.org/) |
+| Styling | [Tailwind CSS 4](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/) |
+| Animation | [GSAP](https://gsap.com/) |
+| Data | [TanStack Query](https://tanstack.com/query) + [TanStack Router](https://tanstack.com/router) |
+| Charts | [Recharts](https://recharts.org/) |
+| Icons | [Lucide](https://lucide.dev/) + [Web3 Icons](https://github.com/0xa3k5/web3icons) |
+| Local database | SQLite (optionally encrypted with SQLCipher) |
+| Quality | [Biome](https://biomejs.dev/) + [Vitest](https://vitest.dev/) + Clippy |
 
 ---
 
-## Rodando localmente
+## Features
 
-**Requisitos**
+- **Multi-chain** — Ethereum and its L2s (Arbitrum, Base, Optimism, Polygon), BSC, Avalanche, Solana and Bitcoin via xpub
+- **Real-time PnL** — realized and unrealized, with FIFO, LIFO or average cost
+- **Unified transactions** — one history across every chain, auto-classified, with transfers between your own wallets detected
+- **Allocation** — by asset, chain, category and protocol, benchmarked against BTC and ETH
+- **DeFi & staking** — Aave, Compound, Uniswap v3, Lido, Rocket Pool, Marinade, Jito and native staking
+- **Risk score** — concentration, stablecoin depeg exposure, scam tokens and unlimited approvals
+- **Market mood** — today's Fear & Greed index with 30 days of history
+- **Alerts** — price, portfolio and on-chain activity as native notifications
+- **Taxes (optional)** — Brazilian income tax reports: monthly exemption, capital gains and annual holdings
+- **Privacy mode** — hides every value with one click
+- **Demo mode** — a sample portfolio to explore the app before adding a wallet
+- **Light and dark themes**, in English and Portuguese, with USD, BRL or EUR as base currency
 
-- [Node.js 24+](https://nodejs.org/) e [pnpm](https://pnpm.io/)
+---
+
+## Supported chains
+
+| Chain | How to add | What is read |
+|-------|------------|--------------|
+| Ethereum + L2s, BSC, Avalanche | `0x…` address or ENS name | Tokens, transactions, DeFi positions, approvals |
+| Solana | Address or SNS name | SPL tokens, transactions, staking |
+| Bitcoin | Address or xpub / ypub / zpub | Balance and transactions of every wallet address |
+
+Everything is **watch-only**: Chainfolio never signs transactions or asks for keys.
+
+---
+
+## Running locally
+
+**Requirements**
+
+- [Node.js 24+](https://nodejs.org/) and [pnpm](https://pnpm.io/)
 - [Rust](https://rustup.rs/)
-- Pré-requisitos do Tauri para o seu sistema: [Windows, macOS ou Linux](https://v2.tauri.app/start/prerequisites/)
+- Tauri prerequisites for your OS: [Windows, macOS or Linux](https://v2.tauri.app/start/prerequisites/)
 
 ```bash
 git clone https://github.com/Raggzinn/chainfolio.git
@@ -95,70 +106,72 @@ pnpm tauri dev
 
 ---
 
-## Comandos
+## Commands
 
-| Comando | Descrição |
-|---------|-----------|
-| `pnpm tauri dev` | App desktop com hot reload |
-| `pnpm dev` | Só o frontend, no navegador |
-| `pnpm lint` | Lint e formatação (Biome) |
-| `pnpm lint:fix` | Corrige o que for automático |
-| `pnpm typecheck` | Checagem de tipos |
-| `pnpm test` | Testes do frontend (Vitest) |
-| `cargo test` | Testes do Rust (dentro de `src-tauri/`) |
-| `pnpm tauri build` | Gera os instaladores |
+| Command | Description |
+|---------|-------------|
+| `pnpm tauri dev` | Desktop app with hot reload |
+| `pnpm dev` | Frontend only, in the browser |
+| `pnpm lint` | Lint and format check (Biome) |
+| `pnpm lint:fix` | Apply automatic fixes |
+| `pnpm typecheck` | Type checking |
+| `pnpm test` | Frontend tests (Vitest) |
+| `cargo test` | Rust tests (inside `src-tauri/`) |
+| `pnpm tauri build` | Build installers |
 
 ---
 
-## Estrutura do projeto
+## Project structure
 
 ```
 chainfolio/
-├── src/                  # Frontend React
-│   ├── components/       # UI compartilhada (shadcn, layout, marca)
-│   ├── features/         # Portfólio, mercado, demo...
-│   ├── pages/            # Telas do app
-│   ├── i18n/             # Traduções pt-BR e en
-│   └── stores/           # Preferências do usuário
-├── src-tauri/            # Backend Rust (Tauri)
-└── .github/              # CI, release e templates
+├── src/                  # React frontend
+│   ├── components/       # Shared UI (shadcn, layout, brand)
+│   ├── features/         # Portfolio, market, demo...
+│   ├── pages/            # App screens
+│   ├── i18n/             # en and pt-BR translations
+│   └── stores/           # User preferences
+├── src-tauri/            # Rust backend (Tauri)
+└── .github/              # CI, release and templates
 ```
 
 ---
 
 ## Roadmap
 
-- [x] Fundação, tema e estrutura do app
-- [x] Dashboard, onboarding e modo demo
-- [x] Mood do mercado (Fear & Greed)
-- [ ] Atualização automática e backup das configurações
-- [ ] Carteiras e saldos (EVM, Solana, Bitcoin)
-- [ ] Transações e histórico do portfólio
-- [ ] Motor de PnL (FIFO / LIFO / custo médio)
-- [ ] Módulo de impostos (Brasil)
-- [ ] Posições DeFi e scanner de risco
-- [ ] Alertas, bandeja e sincronização em segundo plano
-- [ ] Banco de dados criptografado
-- [ ] Release v1.0
-- [ ] Corretoras (API somente leitura e importação CSV)
+> **Status:** early development — expect breaking changes until v1.0.
+
+- [x] Foundation, theme and app shell
+- [x] Dashboard, onboarding and demo mode
+- [x] Market mood (Fear & Greed)
+- [ ] Auto-update and settings backup
+- [ ] Wallets and balances (EVM, Solana, Bitcoin)
+- [ ] Transactions and portfolio history
+- [ ] PnL engine (FIFO / LIFO / average cost)
+- [ ] Tax module (Brazil)
+- [ ] DeFi positions and risk scanner
+- [ ] Alerts, tray and background sync
+- [ ] Encrypted database
+- [ ] v1.0 release
+- [ ] Centralized exchanges (read-only API and CSV import)
 
 ---
 
-## Contribuindo
+## Contributing
 
-Contribuições são bem-vindas: novas redes, protocolos DeFi, traduções e melhorias de UI. Leia o [guia de contribuição](CONTRIBUTING.md) — usamos branches por feature, Pull Requests e [Conventional Commits](https://www.conventionalcommits.org/).
+Contributions are welcome: new chains, DeFi protocols, translations and UI polish. Read the [contributing guide](CONTRIBUTING.md) — we use feature branches, Pull Requests and [Conventional Commits](https://www.conventionalcommits.org/).
 
-Encontrou uma falha de segurança? Veja a [política de segurança](SECURITY.md).
-
----
-
-## Licença
-
-Distribuído sob a licença [MIT](LICENSE).
+Found a security issue? See the [security policy](SECURITY.md).
 
 ---
 
-## Contato
+## License
+
+Distributed under the [MIT](LICENSE) license.
+
+---
+
+## Contact
 
 - [GitHub](https://github.com/Raggzinn/)
 - [LinkedIn](https://www.linkedin.com/in/joaogoliveirac/)

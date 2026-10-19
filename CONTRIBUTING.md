@@ -5,7 +5,7 @@ Thanks for helping! Bug reports, new chains, DeFi adapters, translations and UI 
 ## Getting started
 
 1. Fork and clone the repository.
-2. Install the prerequisites listed in the [README](README.en.md#running-locally).
+2. Install the prerequisites listed in the [README](README.md#running-locally).
 3. `pnpm install` and `pnpm tauri dev`.
 
 ## Workflow
