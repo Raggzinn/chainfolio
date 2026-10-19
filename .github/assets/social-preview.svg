@@ -12,15 +12,15 @@
     <circle cx="93" cy="60" r="7" fill="#19E3A1"/>
   </g>
   <text x="352" y="282" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="104" font-weight="700" letter-spacing="-4" fill="#ECEDEF">Chain<tspan fill="#1E6BFF">folio</tspan></text>
-  <text x="356" y="340" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="32" fill="#9B9DA4">Inteligência open source para o seu portfólio cripto</text>
+  <text x="356" y="340" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="32" fill="#9B9DA4">Open-source crypto portfolio intelligence</text>
   <g font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="24" font-weight="600">
     <rect x="120" y="440" width="196" height="52" rx="26" fill="#1C1D20" stroke="#2B2C30"/>
     <circle cx="148" cy="466" r="6" fill="#19E3A1"/><text x="166" y="474" fill="#ECEDEF">100% local</text>
-    <rect x="332" y="440" width="236" height="52" rx="26" fill="#1C1D20" stroke="#2B2C30"/>
-    <circle cx="360" cy="466" r="6" fill="#19E3A1"/><text x="378" y="474" fill="#ECEDEF">Somente leitura</text>
-    <rect x="584" y="440" width="200" height="52" rx="26" fill="#1C1D20" stroke="#2B2C30"/>
-    <circle cx="612" cy="466" r="6" fill="#19E3A1"/><text x="630" y="474" fill="#ECEDEF">Open source</text>
-    <rect x="800" y="440" width="300" height="52" rx="26" fill="#1C1D20" stroke="#2B2C30"/>
-    <circle cx="828" cy="466" r="6" fill="#1E6BFF"/><text x="846" y="474" fill="#ECEDEF">EVM · Solana · Bitcoin</text>
+    <rect x="332" y="440" width="196" height="52" rx="26" fill="#1C1D20" stroke="#2B2C30"/>
+    <circle cx="360" cy="466" r="6" fill="#19E3A1"/><text x="378" y="474" fill="#ECEDEF">Watch-only</text>
+    <rect x="544" y="440" width="200" height="52" rx="26" fill="#1C1D20" stroke="#2B2C30"/>
+    <circle cx="572" cy="466" r="6" fill="#19E3A1"/><text x="590" y="474" fill="#ECEDEF">Open source</text>
+    <rect x="760" y="440" width="300" height="52" rx="26" fill="#1C1D20" stroke="#2B2C30"/>
+    <circle cx="788" cy="466" r="6" fill="#1E6BFF"/><text x="806" y="474" fill="#ECEDEF">EVM · Solana · Bitcoin</text>
   </g>
 </svg>
