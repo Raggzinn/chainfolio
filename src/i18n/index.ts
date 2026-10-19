@@ -11,6 +11,11 @@ export const SUPPORTED_LANGUAGES = [
 
 export type Language = (typeof SUPPORTED_LANGUAGES)[number]["code"];
 
+/** Maps any detected locale (pt, pt-PT, en-US…) onto a supported language. */
+export function normalizeLanguage(lng: string): Language {
+  return lng.toLowerCase().startsWith("pt") ? "pt-BR" : "en";
+}
+
 export const resources = {
   en: { translation: en },
   "pt-BR": { translation: ptBR },
@@ -23,12 +28,12 @@ void i18n
     resources,
     fallbackLng: "en",
     supportedLngs: SUPPORTED_LANGUAGES.map((l) => l.code),
-    nonExplicitSupportedLngs: true,
     interpolation: { escapeValue: false },
     detection: {
       order: ["localStorage", "navigator"],
       lookupLocalStorage: "chainfolio.language",
       caches: ["localStorage"],
+      convertDetectedLanguage: normalizeLanguage,
     },
   });
 
