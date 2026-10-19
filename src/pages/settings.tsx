@@ -1,92 +1,79 @@
+import { Check } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout/page-header";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Panel } from "@/components/panel";
+import { SegmentedControl } from "@/components/segmented-control";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { useTheme } from "@/hooks/use-theme";
-import { SUPPORTED_LANGUAGES } from "@/i18n";
-import { CURRENCIES, type Currency, type Theme, usePreferences } from "@/stores/preferences";
+import { type Language, SUPPORTED_LANGUAGES } from "@/i18n";
+import { cn } from "@/lib/utils";
+import { CURRENCIES, THEMES, type Theme, usePreferences } from "@/stores/preferences";
 
 export function SettingsPage() {
   const { t, i18n } = useTranslation();
   const { theme, setTheme } = useTheme();
-  const { currency, setCurrency, taxModuleEnabled, setTaxModuleEnabled } = usePreferences();
+  const { currency, setCurrency, taxModuleEnabled, setTaxModuleEnabled, demoMode, setDemoMode } =
+    usePreferences();
+
+  const themeLabels: Record<Theme, string> = {
+    dark: t("settings.themeDark"),
+    light: t("settings.themeLight"),
+    system: t("settings.themeSystem"),
+  };
 
   return (
     <>
       <PageHeader title={t("pages.settings.title")} description={t("pages.settings.description")} />
 
-      <Card>
-        <CardHeader>
-          <CardTitle>{t("settings.general")}</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-5">
-          <SettingRow
-            id="language"
-            label={t("settings.language")}
-            hint={t("settings.languageHint")}
-          >
-            <Select value={i18n.resolvedLanguage} onValueChange={(v) => i18n.changeLanguage(v)}>
-              <SelectTrigger id="language" className="w-52">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {SUPPORTED_LANGUAGES.map((l) => (
-                  <SelectItem key={l.code} value={l.code}>
-                    {l.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </SettingRow>
-          <Separator />
-          <SettingRow id="theme" label={t("settings.theme")} hint={t("settings.themeHint")}>
-            <Select value={theme} onValueChange={(v) => setTheme(v as Theme)}>
-              <SelectTrigger id="theme" className="w-52">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="dark">{t("settings.themeDark")}</SelectItem>
-                <SelectItem value="light">{t("settings.themeLight")}</SelectItem>
-                <SelectItem value="system">{t("settings.themeSystem")}</SelectItem>
-              </SelectContent>
-            </Select>
-          </SettingRow>
-          <Separator />
-          <SettingRow
-            id="currency"
-            label={t("settings.currency")}
-            hint={t("settings.currencyHint")}
-          >
-            <Select value={currency} onValueChange={(v) => setCurrency(v as Currency)}>
-              <SelectTrigger id="currency" className="w-52">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {CURRENCIES.map((c) => (
-                  <SelectItem key={c} value={c}>
-                    {c}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </SettingRow>
-        </CardContent>
-      </Card>
+      <Panel title={t("settings.theme")} subtitle={t("settings.themeHint")}>
+        <div className="grid grid-cols-3 gap-4">
+          {THEMES.map((option) => (
+            <button
+              key={option}
+              type="button"
+              onClick={() => setTheme(option)}
+              className="group space-y-2.5 text-left"
+            >
+              <ThemePreview variant={option} selected={theme === option} />
+              <span
+                className={cn(
+                  "flex items-center gap-1.5 font-medium text-sm",
+                  theme === option ? "text-foreground" : "text-muted-foreground",
+                )}
+              >
+                {theme === option && <Check className="size-4 text-primary" />}
+                {themeLabels[option]}
+              </span>
+            </button>
+          ))}
+        </div>
+      </Panel>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>{t("settings.modules")}</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <Panel title={t("settings.general")}>
+        <div className="divide-y divide-border">
+          <SettingRow label={t("settings.language")} hint={t("settings.languageHint")}>
+            <SegmentedControl
+              label={t("settings.language")}
+              options={SUPPORTED_LANGUAGES.map((l) => l.code)}
+              labels={{ "pt-BR": "Português", en: "English" }}
+              value={(i18n.resolvedLanguage ?? "en") as Language}
+              onChange={(v) => i18n.changeLanguage(v)}
+            />
+          </SettingRow>
+          <SettingRow label={t("settings.currency")} hint={t("settings.currencyHint")}>
+            <SegmentedControl
+              label={t("settings.currency")}
+              options={CURRENCIES}
+              value={currency}
+              onChange={setCurrency}
+            />
+          </SettingRow>
+        </div>
+      </Panel>
+
+      <Panel title={t("settings.modules")}>
+        <div className="divide-y divide-border">
           <SettingRow
             id="tax-module"
             label={t("settings.taxModule")}
@@ -98,8 +85,15 @@ export function SettingsPage() {
               onCheckedChange={setTaxModuleEnabled}
             />
           </SettingRow>
-        </CardContent>
-      </Card>
+          <SettingRow
+            id="demo-mode"
+            label={t("settings.demoMode")}
+            hint={t("settings.demoModeHint")}
+          >
+            <Switch id="demo-mode" checked={demoMode} onCheckedChange={setDemoMode} />
+          </SettingRow>
+        </div>
+      </Panel>
     </>
   );
 }
@@ -110,18 +104,80 @@ function SettingRow({
   hint,
   children,
 }: {
-  id: string;
+  id?: string;
   label: string;
   hint: string;
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex items-center justify-between gap-6">
+    <div className="flex items-center justify-between gap-6 py-4 first:pt-0 last:pb-0">
       <div className="space-y-1">
-        <Label htmlFor={id}>{label}</Label>
-        <p className="text-muted-foreground text-sm">{hint}</p>
+        <Label htmlFor={id} className="text-sm">
+          {label}
+        </Label>
+        <p className="max-w-lg text-muted-foreground text-sm">{hint}</p>
       </div>
       {children}
+    </div>
+  );
+}
+
+/** Miniature app window drawn in the given theme. */
+function ThemePreview({ variant, selected }: { variant: Theme; selected: boolean }) {
+  const half = variant === "system";
+  return (
+    <div
+      className={cn(
+        "relative aspect-[16/10] overflow-hidden rounded-xl ring-1 ring-border transition-all duration-300 group-hover:-translate-y-0.5",
+        selected && "ring-2 ring-primary",
+      )}
+    >
+      <MiniWindow dark={variant !== "light"} />
+      {half && (
+        <div
+          className="absolute inset-0"
+          style={{ clipPath: "polygon(55% 0, 100% 0, 100% 100%, 45% 100%)" }}
+        >
+          <MiniWindow dark={false} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function MiniWindow({ dark }: { dark: boolean }) {
+  const bg = dark ? "#141517" : "#f2f2f4";
+  const panel = dark ? "#1c1d20" : "#fafafb";
+  const line = dark ? "#2b2c30" : "#e1e1e5";
+  return (
+    <div className="absolute inset-0 flex gap-1.5 p-2" style={{ background: bg }}>
+      <div className="w-1/4 space-y-1.5 rounded-md p-1.5" style={{ background: panel }}>
+        <div className="h-1.5 w-3/4 rounded-full bg-primary" />
+        {[0, 1, 2, 3].map((i) => (
+          <div key={i} className="h-1 rounded-full" style={{ background: line }} />
+        ))}
+      </div>
+      <div className="flex flex-1 flex-col gap-1.5">
+        <div className="flex-1 rounded-md p-1.5" style={{ background: panel }}>
+          <svg
+            viewBox="0 0 100 40"
+            className="h-full w-full"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M0 32 L15 28 L30 30 L45 20 L60 22 L75 12 L100 6"
+              fill="none"
+              stroke="#1E6BFF"
+              strokeWidth="2.5"
+            />
+          </svg>
+        </div>
+        <div className="flex h-1/3 gap-1.5">
+          <div className="flex-1 rounded-md" style={{ background: panel }} />
+          <div className="flex-1 rounded-md" style={{ background: panel }} />
+        </div>
+      </div>
     </div>
   );
 }
