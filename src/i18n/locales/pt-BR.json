@@ -94,6 +94,69 @@
     "currencyHint": "Todos os valores são convertidos para esta moeda.",
     "modules": "Módulos",
     "taxModule": "Módulo de impostos",
-    "taxModuleHint": "Ativa os relatórios de IR. São estimativas e não substituem um contador."
+    "taxModuleHint": "Ativa os relatórios de IR. São estimativas e não substituem um contador.",
+    "demoMode": "Modo demo",
+    "demoModeHint": "Preenche o app com um portfólio de exemplo para explorar todas as telas."
+  },
+  "sidebar": {
+    "watchOnly": "Somente leitura",
+    "local": "Dados locais",
+    "synced": "Sincronizado agora",
+    "collapse": "Recolher menu",
+    "expand": "Expandir menu"
+  },
+  "onboarding": {
+    "eyebrow": "Open source · 100% local",
+    "title": "Todo o seu patrimônio on-chain.",
+    "titleAccent": "Em um só lugar.",
+    "subtitle": "Acompanhe carteiras em Ethereum, suas L2s, Solana e Bitcoin. PnL em tempo real, análise de risco e relatórios de IR, sem abrir mão das suas chaves ou da sua privacidade.",
+    "addWallet": "Adicionar primeira carteira",
+    "exploreDemo": "Explorar com dados demo",
+    "chipWatchOnly": "Somente leitura, nunca suas chaves",
+    "chipLocal": "Dados ficam no seu dispositivo",
+    "chipOpenSource": "Licença MIT"
+  },
+  "dashboard": {
+    "totalValue": "Valor total do portfólio",
+    "today": "hoje",
+    "allTime": "PnL total",
+    "costBasis": "Custo de aquisição",
+    "allocation": "Alocação",
+    "byAsset": "Por ativo",
+    "byChain": "Por rede",
+    "topAssets": "Principais ativos",
+    "viewAll": "Ver todos",
+    "risk": "Score de risco",
+    "riskLow": "Baixo",
+    "riskModerate": "Moderado",
+    "riskHigh": "Alto",
+    "riskHint": "Baseado em concentração, exposição a stablecoins e aprovações abertas.",
+    "factors": {
+      "concentration": "Concentração",
+      "stablecoins": "Depeg de stablecoin",
+      "approvals": "Aprovações abertas"
+    },
+    "recentActivity": "Atividade recente",
+    "activity": {
+      "received": "Recebido",
+      "sent": "Enviado",
+      "swap": "Swap",
+      "staked": "Staking"
+    },
+    "columns": {
+      "asset": "Ativo",
+      "price": "Preço",
+      "holdings": "Quantidade",
+      "value": "Valor",
+      "change": "24h",
+      "trend": "7d"
+    },
+    "demoBanner": "Você está vendo dados de demonstração.",
+    "exitDemo": "Sair do demo",
+    "minutesAgo": "há {{count}} min",
+    "hoursAgo": "há {{count}} h",
+    "daysAgo": "há {{count}} d",
+    "assetsCount": "{{count}} ativos",
+    "chainsCount": "em {{count}} redes"
   }
 }

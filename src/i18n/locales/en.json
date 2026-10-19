@@ -94,6 +94,69 @@
     "currencyHint": "All values are converted to this currency.",
     "modules": "Modules",
     "taxModule": "Tax module",
-    "taxModuleHint": "Enables Brazilian tax reports (IR). Estimates only, not a substitute for an accountant."
+    "taxModuleHint": "Enables Brazilian tax reports (IR). Estimates only, not a substitute for an accountant.",
+    "demoMode": "Demo mode",
+    "demoModeHint": "Fill the app with a sample portfolio to explore every screen."
+  },
+  "sidebar": {
+    "watchOnly": "Watch-only",
+    "local": "Stored locally",
+    "synced": "Synced just now",
+    "collapse": "Collapse sidebar",
+    "expand": "Expand sidebar"
+  },
+  "onboarding": {
+    "eyebrow": "Open source · 100% local",
+    "title": "Your entire on-chain wealth.",
+    "titleAccent": "One calm place.",
+    "subtitle": "Track wallets across Ethereum, its L2s, Solana and Bitcoin. Real-time PnL, risk insights and tax reports, without giving up your keys or your privacy.",
+    "addWallet": "Add your first wallet",
+    "exploreDemo": "Explore with demo data",
+    "chipWatchOnly": "Watch-only, never your keys",
+    "chipLocal": "Data stays on your device",
+    "chipOpenSource": "MIT licensed"
+  },
+  "dashboard": {
+    "totalValue": "Total portfolio value",
+    "today": "today",
+    "allTime": "All-time PnL",
+    "costBasis": "Cost basis",
+    "allocation": "Allocation",
+    "byAsset": "By asset",
+    "byChain": "By chain",
+    "topAssets": "Top assets",
+    "viewAll": "View all",
+    "risk": "Risk score",
+    "riskLow": "Low",
+    "riskModerate": "Moderate",
+    "riskHigh": "High",
+    "riskHint": "Based on concentration, stablecoin exposure and open approvals.",
+    "factors": {
+      "concentration": "Concentration",
+      "stablecoins": "Stablecoin depeg",
+      "approvals": "Open approvals"
+    },
+    "recentActivity": "Recent activity",
+    "activity": {
+      "received": "Received",
+      "sent": "Sent",
+      "swap": "Swapped",
+      "staked": "Staked"
+    },
+    "columns": {
+      "asset": "Asset",
+      "price": "Price",
+      "holdings": "Holdings",
+      "value": "Value",
+      "change": "24h",
+      "trend": "7d"
+    },
+    "demoBanner": "You are viewing demo data.",
+    "exitDemo": "Exit demo",
+    "minutesAgo": "{{count}} min ago",
+    "hoursAgo": "{{count}} h ago",
+    "daysAgo": "{{count}} d ago",
+    "assetsCount": "{{count}} assets",
+    "chainsCount": "across {{count}} chains"
   }
 }
