@@ -1,0 +1,155 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/jetbrains-mono";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Chainfolio brand palette
+ *   navy  #0A1020 · blue #1E6BFF · mint #19E3A1 · sky #9CC9FF · mist #E5E9F0
+ */
+:root {
+  --radius: 0.75rem;
+
+  --background: #f6f8fc;
+  --foreground: #0a1020;
+  --card: #ffffff;
+  --card-foreground: #0a1020;
+  --popover: #ffffff;
+  --popover-foreground: #0a1020;
+  --primary: #1e6bff;
+  --primary-foreground: #ffffff;
+  --secondary: #e9eef7;
+  --secondary-foreground: #0a1020;
+  --muted: #eef2f8;
+  --muted-foreground: #5b6780;
+  --accent: #e3ecff;
+  --accent-foreground: #0b47c2;
+  --destructive: #e5354f;
+  --border: #dde3ee;
+  --input: #dde3ee;
+  --ring: #1e6bff;
+
+  --success: #0aa877;
+  --warning: #d98a00;
+  --danger: #e5354f;
+
+  --chart-1: #1e6bff;
+  --chart-2: #19e3a1;
+  --chart-3: #9cc9ff;
+  --chart-4: #7c5cff;
+  --chart-5: #ffb547;
+
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0a1020;
+  --sidebar-primary: #1e6bff;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e9f0ff;
+  --sidebar-accent-foreground: #0b47c2;
+  --sidebar-border: #e3e8f1;
+  --sidebar-ring: #1e6bff;
+}
+
+.dark {
+  --background: #0a1020;
+  --foreground: #e5e9f0;
+  --card: #0f1729;
+  --card-foreground: #e5e9f0;
+  --popover: #111a2e;
+  --popover-foreground: #e5e9f0;
+  --primary: #1e6bff;
+  --primary-foreground: #ffffff;
+  --secondary: #16213a;
+  --secondary-foreground: #e5e9f0;
+  --muted: #141d33;
+  --muted-foreground: #8a97b2;
+  --accent: #15244a;
+  --accent-foreground: #9cc9ff;
+  --destructive: #ff4d6a;
+  --border: #1d2842;
+  --input: #22304f;
+  --ring: #1e6bff;
+
+  --success: #19e3a1;
+  --warning: #ffb547;
+  --danger: #ff4d6a;
+
+  --chart-1: #1e6bff;
+  --chart-2: #19e3a1;
+  --chart-3: #9cc9ff;
+  --chart-4: #8b6dff;
+  --chart-5: #ffb547;
+
+  --sidebar: #0c1324;
+  --sidebar-foreground: #e5e9f0;
+  --sidebar-primary: #1e6bff;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #13213f;
+  --sidebar-accent-foreground: #9cc9ff;
+  --sidebar-border: #182340;
+  --sidebar-ring: #1e6bff;
+}
+
+@theme inline {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html,
+  body,
+  #root {
+    @apply h-full;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv11", "ss01";
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
