@@ -241,13 +241,18 @@
     },
     "personalize": {
       "title": "Make it yours",
-      "subtitle": "You can change any of this later in Settings."
+      "subtitle": "You can change any of this later in Settings.",
+      "preview": "Live preview"
     },
     "modules": {
       "title": "Optional modules",
       "subtitle": "Turn on only what you need.",
       "taxBody": "Brazilian income tax (IR) reports: monthly R$ 35k exemption, capital gains and annual holdings. Estimates only.",
-      "later": "More modules (alerts, DeFi) arrive as the app grows."
+      "later": "More modules (alerts, DeFi) arrive as the app grows.",
+      "previewTitle": "Monthly crypto sales",
+      "previewSubtitle": "Sales up to R$ 35k a month are exempt from income tax.",
+      "exempt": "Exempt",
+      "taxable": "Taxable"
     },
     "ready": {
       "title": "You're all set",
@@ -264,6 +269,15 @@
         "title": "Explore with demo data",
         "body": "Try the dashboard with a sample portfolio."
       }
+    },
+    "steps": "Setup steps",
+    "keyboardHint": "Tip: use ← → to move between steps",
+    "stepLabels": {
+      "welcome": "Welcome",
+      "privacy": "Privacy",
+      "personalize": "Personalize",
+      "modules": "Modules",
+      "ready": "Start"
     }
   },
   "tour": {

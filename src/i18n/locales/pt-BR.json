@@ -241,13 +241,18 @@
     },
     "personalize": {
       "title": "Do seu jeito",
-      "subtitle": "Dá para mudar tudo isso depois em Configurações."
+      "subtitle": "Dá para mudar tudo isso depois em Configurações.",
+      "preview": "Prévia ao vivo"
     },
     "modules": {
       "title": "Módulos opcionais",
       "subtitle": "Ative só o que você precisa.",
       "taxBody": "Relatórios de IR: isenção mensal de R$ 35 mil, ganho de capital e bens e direitos. São estimativas.",
-      "later": "Mais módulos (alertas, DeFi) chegam conforme o app evolui."
+      "later": "Mais módulos (alertas, DeFi) chegam conforme o app evolui.",
+      "previewTitle": "Vendas mensais de cripto",
+      "previewSubtitle": "Vendas de até R$ 35 mil por mês são isentas de IR.",
+      "exempt": "Isento",
+      "taxable": "Tributável"
     },
     "ready": {
       "title": "Tudo pronto",
@@ -264,6 +269,15 @@
         "title": "Explorar com dados demo",
         "body": "Teste o dashboard com um portfólio de exemplo."
       }
+    },
+    "steps": "Etapas da configuração",
+    "keyboardHint": "Dica: use ← → para navegar entre as etapas",
+    "stepLabels": {
+      "welcome": "Boas-vindas",
+      "privacy": "Privacidade",
+      "personalize": "Personalizar",
+      "modules": "Módulos",
+      "ready": "Começar"
     }
   },
   "tour": {
