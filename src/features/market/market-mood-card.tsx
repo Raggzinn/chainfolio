@@ -51,6 +51,7 @@ export function MarketMoodCard() {
 
   return (
     <Panel
+      tourId="mood"
       title={t("market.title")}
       subtitle={
         hours

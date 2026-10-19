@@ -62,7 +62,7 @@ export function HeroCard() {
   const periodLabel = custom ? t("filters.inPeriod") : t(`filters.ranges.${range}`);
 
   return (
-    <section className="surface relative overflow-hidden rounded-3xl">
+    <section data-tour="portfolio" className="surface relative overflow-hidden rounded-3xl">
       <div className="relative flex flex-wrap items-start justify-between gap-6 p-6 pb-0">
         <div className="space-y-3">
           <p className="font-medium text-muted-foreground text-sm">
@@ -86,7 +86,7 @@ export function HeroCard() {
           </div>
         </div>
 
-        <div className="flex flex-col items-end gap-2">
+        <div data-tour="filters" className="flex flex-col items-end gap-2">
           <SegmentedControl
             label={t("filters.period")}
             options={RANGES}
