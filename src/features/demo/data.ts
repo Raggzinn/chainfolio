@@ -163,16 +163,103 @@ export interface HistoryPoint {
 }
 
 /** Random walk generated backwards from the current total, so it always ends at "now". */
-export function demoHistory(range: Range, end = DEMO_TOTAL, now = Date.now()): HistoryPoint[] {
-  const { points, stepMs, drift, vol } = RANGE_SPEC[range];
-  const rand = mulberry32(range.charCodeAt(0) * 131 + range.length * 7);
+const seedOf = (key: string) =>
+  [...key].reduce((acc, ch, i) => (acc * 31 + ch.charCodeAt(0) * (i + 7)) | 0, 17);
+
+/** Stablecoins barely move; everything else gets the range's full volatility. */
+const volatilityOf = (asset?: DemoAsset) => (asset?.category === "stable" ? 0.02 : 1);
+
+function walk(end: number, points: number, drift: number, vol: number, seed: number): number[] {
+  const rand = mulberry32(seed);
   const values = [end];
   for (let i = 1; i < points; i++) {
     const prev = values[i - 1] ?? end;
-    const shock = (rand() - 0.5) * 2 * vol + Math.sin(i / 9) * vol * 0.4;
+    const shock = (rand() - 0.5) * 2 * vol + Math.sin(i / 9 + seed) * vol * 0.4;
     values.push(prev / (1 + drift + shock));
   }
-  return values.reverse().map((value, i) => ({ t: now - (points - 1 - i) * stepMs, value }));
+  return values.reverse();
+}
+
+/** Random walk generated backwards from the current total, so it always ends at "now". */
+export function demoHistory(
+  range: Range,
+  end = DEMO_TOTAL,
+  now = Date.now(),
+  key = "total",
+): HistoryPoint[] {
+  const { points, stepMs, drift, vol } = RANGE_SPEC[range];
+  const asset = DEMO_ASSETS.find((a) => a.symbol === key);
+  const scale = volatilityOf(asset);
+  return walk(end, points, drift * scale, vol * scale, seedOf(key + range)).map((value, i) => ({
+    t: now - (points - 1 - i) * stepMs,
+    value,
+  }));
+}
+
+const sumSeries = (series: HistoryPoint[][]): HistoryPoint[] =>
+  (series[0] ?? []).map((p, i) => ({
+    t: p.t,
+    value: series.reduce((sum, s) => sum + (s[i]?.value ?? 0), 0),
+  }));
+
+const pick = (symbols?: readonly string[]) =>
+  symbols?.length ? DEMO_ASSETS.filter((a) => symbols.includes(a.symbol)) : DEMO_ASSETS;
+
+/** Portfolio value over a preset range, restricted to `symbols` when given. */
+export function demoPortfolioHistory(
+  range: Range,
+  symbols?: readonly string[],
+  now = Date.now(),
+): HistoryPoint[] {
+  return sumSeries(pick(symbols).map((a) => demoHistory(range, assetValue(a), now, a.symbol)));
+}
+
+/** How far back custom date ranges can go in demo mode. */
+export const DEMO_HISTORY_DAYS = 730;
+const DAY_MS = 86_400_000;
+const dailyCache = new Map<string, number[]>();
+
+function dailySeries(asset: DemoAsset): number[] {
+  let series = dailyCache.get(asset.symbol);
+  if (!series) {
+    const scale = volatilityOf(asset);
+    series = walk(
+      assetValue(asset),
+      DEMO_HISTORY_DAYS,
+      0.0012 * scale,
+      0.03 * scale,
+      seedOf(asset.symbol),
+    );
+    dailyCache.set(asset.symbol, series);
+  }
+  return series;
+}
+
+/** Daily portfolio value between two dates (inclusive), restricted to `symbols` when given. */
+export function demoRangeHistory(
+  from: Date,
+  to: Date,
+  symbols?: readonly string[],
+  now = Date.now(),
+): HistoryPoint[] {
+  const today = Math.floor(now / DAY_MS);
+  const toIndex = (d: Date) =>
+    Math.min(
+      DEMO_HISTORY_DAYS - 1,
+      Math.max(0, DEMO_HISTORY_DAYS - 1 - (today - Math.floor(d.getTime() / DAY_MS))),
+    );
+  const start = toIndex(from);
+  const end = Math.max(start, toIndex(to));
+  return sumSeries(
+    pick(symbols).map((a) =>
+      dailySeries(a)
+        .slice(start, end + 1)
+        .map((value, i) => ({
+          t: (today - (DEMO_HISTORY_DAYS - 1 - (start + i))) * DAY_MS,
+          value,
+        })),
+    ),
+  );
 }
 
 /** 24 points for the small per-asset sparklines. */
