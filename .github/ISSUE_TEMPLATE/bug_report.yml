@@ -1,0 +1,44 @@
+name: Bug report
+description: Something is not working as expected
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: Never paste private keys or seed phrases. Public addresses are fine.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Add wallet ...
+        2. Open ...
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Chainfolio version
+      placeholder: v0.1.0
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options: [Windows, macOS, Linux]
+    validations:
+      required: true
+  - type: dropdown
+    id: chain
+    attributes:
+      label: Chain (if relevant)
+      options: [Not chain specific, Ethereum / EVM L2, Solana, Bitcoin]
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      render: shell

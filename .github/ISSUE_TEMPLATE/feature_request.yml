@@ -1,0 +1,27 @@
+name: Feature request
+description: Suggest an idea, chain, protocol or data source
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - New chain
+        - DeFi protocol / staking
+        - Portfolio & analytics
+        - Risk
+        - Taxes
+        - Alerts
+        - UI / UX
+        - Other
