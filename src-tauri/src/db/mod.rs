@@ -35,3 +35,40 @@ pub fn now_ms() -> i64 {
         .duration_since(std::time::UNIX_EPOCH)
         .map_or(0, |d| d.as_millis() as i64)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::{
+        chains::Family,
+        db::repo::{self, NewWallet, WalletKind},
+    };
+
+    #[test]
+    fn wallets_persist_across_reopen() {
+        let dir = std::env::temp_dir().join(format!("chainfolio-test-{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let path = dir.join("chainfolio.db");
+        {
+            let mut conn = open(&path).unwrap();
+            repo::insert_wallet(
+                &mut conn,
+                &NewWallet {
+                    label: "Cold",
+                    family: Family::Bitcoin,
+                    kind: WalletKind::Address,
+                    address: "bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq",
+                    input: "bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq",
+                },
+            )
+            .unwrap();
+        }
+        // Reopening runs the migration runner again, which must be a no-op.
+        let conn = open(&path).unwrap();
+        let wallets = repo::list_wallets(&conn).unwrap();
+        drop(conn);
+        std::fs::remove_dir_all(&dir).ok();
+        assert_eq!(wallets.len(), 1);
+        assert_eq!(wallets[0].label, "Cold");
+    }
+}
