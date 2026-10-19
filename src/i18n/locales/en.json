@@ -96,7 +96,10 @@
     "taxModule": "Tax module",
     "taxModuleHint": "Enables Brazilian tax reports (IR). Estimates only, not a substitute for an accountant.",
     "demoMode": "Demo mode",
-    "demoModeHint": "Fill the app with a sample portfolio to explore every screen."
+    "demoModeHint": "Fill the app with a sample portfolio to explore every screen.",
+    "help": "Help",
+    "tourHint": "A one-minute walkthrough of the app.",
+    "welcomeHint": "Run the first-time setup again."
   },
   "sidebar": {
     "watchOnly": "Watch-only",
@@ -196,6 +199,115 @@
       "3M": "in 3 months",
       "1Y": "this year",
       "ALL": "all time"
+    }
+  },
+  "welcome": {
+    "skip": "Skip",
+    "back": "Back",
+    "next": "Next",
+    "start": "Get started",
+    "show": "Show welcome screen",
+    "welcome": {
+      "title": "Welcome to Chainfolio",
+      "subtitle": "Your whole on-chain portfolio in one calm, private place. Let's set things up — it takes less than a minute.",
+      "chains": {
+        "title": "Every chain",
+        "body": "Ethereum, L2s, Solana, Bitcoin, TRON and XRP."
+      },
+      "pnl": {
+        "title": "Real PnL",
+        "body": "FIFO, LIFO or average cost, always up to date."
+      },
+      "risk": {
+        "title": "Risk insights",
+        "body": "Concentration, depegs, scams and approvals."
+      }
+    },
+    "privacy": {
+      "title": "Private by design",
+      "subtitle": "Chainfolio works without an account and never touches your funds.",
+      "watchOnly": {
+        "title": "Watch-only",
+        "body": "You add public addresses. We never ask for private keys or seed phrases and can't move funds."
+      },
+      "local": {
+        "title": "Stays on your device",
+        "body": "Wallets, balances and settings live in a local database. No servers, no telemetry."
+      },
+      "openSource": {
+        "title": "Open source",
+        "body": "MIT licensed. Anyone can read, audit and improve the code."
+      }
+    },
+    "personalize": {
+      "title": "Make it yours",
+      "subtitle": "You can change any of this later in Settings."
+    },
+    "modules": {
+      "title": "Optional modules",
+      "subtitle": "Turn on only what you need.",
+      "taxBody": "Brazilian income tax (IR) reports: monthly R$ 35k exemption, capital gains and annual holdings. Estimates only.",
+      "later": "More modules (alerts, DeFi) arrive as the app grows."
+    },
+    "ready": {
+      "title": "You're all set",
+      "subtitle": "How would you like to start?",
+      "wallet": {
+        "title": "Add your first wallet",
+        "body": "Paste a public address, ENS name or xpub."
+      },
+      "tour": {
+        "title": "Take a quick tour",
+        "body": "See every part of the app in about a minute."
+      },
+      "demo": {
+        "title": "Explore with demo data",
+        "body": "Try the dashboard with a sample portfolio."
+      }
+    }
+  },
+  "tour": {
+    "start": "Take the tour",
+    "finish": "Finish",
+    "close": "Close tour",
+    "progress": "{{current}} of {{total}}",
+    "steps": {
+      "navigation": {
+        "title": "Navigation",
+        "body": "Everything lives here: portfolio, assets, transactions, DeFi, analytics, risk and alerts. Collapse it at the bottom for more room."
+      },
+      "search": {
+        "title": "Search and commands",
+        "body": "Press Ctrl K anywhere to jump to a page or run an action like switching theme or hiding balances."
+      },
+      "privacy": {
+        "title": "Privacy mode",
+        "body": "One click hides every balance. Handy for screen sharing or working in public."
+      },
+      "portfolio": {
+        "title": "Your portfolio",
+        "body": "Total value and performance over time. Hover the chart to see the value on any day."
+      },
+      "filters": {
+        "title": "Periods and filters",
+        "body": "Switch the period, pick specific dates, or narrow the chart down to the assets you care about."
+      },
+      "risk": {
+        "title": "Risk score",
+        "body": "A 0–100 score built from concentration, stablecoin depeg exposure and open token approvals."
+      },
+      "mood": {
+        "title": "Market mood",
+        "body": "Today's crypto Fear & Greed index, compared with yesterday, last week and last month."
+      },
+      "wallets": {
+        "title": "Your wallets",
+        "body": "Add public addresses here. Chainfolio reads balances and history — it never asks for keys."
+      },
+      "settings": {
+        "title": "Settings",
+        "body": "Language, theme, base currency, optional modules, and this tour whenever you need it again."
+      }
     }
   }
 }
