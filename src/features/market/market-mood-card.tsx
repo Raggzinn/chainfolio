@@ -1,5 +1,5 @@
 import { RefreshCw } from "lucide-react";
-import { useRef } from "react";
+import { useId, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Panel } from "@/components/panel";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -19,13 +19,19 @@ const CY = 118;
 const R = 96;
 const STROKE = 14;
 
-const BANDS: { from: number; to: number; level: MoodLevel }[] = [
-  { from: 0, to: 25, level: "extremeFear" },
-  { from: 25, to: 47, level: "fear" },
-  { from: 47, to: 55, level: "neutral" },
-  { from: 55, to: 75, level: "greed" },
-  { from: 75, to: 100, level: "extremeGreed" },
+const ARC_LENGTH = Math.PI * R;
+
+/** Each level's color is anchored at the middle of its band and blends into the next. */
+const GRADIENT_STOPS: { value: number; level: MoodLevel }[] = [
+  { value: 8, level: "extremeFear" },
+  { value: 36, level: "fear" },
+  { value: 51, level: "neutral" },
+  { value: 65, level: "greed" },
+  { value: 90, level: "extremeGreed" },
 ];
+
+/** Horizontal position (0–1) of a value on the semicircle, for the left-to-right gradient. */
+const gradientOffset = (value: number) => (1 - Math.cos((value / 100) * Math.PI)) / 2;
 
 /** Point on the gauge arc for a 0–100 value (0 = left, 100 = right). */
 function point(value: number, radius = R) {
@@ -33,11 +39,9 @@ function point(value: number, radius = R) {
   return { x: CX + radius * Math.cos(angle), y: CY - radius * Math.sin(angle) };
 }
 
-function arc(from: number, to: number) {
-  const a = point(from);
-  const b = point(to);
-  return `M${a.x.toFixed(2)} ${a.y.toFixed(2)} A${R} ${R} 0 0 1 ${b.x.toFixed(2)} ${b.y.toFixed(2)}`;
-}
+const start = point(0);
+const end = point(100);
+const ARC_PATH = `M${start.x} ${start.y} A${R} ${R} 0 0 1 ${end.x} ${end.y}`;
 
 export function MarketMoodCard() {
   const { t } = useTranslation();
@@ -96,6 +100,7 @@ function MoodContent({
   const scope = useRef<HTMLDivElement>(null);
   const needle = useRef<SVGGElement>(null);
   const valueRef = useRef<HTMLSpanElement>(null);
+  const gradientId = useId();
   const color = MOOD_COLORS[today.level];
   const dayFormat = new Intl.DateTimeFormat(i18n.resolvedLanguage, {
     day: "numeric",
@@ -128,12 +133,16 @@ function MoodContent({
           if (valueRef.current) valueRef.current.textContent = Math.round(counter.n).toString();
         },
       });
-      gsap.from("[data-band]", {
-        autoAlpha: 0,
-        duration: instant ? 0 : 0.5,
-        stagger: 0.07,
-        ease: "power2.out",
-      });
+      gsap.fromTo(
+        "[data-progress]",
+        { strokeDashoffset: ARC_LENGTH },
+        {
+          strokeDashoffset: ARC_LENGTH * (1 - today.value / 100),
+          duration: instant ? 0 : 1.4,
+          ease: "expo.out",
+          delay: 0.25,
+        },
+      );
       gsap.from("[data-bar]", {
         scaleY: 0,
         transformOrigin: "bottom center",
@@ -150,18 +159,42 @@ function MoodContent({
     <div ref={scope} className="space-y-5">
       <div className="relative mx-auto" style={{ width: W }}>
         <svg viewBox={`0 0 ${W} ${CY + 14}`} className="w-full overflow-visible" aria-hidden="true">
-          {BANDS.map((band) => (
-            <path
-              key={band.level}
-              data-band
-              d={arc(band.from + 0.9, band.to - 0.9)}
-              fill="none"
-              stroke={MOOD_COLORS[band.level]}
-              strokeWidth={STROKE}
-              strokeLinecap="round"
-              opacity={band.level === today.level ? 1 : 0.22}
-            />
-          ))}
+          <defs>
+            <linearGradient
+              id={gradientId}
+              gradientUnits="userSpaceOnUse"
+              x1={CX - R}
+              y1={0}
+              x2={CX + R}
+              y2={0}
+            >
+              {GRADIENT_STOPS.map((stop) => (
+                <stop
+                  key={stop.level}
+                  offset={gradientOffset(stop.value)}
+                  style={{ stopColor: MOOD_COLORS[stop.level] }}
+                />
+              ))}
+            </linearGradient>
+          </defs>
+          <path
+            d={ARC_PATH}
+            fill="none"
+            stroke={`url(#${gradientId})`}
+            strokeWidth={STROKE}
+            strokeLinecap="round"
+            opacity={0.18}
+          />
+          <path
+            data-progress
+            d={ARC_PATH}
+            fill="none"
+            stroke={`url(#${gradientId})`}
+            strokeWidth={STROKE}
+            strokeLinecap="round"
+            strokeDasharray={ARC_LENGTH}
+            strokeDashoffset={ARC_LENGTH}
+          />
           <g ref={needle} transform={`rotate(-90 ${CX} ${CY})`}>
             <line
               x1={CX}
