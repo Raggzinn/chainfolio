@@ -1,24 +1,13 @@
 /**
- * Static sample portfolio used by demo mode and screenshots. Replaced by real
- * queries once wallet sync lands; nothing here touches the network.
+ * Static sample portfolio used by demo mode and screenshots. Real wallets
+ * come from the Rust backend; nothing here touches the network.
  */
 
+import { CHAINS } from "@/lib/chains";
+
+export { CHAINS };
+
 export type ChainId = "ethereum" | "solana" | "bitcoin" | "arbitrum" | "base" | "optimism";
-
-export interface Chain {
-  id: ChainId;
-  name: string;
-  color: string;
-}
-
-export const CHAINS: Record<ChainId, Chain> = {
-  ethereum: { id: "ethereum", name: "Ethereum", color: "#627EEA" },
-  bitcoin: { id: "bitcoin", name: "Bitcoin", color: "#F7931A" },
-  solana: { id: "solana", name: "Solana", color: "#14F195" },
-  arbitrum: { id: "arbitrum", name: "Arbitrum", color: "#28A0F0" },
-  base: { id: "base", name: "Base", color: "#0052FF" },
-  optimism: { id: "optimism", name: "Optimism", color: "#FF0420" },
-};
 
 export interface DemoAsset {
   symbol: string;
