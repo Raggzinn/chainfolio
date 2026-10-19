@@ -195,6 +195,7 @@ pub fn btc_holding(sats: i128) -> Option<Holding> {
     (sats > 0).then(|| Holding {
         asset: AssetMeta::native(Chain::Bitcoin, "BTC", "Bitcoin", 8, "bitcoin"),
         amount: Decimal::from_i128_with_scale(sats, 8).normalize(),
+        locked: None,
     })
 }
 

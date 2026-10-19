@@ -146,10 +146,12 @@ mod tests {
             Holding {
                 asset: eth.clone(),
                 amount: Decimal::ONE,
+                locked: None,
             },
             Holding {
                 asset: eth,
                 amount: Decimal::TWO,
+                locked: None,
             },
         ]);
         assert_eq!(merged.len(), 1);

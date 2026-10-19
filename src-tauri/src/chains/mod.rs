@@ -6,6 +6,8 @@ pub mod evm;
 mod evm_tokens;
 mod rpc;
 pub mod solana;
+pub mod tron;
+pub mod xrpl;
 
 use std::{fmt, str::FromStr, sync::Arc};
 
@@ -22,6 +24,8 @@ pub enum Family {
     Evm,
     Solana,
     Bitcoin,
+    Tron,
+    Xrpl,
 }
 
 impl Family {
@@ -30,6 +34,8 @@ impl Family {
             Self::Evm => "evm",
             Self::Solana => "solana",
             Self::Bitcoin => "bitcoin",
+            Self::Tron => "tron",
+            Self::Xrpl => "xrpl",
         }
     }
 
@@ -39,6 +45,8 @@ impl Family {
             Self::Evm => &Chain::EVM,
             Self::Solana => &[Chain::Solana],
             Self::Bitcoin => &[Chain::Bitcoin],
+            Self::Tron => &[Chain::Tron],
+            Self::Xrpl => &[Chain::Xrp],
         }
     }
 }
@@ -51,6 +59,8 @@ impl FromStr for Family {
             "evm" => Ok(Self::Evm),
             "solana" => Ok(Self::Solana),
             "bitcoin" => Ok(Self::Bitcoin),
+            "tron" => Ok(Self::Tron),
+            "xrpl" => Ok(Self::Xrpl),
             _ => Err(Error::InvalidAddress),
         }
     }
@@ -68,6 +78,8 @@ pub enum Chain {
     Avalanche,
     Solana,
     Bitcoin,
+    Tron,
+    Xrp,
 }
 
 impl Chain {
@@ -92,6 +104,8 @@ impl Chain {
             Self::Avalanche => "avalanche",
             Self::Solana => "solana",
             Self::Bitcoin => "bitcoin",
+            Self::Tron => "tron",
+            Self::Xrp => "xrp",
         }
     }
 
@@ -99,6 +113,7 @@ impl Chain {
     pub fn llama_prefix(self) -> &'static str {
         match self {
             Self::Avalanche => "avax",
+            Self::Xrp => "xrpl",
             other => other.as_str(),
         }
     }
@@ -114,7 +129,7 @@ impl FromStr for Chain {
     type Err = Error;
 
     fn from_str(s: &str) -> Result<Self> {
-        [Chain::Solana, Chain::Bitcoin]
+        [Chain::Solana, Chain::Bitcoin, Chain::Tron, Chain::Xrp]
             .into_iter()
             .chain(Chain::EVM)
             .find(|c| c.as_str() == s)
@@ -185,6 +200,8 @@ impl AssetMeta {
 pub struct Holding {
     pub asset: AssetMeta,
     pub amount: Decimal,
+    /// Part of `amount` the owner can't spend, e.g. the XRP Ledger reserve.
+    pub locked: Option<Decimal>,
 }
 
 /// Fetches the current holdings of a watch-only address on one chain.
@@ -206,6 +223,8 @@ pub fn adapters(family: Family, http: &reqwest::Client) -> Vec<Arc<dyn ChainAdap
             .collect(),
         Family::Solana => vec![Arc::new(solana::SolanaAdapter::new(http.clone()))],
         Family::Bitcoin => vec![Arc::new(bitcoin::BitcoinAdapter::new(http.clone()))],
+        Family::Tron => vec![Arc::new(tron::TronAdapter::new(http.clone()))],
+        Family::Xrpl => vec![Arc::new(xrpl::XrplAdapter::new(http.clone()))],
     }
 }
 
@@ -289,9 +308,10 @@ mod tests {
 
     #[test]
     fn chain_round_trips() {
-        for chain in Chain::EVM
-            .into_iter()
-            .chain([Chain::Solana, Chain::Bitcoin])
+        for chain in
+            Chain::EVM
+                .into_iter()
+                .chain([Chain::Solana, Chain::Bitcoin, Chain::Tron, Chain::Xrp])
         {
             assert_eq!(chain.as_str().parse::<Chain>().unwrap(), chain);
         }

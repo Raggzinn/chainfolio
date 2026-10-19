@@ -1,4 +1,6 @@
-//! Offline detection and validation of what the user pastes into "Add wallet".
+//! Offline detection and validation of what the user pastes into "Add wallet":
+//! EVM, Solana, Bitcoin, TRON and XRP Ledger addresses, ENS/SNS names and
+//! Bitcoin extended public keys.
 //! Names (ENS/SNS) are only recognized here; resolving them needs the network.
 
 use std::str::FromStr;
@@ -7,7 +9,7 @@ use serde::Serialize;
 use sha3::{Digest, Keccak256};
 
 use crate::{
-    chains::{Chain, Family, bitcoin},
+    chains::{Chain, Family, bitcoin, tron, xrpl},
     error::{Error, Result},
 };
 
@@ -62,6 +64,24 @@ pub fn detect(input: &str) -> Result<Detection> {
     }
     if is_name(&lower, ".sol") {
         return Ok(Detection::new(Family::Solana, InputKind::Sns, lower));
+    }
+
+    if tron::is_tron_address(input) {
+        return Ok(Detection::new(
+            Family::Tron,
+            InputKind::Address,
+            input.into(),
+        ));
+    }
+    if xrpl::is_classic_address(input) {
+        return Ok(Detection::new(
+            Family::Xrpl,
+            InputKind::Address,
+            input.into(),
+        ));
+    }
+    if let Some((classic, _tag)) = xrpl::decode_x_address(input) {
+        return Ok(Detection::new(Family::Xrpl, InputKind::Address, classic));
     }
 
     if bitcoin::is_extended_key(input) {
@@ -243,6 +263,41 @@ mod tests {
             (Family::Solana, InputKind::Address)
         );
         assert!(detect("9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYt0WWM").is_err());
+    }
+
+    #[test]
+    fn detects_tron_addresses() {
+        let d = detect("TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t").unwrap();
+        assert_eq!((d.family, d.kind), (Family::Tron, InputKind::Address));
+        assert_eq!(d.chains, vec![Chain::Tron]);
+        assert_eq!(d.normalized, "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t");
+        for bad in [
+            "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6u",
+            "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6tt",
+            "tr7nhqjekqxgtci8q8zy4pl8otszgjlj6t",
+        ] {
+            assert!(detect(bad).is_err(), "{bad}");
+        }
+    }
+
+    #[test]
+    fn detects_xrpl_addresses() {
+        assert_eq!(
+            kind("rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh"),
+            (Family::Xrpl, InputKind::Address)
+        );
+        // X-addresses normalize to the classic address; the tag is dropped.
+        let d = detect("XVLhHMPHU98es4dbozjVtdWzVrDjtV5fdx1mHp98tDMoQXb").unwrap();
+        assert_eq!(d.family, Family::Xrpl);
+        assert_eq!(d.normalized, "rGWrZyQqhTp9Xu7G5Pkayo7bXjH4k4QYpf");
+        assert_eq!(d.chains, vec![Chain::Xrp]);
+        for bad in [
+            "rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTi",
+            "rHb9CJAWyB4rj91VRWn96Dkuk",
+            "XVLhHMPHU98es4dbozjVtdWzVrDjtV5fdx1mHp98tDMoQXc",
+        ] {
+            assert!(detect(bad).is_err(), "{bad}");
+        }
     }
 
     #[test]

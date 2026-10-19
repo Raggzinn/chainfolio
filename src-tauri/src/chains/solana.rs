@@ -86,6 +86,7 @@ impl ChainAdapter for SolanaAdapter {
             holdings.push(Holding {
                 asset: AssetMeta::native(Chain::Solana, "SOL", "Solana", 9, "solana"),
                 amount: Decimal::from_i128_with_scale(i128::from(lamports.value), 9).normalize(),
+                locked: None,
             });
         }
 
@@ -167,7 +168,11 @@ fn parse_token_accounts(accounts: Vec<TokenAccount>) -> Vec<Holding> {
                 known.map(|(_, symbol, _)| symbol.to_string()),
                 known.map(|(_, _, name)| name.to_string()),
             );
-            Holding { asset, amount }
+            Holding {
+                asset,
+                amount,
+                locked: None,
+            }
         })
         .collect()
 }

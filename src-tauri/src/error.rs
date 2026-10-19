@@ -4,7 +4,7 @@ pub type Result<T, E = Error> = std::result::Result<T, E>;
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
-    #[error("not a valid EVM, Solana or Bitcoin address")]
+    #[error("not a valid EVM, Solana, Bitcoin, TRON or XRP Ledger address")]
     InvalidAddress,
     #[error("address checksum does not match")]
     BadChecksum,

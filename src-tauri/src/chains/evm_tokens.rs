@@ -469,6 +469,6 @@ pub fn known_tokens(chain: Chain) -> &'static [KnownToken] {
         Chain::Polygon => POLYGON,
         Chain::Bsc => BSC,
         Chain::Avalanche => AVALANCHE,
-        Chain::Solana | Chain::Bitcoin => &[],
+        Chain::Solana | Chain::Bitcoin | Chain::Tron | Chain::Xrp => &[],
     }
 }

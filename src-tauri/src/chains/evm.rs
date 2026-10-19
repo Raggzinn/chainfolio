@@ -108,7 +108,9 @@ fn config(chain: Chain) -> ChainConfig {
                 gecko_id: "avalanche-2",
             },
         },
-        Chain::Solana | Chain::Bitcoin => unreachable!("{chain} is not an EVM chain"),
+        Chain::Solana | Chain::Bitcoin | Chain::Tron | Chain::Xrp => {
+            unreachable!("{chain} is not an EVM chain")
+        }
     }
 }
 
@@ -175,6 +177,7 @@ impl EvmAdapter {
         Ok((!amount.is_zero()).then(|| Holding {
             asset: AssetMeta::native(self.chain, symbol, name, 18, gecko_id),
             amount,
+            locked: None,
         }))
     }
 
@@ -213,6 +216,7 @@ fn known_holding(chain: Chain, token: &KnownToken, amount: rust_decimal::Decimal
         asset: AssetMeta::token(chain, token.contract, token.decimals)
             .with_names(Some(token.symbol.into()), Some(token.name.into())),
         amount,
+        locked: None,
     }
 }
 
@@ -276,7 +280,11 @@ fn parse_token_balances(chain: Chain, entries: Vec<TokenBalance>) -> Vec<Holding
             let mut asset =
                 AssetMeta::token(chain, contract, decimals).with_names(token.symbol, token.name);
             asset.logo_url = token.icon_url.filter(|u| u.starts_with("https://"));
-            Some(Holding { asset, amount })
+            Some(Holding {
+                asset,
+                amount,
+                locked: None,
+            })
         })
         .collect()
 }
