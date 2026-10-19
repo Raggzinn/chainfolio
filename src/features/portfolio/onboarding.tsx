@@ -151,15 +151,13 @@ export function Onboarding() {
         <div data-core className="relative flex size-28 items-center justify-center">
           <span
             data-pulse
-            className="absolute inset-0 rounded-[32px] border border-brand-blue/40"
+            className="absolute inset-0 rounded-[26px] border-2 border-brand-blue/50"
           />
           <span
             data-pulse
-            className="absolute inset-0 rounded-[32px] border border-brand-mint/40"
+            className="absolute inset-0 rounded-[26px] border-2 border-brand-mint/50"
           />
-          <div className="surface-raised flex size-28 items-center justify-center rounded-[32px]">
-            <BrandMark className="size-16" />
-          </div>
+          <BrandMark className="relative size-28" />
         </div>
       </div>
     </div>
