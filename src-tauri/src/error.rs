@@ -16,6 +16,12 @@ pub enum Error {
     NotFound,
     #[error("label cannot be empty")]
     EmptyLabel,
+    #[error("the database is locked")]
+    Locked,
+    #[error("wrong password")]
+    WrongPassword,
+    #[error("password must be at least 8 characters")]
+    WeakPassword,
     #[error("{0}")]
     Provider(String),
     #[error(transparent)]
@@ -38,6 +44,9 @@ impl Error {
             Self::Duplicate => "duplicate",
             Self::NotFound => "notFound",
             Self::EmptyLabel => "emptyLabel",
+            Self::Locked => "locked",
+            Self::WrongPassword => "wrongPassword",
+            Self::WeakPassword => "weakPassword",
             Self::Provider(_) | Self::Http(_) => "network",
             Self::Db(_) | Self::Migration(_) | Self::Io(_) => "storage",
         }

@@ -21,7 +21,9 @@ tauri-build = { version = "2", features = [] }
 tauri = { version = "2", features = [] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-rusqlite = { version = "0.39", features = ["bundled"] }
+# SQLCipher build of SQLite so the database can be encrypted with the master
+# password; OpenSSL is vendored so it builds the same on every OS.
+rusqlite = { version = "0.39", features = ["bundled-sqlcipher-vendored-openssl"] }
 refinery = { version = "0.9", features = ["rusqlite"] }
 rust_decimal = { version = "1.43", features = ["serde-with-str"] }
 reqwest = { version = "0.13", default-features = false, features = ["json", "rustls"] }

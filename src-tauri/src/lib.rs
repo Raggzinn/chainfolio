@@ -6,6 +6,7 @@ mod error;
 #[cfg(test)]
 mod live_tests;
 mod prices;
+mod security;
 mod state;
 mod sync;
 
@@ -25,8 +26,14 @@ pub fn run() {
         .setup(|app| {
             let dir = app.path().app_data_dir()?;
             std::fs::create_dir_all(&dir)?;
-            let conn = db::open(&dir.join("chainfolio.db"))?;
-            app.manage(state::AppState::new(conn)?);
+            let path = dir.join("chainfolio.db");
+            // An encrypted database stays closed until the lock screen unlocks it.
+            let conn = if db::is_encrypted(&path)? {
+                None
+            } else {
+                Some(db::open(&path, None)?)
+            };
+            app.manage(state::AppState::new(conn, path)?);
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
@@ -37,6 +44,10 @@ pub fn run() {
             commands::remove_wallet,
             commands::get_portfolio,
             commands::refresh_balances,
+            security::security_status,
+            security::unlock,
+            security::lock,
+            security::set_master_password,
         ])
         .run(tauri::generate_context!())
         .expect("error while running Chainfolio");
