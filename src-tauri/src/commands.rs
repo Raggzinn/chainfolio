@@ -5,9 +5,11 @@ use tauri::State;
 
 use crate::{
     address::{self, Detection, InputKind},
+    analytics::{self, PnlReport},
     chains::{evm, solana},
     db::history::{self as store, TxPage, TxQuery},
     db::repo::{self, NewWallet, Portfolio, WalletSummary},
+    engine::ledger::Method,
     error::{Error, Result},
     history::{
         self,
@@ -153,6 +155,12 @@ pub async fn portfolio_history(
     asset_ids: Option<Vec<String>>,
 ) -> Result<Vec<HistoryPoint>> {
     history::sync::portfolio_history(&state, from, to, asset_ids).await
+}
+
+/// Realized and unrealized PnL of every asset with the given cost method.
+#[tauri::command]
+pub fn pnl_report(state: State<'_, AppState>, method: Method) -> Result<PnlReport> {
+    analytics::pnl_report(&state.db(), method, crate::db::now_ms())
 }
 
 #[derive(serde::Serialize)]

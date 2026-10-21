@@ -1,4 +1,5 @@
 mod address;
+mod analytics;
 mod chains;
 mod commands;
 mod db;
@@ -45,6 +46,7 @@ pub fn run() {
             commands::update_transaction,
             commands::export_transactions_csv,
             commands::portfolio_history,
+            commands::pnl_report,
             commands::get_api_keys,
             commands::set_api_key,
         ])
