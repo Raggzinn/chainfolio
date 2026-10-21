@@ -2,10 +2,12 @@ mod address;
 mod chains;
 mod commands;
 mod db;
+mod defi;
 mod error;
 #[cfg(test)]
 mod live_tests;
 mod prices;
+mod risk;
 mod state;
 mod sync;
 
@@ -37,6 +39,9 @@ pub fn run() {
             commands::remove_wallet,
             commands::get_portfolio,
             commands::refresh_balances,
+            commands::get_positions,
+            commands::get_risk_report,
+            commands::scan_risk,
         ])
         .run(tauri::generate_context!())
         .expect("error while running Chainfolio");
