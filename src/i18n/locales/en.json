@@ -411,7 +411,8 @@
     "unknown": "Something went wrong.",
     "locked": "The database is locked.",
     "wrongPassword": "Wrong password.",
-    "weakPassword": "Use at least 8 characters."
+    "weakPassword": "Use at least 8 characters.",
+    "invalidAlert": "This alert can never fire. Check its threshold."
   },
   "security": {
     "title": "Security",
@@ -461,5 +462,84 @@
     "launchAtLoginHint": "Start Chainfolio hidden in the tray when you sign in to your computer.",
     "notifications": "Alert notifications",
     "notificationsHint": "Show a system notification when one of your alerts fires."
+  },
+  "alerts": {
+    "new": "New alert",
+    "newTitle": "New alert",
+    "editTitle": "Edit alert",
+    "dialogDescription": "Checked after every sync. Prices are in US dollars.",
+    "create": "Create alert",
+    "created": "Alert created",
+    "updated": "Alert updated",
+    "edit": "Edit",
+    "delete": "Delete",
+    "enabled": "Enabled",
+    "kind": "When",
+    "kinds": {
+      "priceAbove": "Price goes above",
+      "priceBelow": "Price drops below",
+      "portfolioChange": "Portfolio moves in 24h",
+      "balanceChange": "Funds move in or out of a wallet",
+      "depeg": "A stablecoin loses its peg"
+    },
+    "kindHints": {
+      "priceAbove": "Fires once when the price crosses the target, then waits until it falls back.",
+      "priceBelow": "Fires once when the price crosses the target, then waits until it recovers.",
+      "portfolioChange": "Compares your portfolio value with 24 hours ago.",
+      "balanceChange": "Compares balances between two syncs, valued at current prices.",
+      "depeg": "Watches every stablecoin you hold (USDT, USDC, DAI…) for drift away from $1."
+    },
+    "asset": "Asset",
+    "pickAsset": "Pick an asset",
+    "targetPrice": "Target price (USD)",
+    "currentPrice": "Now {{price}}",
+    "direction": "Direction",
+    "directions": {
+      "up": "Up / in",
+      "down": "Down / out",
+      "either": "Either"
+    },
+    "wallet": "Wallet",
+    "anyWallet": "any wallet",
+    "removedWallet": "a removed wallet",
+    "minimumMove": "Minimum amount (USD)",
+    "threshold": "Threshold",
+    "rule": {
+      "priceAbove": "{{symbol}} goes above {{price}}",
+      "priceBelow": "{{symbol}} drops below {{price}}",
+      "portfolioUp": "Portfolio rises {{percent}} in 24h",
+      "portfolioDown": "Portfolio falls {{percent}} in 24h",
+      "portfolioEither": "Portfolio moves {{percent}} in 24h",
+      "balanceUp": "{{amount}} or more arrives in {{wallet}}",
+      "balanceDown": "{{amount}} or more leaves {{wallet}}",
+      "balanceEither": "{{amount}} or more moves in or out of {{wallet}}",
+      "depeg": "A stablecoin you hold drifts {{percent}} from $1"
+    },
+    "event": {
+      "priceAbove": "{{symbol}} reached {{price}}",
+      "priceBelow": "{{symbol}} fell to {{price}}",
+      "portfolio": "Portfolio changed {{percent}} in 24h",
+      "balanceIn": "{{amount}} arrived in {{wallet}}",
+      "balanceOut": "{{amount}} left {{wallet}}",
+      "depeg": "{{symbol}} traded at {{price}}"
+    },
+    "rules": "Rules",
+    "rulesCount_one": "{{count}} rule",
+    "rulesCount_other": "{{count}} rules",
+    "lastFired": "Last fired {{time}}",
+    "neverFired": "Hasn’t fired yet",
+    "waitingReset": "waiting for the condition to clear",
+    "history": "Recent alerts",
+    "historyHint": "The last 50 times a rule fired",
+    "noHistory": "Nothing has fired yet.",
+    "clearHistory": "Clear",
+    "schedule": "Alerts are checked after every sync, including the background refresh every {{minutes}} min.",
+    "scheduleOff": "Background refresh is off, so alerts are only checked when you sync manually.",
+    "changeSchedule": "Change in Settings",
+    "emptyTitle": "No alerts yet",
+    "emptyHint": "Get a notification when a price crosses a target, your portfolio swings, funds move in a wallet or a stablecoin depegs.",
+    "fired_one": "An alert fired",
+    "fired_other": "{{count}} alerts fired",
+    "view": "View"
   }
 }

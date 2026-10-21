@@ -6,6 +6,7 @@ import {
   redirect,
 } from "@tanstack/react-router";
 import { AppLayout } from "@/components/layout/app-layout";
+import { AlertsPage } from "@/pages/alerts";
 import { PlaceholderPage } from "@/pages/placeholder-page";
 import { PortfolioPage } from "@/pages/portfolio";
 import { SettingsPage } from "@/pages/settings";
@@ -34,7 +35,7 @@ const routeTree = rootRoute.addChildren([
   page("/analytics", () => <PlaceholderPage page="analytics" />),
   page("/risk", () => <PlaceholderPage page="risk" />),
   taxesRoute,
-  page("/alerts", () => <PlaceholderPage page="alerts" />),
+  page("/alerts", AlertsPage),
   page("/wallets", WalletsPage),
   page("/settings", SettingsPage),
 ]);

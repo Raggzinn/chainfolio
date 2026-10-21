@@ -411,7 +411,8 @@
     "unknown": "Algo deu errado.",
     "locked": "O banco de dados está bloqueado.",
     "wrongPassword": "Senha incorreta.",
-    "weakPassword": "Use pelo menos 8 caracteres."
+    "weakPassword": "Use pelo menos 8 caracteres.",
+    "invalidAlert": "Esse alerta nunca vai disparar. Confira o limite."
   },
   "security": {
     "title": "Segurança",
@@ -461,5 +462,84 @@
     "launchAtLoginHint": "Abre o Chainfolio escondido na bandeja quando você entra no computador.",
     "notifications": "Notificações de alertas",
     "notificationsHint": "Mostra uma notificação do sistema quando um dos seus alertas disparar."
+  },
+  "alerts": {
+    "new": "Novo alerta",
+    "newTitle": "Novo alerta",
+    "editTitle": "Editar alerta",
+    "dialogDescription": "Verificado após cada sincronização. Preços em dólares americanos.",
+    "create": "Criar alerta",
+    "created": "Alerta criado",
+    "updated": "Alerta atualizado",
+    "edit": "Editar",
+    "delete": "Excluir",
+    "enabled": "Ativado",
+    "kind": "Quando",
+    "kinds": {
+      "priceAbove": "O preço passar de",
+      "priceBelow": "O preço cair abaixo de",
+      "portfolioChange": "O portfólio variar em 24h",
+      "balanceChange": "Fundos entrarem ou saírem de uma carteira",
+      "depeg": "Uma stablecoin perder a paridade"
+    },
+    "kindHints": {
+      "priceAbove": "Dispara uma vez quando o preço cruza o alvo e espera ele voltar para baixo.",
+      "priceBelow": "Dispara uma vez quando o preço cruza o alvo e espera ele se recuperar.",
+      "portfolioChange": "Compara o valor do portfólio com o de 24 horas atrás.",
+      "balanceChange": "Compara os saldos entre duas sincronizações, pelos preços atuais.",
+      "depeg": "Monitora todas as stablecoins que você tem (USDT, USDC, DAI…) para desvios de US$ 1."
+    },
+    "asset": "Ativo",
+    "pickAsset": "Escolha um ativo",
+    "targetPrice": "Preço-alvo (USD)",
+    "currentPrice": "Agora {{price}}",
+    "direction": "Direção",
+    "directions": {
+      "up": "Alta / entrada",
+      "down": "Queda / saída",
+      "either": "Ambas"
+    },
+    "wallet": "Carteira",
+    "anyWallet": "qualquer carteira",
+    "removedWallet": "uma carteira removida",
+    "minimumMove": "Valor mínimo (USD)",
+    "threshold": "Limite",
+    "rule": {
+      "priceAbove": "{{symbol}} passar de {{price}}",
+      "priceBelow": "{{symbol}} cair abaixo de {{price}}",
+      "portfolioUp": "Portfólio subir {{percent}} em 24h",
+      "portfolioDown": "Portfólio cair {{percent}} em 24h",
+      "portfolioEither": "Portfólio variar {{percent}} em 24h",
+      "balanceUp": "{{amount}} ou mais entrar em {{wallet}}",
+      "balanceDown": "{{amount}} ou mais sair de {{wallet}}",
+      "balanceEither": "{{amount}} ou mais entrar ou sair de {{wallet}}",
+      "depeg": "Uma stablecoin sua se afastar {{percent}} de US$ 1"
+    },
+    "event": {
+      "priceAbove": "{{symbol}} chegou a {{price}}",
+      "priceBelow": "{{symbol}} caiu para {{price}}",
+      "portfolio": "Portfólio variou {{percent}} em 24h",
+      "balanceIn": "{{amount}} entraram em {{wallet}}",
+      "balanceOut": "{{amount}} saíram de {{wallet}}",
+      "depeg": "{{symbol}} foi negociado a {{price}}"
+    },
+    "rules": "Regras",
+    "rulesCount_one": "{{count}} regra",
+    "rulesCount_other": "{{count}} regras",
+    "lastFired": "Disparou {{time}}",
+    "neverFired": "Ainda não disparou",
+    "waitingReset": "aguardando a condição voltar ao normal",
+    "history": "Alertas recentes",
+    "historyHint": "As últimas 50 vezes que uma regra disparou",
+    "noHistory": "Nada disparou ainda.",
+    "clearHistory": "Limpar",
+    "schedule": "Os alertas são verificados após cada sincronização, incluindo a atualização em segundo plano a cada {{minutes}} min.",
+    "scheduleOff": "A atualização em segundo plano está desligada, então os alertas só são verificados quando você sincroniza manualmente.",
+    "changeSchedule": "Alterar nas Configurações",
+    "emptyTitle": "Nenhum alerta ainda",
+    "emptyHint": "Receba uma notificação quando um preço cruzar um alvo, o portfólio oscilar, fundos se moverem numa carteira ou uma stablecoin perder a paridade.",
+    "fired_one": "Um alerta disparou",
+    "fired_other": "{{count}} alertas disparados",
+    "view": "Ver"
   }
 }
