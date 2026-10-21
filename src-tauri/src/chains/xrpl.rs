@@ -98,7 +98,7 @@ fn currency_symbol(code: &str) -> String {
     code.to_string()
 }
 
-fn parse_amount(value: &str) -> Option<Decimal> {
+pub fn parse_amount(value: &str) -> Option<Decimal> {
     Decimal::from_str(value)
         .or_else(|_| Decimal::from_scientific(value))
         .ok()
@@ -114,7 +114,7 @@ impl XrplAdapter {
     }
 
     /// rippled JSON-RPC: errors come back inside `result` with `status: error`.
-    async fn request(&self, method: &str, params: Value) -> Result<Value> {
+    pub async fn request(&self, method: &str, params: Value) -> Result<Value> {
         let body = json!({ "method": method, "params": [params] });
         let mut last = Error::provider("no XRPL server configured");
         for endpoint in RPCS {
@@ -193,6 +193,24 @@ struct AccountRoot {
 
 /// Holdings from an account root and its trust lines. Part of the XRP balance
 /// is locked as reserve: a base amount plus one increment per owned object.
+pub fn xrp_asset() -> AssetMeta {
+    AssetMeta::native(Chain::Xrp, "XRP", "XRP", 6, "ripple")
+}
+
+/// Issued token `currency` from `issuer`, priced through CoinGecko when known.
+pub fn token_asset(currency: &str, issuer: &str) -> AssetMeta {
+    let symbol = currency_symbol(currency);
+    let known = KNOWN_TOKENS
+        .iter()
+        .find(|(i, code, _, _)| *i == issuer && *code == symbol);
+    let mut asset = AssetMeta::token(Chain::Xrp, format!("{currency}.{issuer}"), TOKEN_DECIMALS)
+        .with_names(Some(symbol), known.map(|k| k.2.to_string()));
+    if let Some((_, _, _, gecko)) = known {
+        asset.price_key = format!("coingecko:{gecko}");
+    }
+    asset
+}
+
 fn holdings(root: &AccountRoot, lines: Vec<TrustLine>, reserves: (u64, u64)) -> Vec<Holding> {
     let mut out = Vec::new();
     let drops: u64 = root.balance.parse().unwrap_or(0);
@@ -202,7 +220,7 @@ fn holdings(root: &AccountRoot, lines: Vec<TrustLine>, reserves: (u64, u64)) -> 
             .saturating_add(reserves.1.saturating_mul(root.owner_count));
         let xrp = |d: u64| Decimal::from_i128_with_scale(i128::from(d), 6).normalize();
         out.push(Holding {
-            asset: AssetMeta::native(Chain::Xrp, "XRP", "XRP", 6, "ripple"),
+            asset: xrp_asset(),
             amount: xrp(drops),
             locked: Some(xrp(reserve.min(drops))),
         });
@@ -214,21 +232,8 @@ fn holdings(root: &AccountRoot, lines: Vec<TrustLine>, reserves: (u64, u64)) -> 
         else {
             continue;
         };
-        let symbol = currency_symbol(&line.currency);
-        let known = KNOWN_TOKENS
-            .iter()
-            .find(|(issuer, code, _, _)| *issuer == line.account && *code == symbol);
-        let mut asset = AssetMeta::token(
-            Chain::Xrp,
-            format!("{}.{}", line.currency, line.account),
-            TOKEN_DECIMALS,
-        )
-        .with_names(Some(symbol), known.map(|k| k.2.to_string()));
-        if let Some((_, _, _, gecko)) = known {
-            asset.price_key = format!("coingecko:{gecko}");
-        }
         out.push(Holding {
-            asset,
+            asset: token_asset(&line.currency, &line.account),
             amount: amount.normalize(),
             locked: None,
         });
