@@ -2,6 +2,7 @@ import { Outlet, useRouterState } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { ProductTour } from "@/features/onboarding/product-tour";
 import { WelcomeScreen } from "@/features/onboarding/welcome-screen";
+import { useAutoRefresh } from "@/features/wallets/queries";
 import { gsap, MOTION_OK, useGSAP } from "@/lib/gsap";
 import { AppSidebar } from "./app-sidebar";
 import { CommandMenu } from "./command-menu";
@@ -11,6 +12,7 @@ export function AppLayout() {
   const [commandOpen, setCommandOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const pageRef = useRef<HTMLDivElement>(null);
+  useAutoRefresh();
 
   // Every page enters with a soft staggered rise of its direct children.
   useGSAP(

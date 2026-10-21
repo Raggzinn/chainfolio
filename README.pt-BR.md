@@ -62,7 +62,7 @@
 
 ## Funcionalidades
 
-- **Multichain** — Ethereum e suas L2s (Arbitrum, Base, Optimism, Polygon), BSC, Avalanche, Solana e Bitcoin via xpub
+- **Multichain** — Ethereum e suas L2s (Arbitrum, Base, Optimism, Polygon), BSC, Avalanche, Solana, Bitcoin via xpub, TRON e XRP Ledger
 - **PnL em tempo real** — realizado e não realizado, por FIFO, LIFO ou custo médio
 - **Transações unificadas** — histórico único de todas as redes, classificado automaticamente, com detecção de transferências entre suas próprias carteiras
 - **Alocação** — por ativo, rede, categoria e protocolo, com benchmark contra BTC e ETH
@@ -84,6 +84,8 @@
 | Ethereum + L2s, BSC, Avalanche | Endereço `0x…` ou nome ENS | Tokens, transações, posições DeFi, aprovações |
 | Solana | Endereço ou nome SNS | Tokens SPL, transações, staking |
 | Bitcoin | Endereço ou xpub / ypub / zpub | Saldo e transações de todos os endereços da carteira |
+| TRON | Endereço `T…` | TRX e tokens TRC-20 (USDT e outros) |
+| XRP Ledger | Endereço `r…` ou X-address | XRP (reserva exibida como bloqueada) e tokens emitidos como RLUSD |
 
 Tudo é **somente leitura**: o Chainfolio nunca assina transações nem pede chaves.
 
@@ -145,7 +147,7 @@ chainfolio/
 - [x] Dashboard, onboarding e modo demo
 - [x] Mood do mercado (Fear & Greed)
 - [ ] Atualização automática e backup das configurações
-- [ ] Carteiras e saldos (EVM, Solana, Bitcoin)
+- [ ] Carteiras e saldos (EVM, Solana, Bitcoin, TRON, XRP Ledger)
 - [ ] Transações e histórico do portfólio
 - [ ] Motor de PnL (FIFO / LIFO / custo médio)
 - [ ] Módulo de impostos (Brasil)
