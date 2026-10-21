@@ -69,7 +69,7 @@
     },
     "wallets": {
       "title": "Wallets",
-      "description": "Watch-only addresses on EVM chains, Solana, Bitcoin, TRON and the XRP Ledger."
+      "description": "Watch-only addresses on EVM chains, Solana and Bitcoin."
     },
     "settings": {
       "title": "Settings",
@@ -112,7 +112,7 @@
     "eyebrow": "Open source · 100% local",
     "title": "Your entire on-chain wealth.",
     "titleAccent": "One calm place.",
-    "subtitle": "Track wallets across Ethereum, its L2s, Solana, Bitcoin, TRON and the XRP Ledger. Real-time PnL, risk insights and tax reports, without giving up your keys or your privacy.",
+    "subtitle": "Track wallets across Ethereum, its L2s, Solana and Bitcoin. Real-time PnL, risk insights and tax reports, without giving up your keys or your privacy.",
     "addWallet": "Add your first wallet",
     "exploreDemo": "Explore with demo data",
     "chipWatchOnly": "Watch-only, never your keys",
@@ -335,6 +335,25 @@
         "body": "Language, theme, base currency, optional modules, and this tour whenever you need it again."
       }
     }
+  },
+  "updates": {
+    "title": "Updates",
+    "version": "Chainfolio v{{version}}",
+    "checkNow": "Check now",
+    "checking": "Checking for updates…",
+    "upToDate": "You're on the latest version",
+    "available": "Chainfolio {{version}} is available",
+    "availableHint": "A new version is ready to install.",
+    "install": "Update and restart",
+    "later": "Later",
+    "downloading": "Downloading update…",
+    "restarting": "Installing and restarting…",
+    "failed": "Couldn't check for updates: {{error}}",
+    "never": "Not checked yet",
+    "lastChecked": "Last checked at {{time}}",
+    "auto": "Check automatically",
+    "autoHint": "Look for new releases on startup and every few hours.",
+    "desktopOnly": "Updates are available in the desktop app."
   },
   "wallets": {
     "addTitle": "Add a wallet",

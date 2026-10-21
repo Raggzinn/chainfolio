@@ -16,6 +16,8 @@ interface PreferencesState {
   sidebarCollapsed: boolean;
   /** Set once the first-run welcome flow is finished or skipped. */
   welcomeCompleted: boolean;
+  /** Look for a new release on startup and every few hours. */
+  autoCheckUpdates: boolean;
   setTheme: (theme: Theme) => void;
   setCurrency: (currency: Currency) => void;
   togglePrivacyMode: () => void;
@@ -23,6 +25,7 @@ interface PreferencesState {
   setDemoMode: (enabled: boolean) => void;
   toggleSidebar: () => void;
   setWelcomeCompleted: (completed: boolean) => void;
+  setAutoCheckUpdates: (enabled: boolean) => void;
 }
 
 /**
@@ -39,6 +42,7 @@ export const usePreferences = create<PreferencesState>()(
       demoMode: false,
       sidebarCollapsed: false,
       welcomeCompleted: false,
+      autoCheckUpdates: true,
       setTheme: (theme) => set({ theme }),
       setCurrency: (currency) => set({ currency }),
       togglePrivacyMode: () => set((s) => ({ privacyMode: !s.privacyMode })),
@@ -46,6 +50,7 @@ export const usePreferences = create<PreferencesState>()(
       setDemoMode: (demoMode) => set({ demoMode }),
       toggleSidebar: () => set((s) => ({ sidebarCollapsed: !s.sidebarCollapsed })),
       setWelcomeCompleted: (welcomeCompleted) => set({ welcomeCompleted }),
+      setAutoCheckUpdates: (autoCheckUpdates) => set({ autoCheckUpdates }),
     }),
     {
       name: "chainfolio.preferences",

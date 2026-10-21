@@ -69,7 +69,7 @@
     },
     "wallets": {
       "title": "Carteiras",
-      "description": "Endereços somente leitura em redes EVM, Solana, Bitcoin, TRON e XRP Ledger."
+      "description": "Endereços somente leitura em redes EVM, Solana e Bitcoin."
     },
     "settings": {
       "title": "Configurações",
@@ -112,7 +112,7 @@
     "eyebrow": "Open source · 100% local",
     "title": "Todo o seu patrimônio on-chain.",
     "titleAccent": "Em um só lugar.",
-    "subtitle": "Acompanhe carteiras em Ethereum, suas L2s, Solana, Bitcoin, TRON e XRP Ledger. PnL em tempo real, análise de risco e relatórios de IR, sem abrir mão das suas chaves ou da sua privacidade.",
+    "subtitle": "Acompanhe carteiras em Ethereum, suas L2s, Solana e Bitcoin. PnL em tempo real, análise de risco e relatórios de IR, sem abrir mão das suas chaves ou da sua privacidade.",
     "addWallet": "Adicionar primeira carteira",
     "exploreDemo": "Explorar com dados demo",
     "chipWatchOnly": "Somente leitura, nunca suas chaves",
@@ -335,6 +335,25 @@
         "body": "Idioma, tema, moeda base, módulos opcionais e este tour sempre que você precisar."
       }
     }
+  },
+  "updates": {
+    "title": "Atualizações",
+    "version": "Chainfolio v{{version}}",
+    "checkNow": "Verificar agora",
+    "checking": "Procurando atualizações…",
+    "upToDate": "Você está na versão mais recente",
+    "available": "Chainfolio {{version}} está disponível",
+    "availableHint": "Uma nova versão está pronta para instalar.",
+    "install": "Atualizar e reiniciar",
+    "later": "Depois",
+    "downloading": "Baixando atualização…",
+    "restarting": "Instalando e reiniciando…",
+    "failed": "Não foi possível verificar atualizações: {{error}}",
+    "never": "Ainda não verificado",
+    "lastChecked": "Última verificação às {{time}}",
+    "auto": "Verificar automaticamente",
+    "autoHint": "Procura novas versões ao abrir o app e a cada poucas horas.",
+    "desktopOnly": "Atualizações ficam disponíveis no app desktop."
   },
   "wallets": {
     "addTitle": "Adicionar carteira",
