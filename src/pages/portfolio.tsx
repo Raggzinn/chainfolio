@@ -2,6 +2,7 @@ import { FlaskConical, X } from "lucide-react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DefiCard } from "@/features/defi/defi-card";
 import { MarketMoodCard } from "@/features/market/market-mood-card";
 import { ActivityCard } from "@/features/portfolio/activity-card";
 import { AllocationCard } from "@/features/portfolio/allocation-card";
@@ -9,7 +10,7 @@ import { HeroCard } from "@/features/portfolio/hero-card";
 import { LiveHeroCard } from "@/features/portfolio/live-hero-card";
 import { demoAssetRows, liveAssetRows } from "@/features/portfolio/model";
 import { Onboarding } from "@/features/portfolio/onboarding";
-import { RiskCard } from "@/features/portfolio/risk-card";
+import { LiveRiskCard, RiskCard } from "@/features/portfolio/risk-card";
 import { TopAssetsCard } from "@/features/portfolio/top-assets-card";
 import { usePortfolio } from "@/features/wallets/queries";
 import type { Portfolio } from "@/lib/api";
@@ -34,11 +35,15 @@ function LiveDashboard({ portfolio }: { portfolio: Portfolio }) {
     <>
       <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
         <LiveHeroCard portfolio={portfolio} />
+        <LiveRiskCard />
+      </div>
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
+        <TopAssetsCard rows={rows} />
         <MarketMoodCard />
       </div>
-      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_420px]">
-        <TopAssetsCard rows={rows} />
+      <div className="grid gap-5 lg:grid-cols-2">
         <AllocationCard rows={rows} />
+        <DefiCard />
       </div>
     </>
   );
