@@ -94,6 +94,16 @@ export interface SecurityStatus {
   locked: boolean;
 }
 
+/** Backend settings (`settings.json`) plus the OS launch-at-login flag. */
+export interface AppSettings {
+  closeToTray: boolean;
+  /** 0 turns background refresh off. */
+  syncIntervalMinutes: number;
+  notifications: boolean;
+  locale: string;
+  launchAtLogin: boolean;
+}
+
 export const ERROR_CODES = [
   "invalidAddress",
   "badChecksum",
@@ -151,6 +161,9 @@ export const api = {
   securityStatus: () => call<SecurityStatus>("security_status"),
   unlock: (password: string) => call<void>("unlock", { password }),
   lock: () => call<void>("lock"),
+  getAppSettings: () => call<AppSettings>("get_app_settings"),
+  updateAppSettings: (update: AppSettings) => call<AppSettings>("update_app_settings", { update }),
+  setTrayPrivacy: (hidden: boolean) => call<void>("set_tray_privacy", { hidden }),
   /** `newPassword: null` removes the master password. */
   setMasterPassword: (currentPassword: string | null, newPassword: string | null) =>
     call<void>("set_master_password", { currentPassword, newPassword }),

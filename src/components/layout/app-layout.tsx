@@ -1,5 +1,6 @@
 import { Outlet, useRouterState } from "@tanstack/react-router";
 import { useRef, useState } from "react";
+import { useBackendEvents } from "@/features/background/use-backend-events";
 import { ProductTour } from "@/features/onboarding/product-tour";
 import { WelcomeScreen } from "@/features/onboarding/welcome-screen";
 import { UpdateBanner } from "@/features/updates/update-banner";
@@ -14,6 +15,7 @@ export function AppLayout() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const pageRef = useRef<HTMLDivElement>(null);
   useAutoRefresh();
+  useBackendEvents();
 
   // Every page enters with a soft staggered rise of its direct children.
   useGSAP(

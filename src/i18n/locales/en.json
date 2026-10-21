@@ -448,5 +448,18 @@
     "lockedTitle": "Chainfolio is locked",
     "lockedHint": "Enter your master password to decrypt your data.",
     "unlock": "Unlock"
+  },
+  "background": {
+    "title": "Background & tray",
+    "subtitle": "Keep Chainfolio watching while the window is closed",
+    "interval": "Background refresh",
+    "intervalHint": "Refresh balances and prices on this schedule and check your alerts afterwards.",
+    "off": "Off",
+    "closeToTray": "Close to tray",
+    "closeToTrayHint": "Closing the window keeps Chainfolio running in the system tray. Quit from the tray menu.",
+    "launchAtLogin": "Launch at login",
+    "launchAtLoginHint": "Start Chainfolio hidden in the tray when you sign in to your computer.",
+    "notifications": "Alert notifications",
+    "notificationsHint": "Show a system notification when one of your alerts fires."
   }
 }

@@ -448,5 +448,18 @@
     "lockedTitle": "Chainfolio está bloqueado",
     "lockedHint": "Digite sua senha mestra para descriptografar seus dados.",
     "unlock": "Desbloquear"
+  },
+  "background": {
+    "title": "Segundo plano e bandeja",
+    "subtitle": "Mantenha o Chainfolio monitorando com a janela fechada",
+    "interval": "Atualização em segundo plano",
+    "intervalHint": "Atualiza saldos e preços nesse intervalo e confere seus alertas em seguida.",
+    "off": "Desligada",
+    "closeToTray": "Fechar para a bandeja",
+    "closeToTrayHint": "Fechar a janela mantém o Chainfolio rodando na bandeja do sistema. Para sair, use o menu da bandeja.",
+    "launchAtLogin": "Iniciar com o sistema",
+    "launchAtLoginHint": "Abre o Chainfolio escondido na bandeja quando você entra no computador.",
+    "notifications": "Notificações de alertas",
+    "notificationsHint": "Mostra uma notificação do sistema quando um dos seus alertas disparar."
   }
 }
