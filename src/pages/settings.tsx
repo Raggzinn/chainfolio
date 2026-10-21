@@ -7,6 +7,7 @@ import { SegmentedControl } from "@/components/segmented-control";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { BackgroundPanel } from "@/features/background/background-panel";
+import { DataSourcesPanel } from "@/features/data-sources/data-sources-panel";
 import { SecurityPanel } from "@/features/security/security-panel";
 import { UpdatesPanel } from "@/features/updates/updates-panel";
 import { useTheme } from "@/hooks/use-theme";
@@ -103,6 +104,8 @@ export function SettingsPage() {
       <BackgroundPanel />
 
       <SecurityPanel />
+
+      <DataSourcesPanel />
 
       <UpdatesPanel />
 

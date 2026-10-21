@@ -412,7 +412,9 @@
     "locked": "O banco de dados está bloqueado.",
     "wrongPassword": "Senha incorreta.",
     "weakPassword": "Use pelo menos 8 caracteres.",
-    "invalidAlert": "Esse alerta nunca vai disparar. Confira o limite."
+    "invalidAlert": "Esse alerta nunca vai disparar. Confira o limite.",
+    "invalidApiKey": "O provedor recusou essa API key.",
+    "keychain": "Não foi possível acessar o chaveiro do sistema."
   },
   "security": {
     "title": "Segurança",
@@ -541,5 +543,23 @@
     "fired_one": "Um alerta disparou",
     "fired_other": "{{count}} alertas disparados",
     "view": "Ver"
+  },
+  "dataSources": {
+    "title": "Fontes de dados",
+    "subtitle": "API keys opcionais para limites maiores. Ficam no chaveiro do sistema, nunca no banco de dados ou nos backups.",
+    "hints": {
+      "etherscan": "Uma key para todas as redes EVM.",
+      "helius": "RPC de Solana mais rápido.",
+      "coingecko": "Key Demo ou Pro para preços.",
+      "trongrid": "Limites maiores na TRON."
+    },
+    "configured": "Key ••••{{hint}}",
+    "add": "Adicionar key",
+    "replace": "Substituir",
+    "test": "Testar conexão",
+    "placeholder": "Cole sua API key da {{provider}}",
+    "saved": "Key da {{provider}} salva no chaveiro",
+    "testOk": "A {{provider}} aceitou a key",
+    "testFailed": "Falha na conexão com a {{provider}}"
   }
 }

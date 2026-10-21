@@ -412,7 +412,9 @@
     "locked": "The database is locked.",
     "wrongPassword": "Wrong password.",
     "weakPassword": "Use at least 8 characters.",
-    "invalidAlert": "This alert can never fire. Check its threshold."
+    "invalidAlert": "This alert can never fire. Check its threshold.",
+    "invalidApiKey": "The provider rejected this API key.",
+    "keychain": "Couldn't access the system keychain."
   },
   "security": {
     "title": "Security",
@@ -541,5 +543,23 @@
     "fired_one": "An alert fired",
     "fired_other": "{{count}} alerts fired",
     "view": "View"
+  },
+  "dataSources": {
+    "title": "Data sources",
+    "subtitle": "Optional API keys for higher rate limits. Stored in your system keychain, never in the database or backups.",
+    "hints": {
+      "etherscan": "One key for every EVM chain.",
+      "helius": "Faster Solana RPC.",
+      "coingecko": "Demo or Pro key for prices.",
+      "trongrid": "Higher limits on TRON."
+    },
+    "configured": "Key ••••{{hint}}",
+    "add": "Add key",
+    "replace": "Replace",
+    "test": "Test connection",
+    "placeholder": "Paste your {{provider}} API key",
+    "saved": "{{provider}} key saved to the keychain",
+    "testOk": "{{provider}} accepted the key",
+    "testFailed": "{{provider}} connection failed"
   }
 }

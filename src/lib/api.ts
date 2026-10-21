@@ -135,6 +135,15 @@ export interface WatchableAsset {
   held: boolean;
 }
 
+export type ApiProvider = "etherscan" | "helius" | "coingecko" | "trongrid";
+
+export interface ApiKeyStatus {
+  provider: ApiProvider;
+  configured: boolean;
+  /** Last four characters of the stored key. */
+  hint: string | null;
+}
+
 /** Backend settings (`settings.json`) plus the OS launch-at-login flag. */
 export interface AppSettings {
   closeToTray: boolean;
@@ -156,6 +165,8 @@ export const ERROR_CODES = [
   "wrongPassword",
   "weakPassword",
   "invalidAlert",
+  "invalidApiKey",
+  "keychain",
   "network",
   "storage",
 ] as const;
@@ -214,6 +225,12 @@ export const api = {
     call<AlertEvent[]>("list_alert_events", { limit: limit ?? null }),
   clearAlertEvents: () => call<void>("clear_alert_events"),
   alertAssets: () => call<WatchableAsset[]>("alert_assets"),
+  listApiKeys: () => call<ApiKeyStatus[]>("list_api_keys"),
+  setApiKey: (provider: ApiProvider, key: string) => call<void>("set_api_key", { provider, key }),
+  removeApiKey: (provider: ApiProvider) => call<void>("remove_api_key", { provider }),
+  /** Tests `key`, or the stored key when omitted. */
+  testApiKey: (provider: ApiProvider, key?: string) =>
+    call<void>("test_api_key", { provider, key: key ?? null }),
   getAppSettings: () => call<AppSettings>("get_app_settings"),
   updateAppSettings: (update: AppSettings) => call<AppSettings>("update_app_settings", { update }),
   setTrayPrivacy: (hidden: boolean) => call<void>("set_tray_privacy", { hidden }),
