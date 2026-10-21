@@ -1,7 +1,7 @@
 //! Tauri commands exposed to the frontend. Argument and result types are
 //! mirrored in `src/lib/api.ts`.
 
-use tauri::State;
+use tauri::{AppHandle, State};
 
 use crate::{
     address::{self, Detection, InputKind},
@@ -9,7 +9,7 @@ use crate::{
     db::repo::{self, NewWallet, Portfolio, WalletSummary},
     error::{Error, Result},
     state::AppState,
-    sync::{self, RefreshReport},
+    sync::RefreshReport,
 };
 
 /// Classifies an address, name or extended key without touching the network.
@@ -92,11 +92,8 @@ pub fn get_portfolio(state: State<'_, AppState>) -> Result<Portfolio> {
 /// Fetches fresh balances and prices for one wallet, or all when `wallet_id`
 /// is omitted.
 #[tauri::command]
-pub async fn refresh_balances(
-    state: State<'_, AppState>,
-    wallet_id: Option<i64>,
-) -> Result<RefreshReport> {
-    sync::refresh(&state, wallet_id).await
+pub async fn refresh_balances(app: AppHandle, wallet_id: Option<i64>) -> Result<RefreshReport> {
+    crate::background::sync_now(&app, wallet_id).await
 }
 
 #[cfg(test)]
