@@ -3,9 +3,10 @@ import { useTranslation } from "react-i18next";
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 import { Panel } from "@/components/panel";
 import { SegmentedControl } from "@/components/segmented-control";
-import { assetValue, CHAINS, DEMO_ASSETS, DEMO_TOTAL } from "@/features/demo/data";
 import { useMoney } from "@/hooks/use-money";
+import { CHAINS } from "@/lib/chains";
 import { formatPercent } from "@/lib/format";
+import { type AssetRow, rowsTotal } from "./model";
 
 type Mode = "asset" | "chain";
 
@@ -16,36 +17,33 @@ interface Slice {
   color: string;
 }
 
-function slices(mode: Mode): Slice[] {
+function slices(rows: AssetRow[], mode: Mode, other: string): Slice[] {
   if (mode === "asset") {
-    const sorted = [...DEMO_ASSETS].sort((a, b) => assetValue(b) - assetValue(a));
+    const sorted = [...rows].sort((a, b) => b.value - a.value);
     const top = sorted.slice(0, 5).map((a) => ({
-      key: a.symbol,
+      key: a.key,
       label: a.symbol,
-      value: assetValue(a),
+      value: a.value,
       color: a.color,
     }));
-    const rest = sorted.slice(5).reduce((s, a) => s + assetValue(a), 0);
-    return rest > 0
-      ? [...top, { key: "other", label: "Other", value: rest, color: "#64748B" }]
-      : top;
+    const rest = rowsTotal(sorted.slice(5));
+    return rest > 0 ? [...top, { key: "other", label: other, value: rest, color: "#64748B" }] : top;
   }
-  const byChain = new Map<string, number>();
-  for (const a of DEMO_ASSETS) byChain.set(a.chain, (byChain.get(a.chain) ?? 0) + assetValue(a));
+  const byChain = new Map<AssetRow["chain"], number>();
+  for (const a of rows) byChain.set(a.chain, (byChain.get(a.chain) ?? 0) + a.value);
   return [...byChain.entries()]
     .sort((a, b) => b[1] - a[1])
-    .map(([id, value]) => {
-      const chain = CHAINS[id as keyof typeof CHAINS];
-      return { key: id, label: chain.name, value, color: chain.color };
-    });
+    .map(([id, value]) => ({ key: id, label: CHAINS[id].name, value, color: CHAINS[id].color }));
 }
 
-export function AllocationCard() {
+export function AllocationCard({ rows }: { rows: AssetRow[] }) {
   const { t, i18n } = useTranslation();
   const { format } = useMoney();
   const [mode, setMode] = useState<Mode>("asset");
   const [hovered, setHovered] = useState<string | null>(null);
-  const data = useMemo(() => slices(mode), [mode]);
+  const other = t("dashboard.other");
+  const data = useMemo(() => slices(rows, mode, other), [rows, mode, other]);
+  const total = rowsTotal(rows);
   const active = data.find((s) => s.key === hovered);
 
   return (
@@ -92,9 +90,11 @@ export function AllocationCard() {
             </PieChart>
           </ResponsiveContainer>
           <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center text-center">
-            <span className="text-[11px] text-muted-foreground">{active?.label ?? "Total"}</span>
+            <span className="text-[11px] text-muted-foreground">
+              {active?.label ?? t("dashboard.total")}
+            </span>
             <span className="tabular font-semibold text-sm">
-              {format(active?.value ?? DEMO_TOTAL, { compact: true })}
+              {format(active?.value ?? total, { compact: true })}
             </span>
           </div>
         </div>
@@ -110,7 +110,7 @@ export function AllocationCard() {
               <span className="size-2.5 shrink-0 rounded-full" style={{ background: s.color }} />
               <span className="truncate">{s.label}</span>
               <span className="tabular ml-auto font-medium text-muted-foreground">
-                {formatPercent(s.value / DEMO_TOTAL, i18n.resolvedLanguage ?? "en", {
+                {formatPercent(total ? s.value / total : 0, i18n.resolvedLanguage ?? "en", {
                   signed: false,
                 })}
               </span>

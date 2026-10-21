@@ -3,6 +3,7 @@ import { CircleHelp, Command, Eye, EyeOff, Moon, RefreshCw, Search, Sun } from "
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { useHasWallets, useIsSyncing, useRefreshBalances } from "@/features/wallets/queries";
 import { useTheme } from "@/hooks/use-theme";
 import { gsap } from "@/lib/gsap";
 import { IS_MAC } from "@/lib/platform";
@@ -16,6 +17,10 @@ export function Topbar({ onOpenCommand }: { onOpenCommand: () => void }) {
   const { resolvedTheme, toggleTheme } = useTheme();
   const privacyMode = usePreferences((s) => s.privacyMode);
   const togglePrivacyMode = usePreferences((s) => s.togglePrivacyMode);
+  const demoMode = usePreferences((s) => s.demoMode);
+  const hasWallets = useHasWallets();
+  const refresh = useRefreshBalances();
+  const syncing = useIsSyncing();
   const syncIcon = useRef<SVGSVGElement>(null);
   const themeIcon = useRef<HTMLSpanElement>(null);
   const startTour = useTour((s) => s.start);
@@ -27,6 +32,7 @@ export function Topbar({ onOpenCommand }: { onOpenCommand: () => void }) {
       { rotate: 0 },
       { rotate: 360, duration: 0.9, ease: "power2.inOut" },
     );
+    if (hasWallets && !demoMode && !syncing) refresh.mutate(undefined);
   };
 
   const flipTheme = () => {
@@ -57,7 +63,7 @@ export function Topbar({ onOpenCommand }: { onOpenCommand: () => void }) {
 
       <div className="surface flex items-center gap-0.5 rounded-xl p-1">
         <IconButton label={t("topbar.sync")} onClick={spinSync}>
-          <RefreshCw ref={syncIcon} />
+          <RefreshCw ref={syncIcon} className={cn(syncing && "animate-spin")} />
         </IconButton>
         <IconButton
           tourId="privacy"

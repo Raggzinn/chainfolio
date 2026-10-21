@@ -5,13 +5,14 @@ import { ChangePill } from "@/components/change-pill";
 import { Panel } from "@/components/panel";
 import { Sparkline } from "@/components/sparkline";
 import { TokenIcon } from "@/components/token-icon";
-import { assetValue, CHAINS, DEMO_ASSETS, demoSparkline } from "@/features/demo/data";
 import { useMoney } from "@/hooks/use-money";
+import { CHAINS } from "@/lib/chains";
+import type { AssetRow } from "./model";
 
-export function TopAssetsCard() {
+export function TopAssetsCard({ rows }: { rows: AssetRow[] }) {
   const { t, i18n } = useTranslation();
   const { format, hidden } = useMoney();
-  const assets = [...DEMO_ASSETS].sort((a, b) => assetValue(b) - assetValue(a)).slice(0, 6);
+  const assets = [...rows].sort((a, b) => b.value - a.value).slice(0, 6);
   const amount = new Intl.NumberFormat(i18n.resolvedLanguage, { maximumFractionDigits: 4 });
 
   return (
@@ -36,10 +37,15 @@ export function TopAssetsCard() {
           <span className="text-center">{t("dashboard.columns.trend")}</span>
           <span className="text-right">{t("dashboard.columns.value")}</span>
         </div>
+        {assets.length === 0 && (
+          <p className="px-3 py-8 text-center text-muted-foreground text-sm">
+            {t("dashboard.noAssets")}
+          </p>
+        )}
         <ul>
           {assets.map((a) => (
             <li
-              key={a.symbol}
+              key={a.key}
               className="group grid grid-cols-[minmax(0,1.6fr)_1fr_1fr_110px_1fr] items-center gap-4 rounded-xl px-3 py-2.5 transition-all duration-200 hover:bg-accent"
             >
               <div className="flex min-w-0 items-center gap-3">
@@ -47,12 +53,16 @@ export function TopAssetsCard() {
                   symbol={a.symbol}
                   color={a.color}
                   chain={a.chain}
+                  src={a.logoUrl}
                   className="transition-transform duration-300 group-hover:scale-110"
                 />
                 <div className="min-w-0">
                   <p className="truncate font-medium text-sm">{a.name}</p>
                   <p className="truncate text-muted-foreground text-xs">
                     {hidden ? "•••" : amount.format(a.balance)} {a.symbol} · {CHAINS[a.chain].name}
+                    {a.locked && !hidden
+                      ? ` · ${t("dashboard.locked", { amount: amount.format(a.locked) })}`
+                      : null}
                   </p>
                 </div>
               </div>
@@ -60,14 +70,20 @@ export function TopAssetsCard() {
                 {format(a.price, { ignorePrivacy: true })}
               </span>
               <span className="text-right">
-                <ChangePill value={a.change24h} />
+                {a.change24h === null ? (
+                  <span className="text-muted-foreground text-xs">—</span>
+                ) : (
+                  <ChangePill value={a.change24h} />
+                )}
               </span>
               <span className="flex justify-center">
-                <Sparkline data={demoSparkline(a)} positive={a.change24h >= 0} />
+                {a.sparkline ? (
+                  <Sparkline data={a.sparkline} positive={(a.change24h ?? 0) >= 0} />
+                ) : (
+                  <span className="text-muted-foreground text-xs">—</span>
+                )}
               </span>
-              <span className="tabular text-right font-semibold text-sm">
-                {format(assetValue(a))}
-              </span>
+              <span className="tabular text-right font-semibold text-sm">{format(a.value)}</span>
             </li>
           ))}
         </ul>

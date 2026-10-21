@@ -62,7 +62,7 @@
 
 ## Features
 
-- **Multi-chain** — Ethereum and its L2s (Arbitrum, Base, Optimism, Polygon), BSC, Avalanche, Solana and Bitcoin via xpub
+- **Multi-chain** — Ethereum and its L2s (Arbitrum, Base, Optimism, Polygon), BSC, Avalanche, Solana, Bitcoin via xpub, TRON and the XRP Ledger
 - **Real-time PnL** — realized and unrealized, with FIFO, LIFO or average cost
 - **Unified transactions** — one history across every chain, auto-classified, with transfers between your own wallets detected
 - **Allocation** — by asset, chain, category and protocol, benchmarked against BTC and ETH
@@ -84,6 +84,8 @@
 | Ethereum + L2s, BSC, Avalanche | `0x…` address or ENS name | Tokens, transactions, DeFi positions, approvals |
 | Solana | Address or SNS name | SPL tokens, transactions, staking |
 | Bitcoin | Address or xpub / ypub / zpub | Balance and transactions of every wallet address |
+| TRON | `T…` address | TRX and TRC-20 tokens (USDT and more) |
+| XRP Ledger | `r…` address or X-address | XRP (reserve shown as locked) and issued tokens such as RLUSD |
 
 Everything is **watch-only**: Chainfolio never signs transactions or asks for keys.
 
@@ -145,7 +147,7 @@ chainfolio/
 - [x] Dashboard, onboarding and demo mode
 - [x] Market mood (Fear & Greed)
 - [ ] Auto-update and settings backup
-- [ ] Wallets and balances (EVM, Solana, Bitcoin)
+- [ ] Wallets and balances (EVM, Solana, Bitcoin, TRON, XRP Ledger)
 - [ ] Transactions and portfolio history
 - [ ] PnL engine (FIFO / LIFO / average cost)
 - [ ] Tax module (Brazil)

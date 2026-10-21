@@ -160,7 +160,19 @@
     "hoursAgo": "há {{count}} h",
     "daysAgo": "há {{count}} d",
     "assetsCount": "{{count}} ativos",
-    "chainsCount": "em {{count}} redes"
+    "chainsCount": "em {{count}} redes",
+    "noAssets": "Nenhum ativo com preço ainda. Os saldos aparecem aqui após a primeira sincronização.",
+    "other": "Outros",
+    "total": "Total",
+    "updated": "Atualizado {{when}}",
+    "historySoon": "O histórico de desempenho chega com a sincronização de transações.",
+    "walletsCount_one": "{{count}} carteira",
+    "walletsCount_other": "{{count}} carteiras",
+    "manageWallets": "Gerenciar",
+    "unpriced": "Tokens ocultos",
+    "unpricedCount_one": "{{count}} sem preço",
+    "unpricedCount_other": "{{count}} sem preço",
+    "locked": "{{amount}} bloqueado como reserva"
   },
   "market": {
     "title": "Mood do mercado",
@@ -342,5 +354,60 @@
     "auto": "Verificar automaticamente",
     "autoHint": "Procura novas versões ao abrir o app e a cada poucas horas.",
     "desktopOnly": "Atualizações ficam disponíveis no app desktop."
+  },
+  "wallets": {
+    "addTitle": "Adicionar carteira",
+    "addDescription": "Cole um endereço público, um nome ENS ou SNS, ou uma chave pública estendida de Bitcoin.",
+    "addressLabel": "Endereço, nome ou xpub",
+    "nameLabel": "Nome",
+    "namePlaceholder": "Opcional, ex.: Cold storage",
+    "supported": "EVM (0x… ou .eth), Solana (base58 ou .sol), Bitcoin (endereço ou xpub/ypub/zpub), TRON (T…) e XRP Ledger (r… ou X…).",
+    "watchOnlyNote": "Somente leitura: o Chainfolio só lê saldos públicos. Nunca cole uma seed phrase ou chave privada.",
+    "families": {
+      "evm": "EVM",
+      "solana": "Solana",
+      "bitcoin": "Bitcoin",
+      "tron": "TRON",
+      "xrpl": "XRP Ledger"
+    },
+    "kinds": {
+      "address": "Endereço {{family}}",
+      "ens": "Nome ENS",
+      "sns": "Nome SNS",
+      "xpub": "Chave estendida Bitcoin"
+    },
+    "scansChains_one": "Escaneia {{chains}}",
+    "scansChains_other": "Escaneia {{count}} redes: {{chains}}",
+    "cancel": "Cancelar",
+    "save": "Salvar",
+    "resolving": "Resolvendo…",
+    "added": "{{label}} adicionada",
+    "loadingBalances": "Carregando saldos em segundo plano.",
+    "syncing": "Sincronizando…",
+    "syncFailed": "Não foi possível atualizar os saldos",
+    "syncPartial_one": "{{count}} fonte falhou ao atualizar; exibindo os últimos saldos conhecidos.",
+    "syncPartial_other": "{{count}} fontes falharam ao atualizar; exibindo os últimos saldos conhecidos.",
+    "neverSynced": "Ainda não sincronizada",
+    "copyAddress": "Copiar endereço",
+    "actions": "Ações da carteira",
+    "refresh": "Atualizar",
+    "rename": "Renomear",
+    "renameTitle": "Renomear carteira",
+    "remove": "Remover",
+    "removeTitle": "Remover {{label}}?",
+    "removeDescription": "Os saldos dela são apagados deste dispositivo. Você pode adicionar o endereço de novo quando quiser.",
+    "removed": "{{label}} removida",
+    "desktopOnly": "As carteiras ficam no app desktop. Rode o Chainfolio com `pnpm tauri dev` para adicionar uma."
+  },
+  "errors": {
+    "invalidAddress": "Não é um endereço EVM, Solana, Bitcoin, TRON ou XRP Ledger válido.",
+    "badChecksum": "Checksum inválido. Confira se há erros de digitação no endereço.",
+    "nameNotFound": "Este nome não aponta para nenhum endereço.",
+    "duplicate": "Esta carteira já está sendo acompanhada.",
+    "notFound": "Carteira não encontrada.",
+    "emptyLabel": "O nome não pode ficar vazio.",
+    "network": "Erro de rede. Verifique sua conexão e tente de novo.",
+    "storage": "Não foi possível salvar no banco de dados local.",
+    "unknown": "Algo deu errado."
   }
 }

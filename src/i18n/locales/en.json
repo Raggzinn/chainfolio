@@ -160,7 +160,19 @@
     "hoursAgo": "{{count}} h ago",
     "daysAgo": "{{count}} d ago",
     "assetsCount": "{{count}} assets",
-    "chainsCount": "across {{count}} chains"
+    "chainsCount": "across {{count}} chains",
+    "noAssets": "No priced assets yet. Balances appear here after the first sync.",
+    "other": "Other",
+    "total": "Total",
+    "updated": "Updated {{when}}",
+    "historySoon": "Performance history arrives with transaction sync.",
+    "walletsCount_one": "{{count}} wallet",
+    "walletsCount_other": "{{count}} wallets",
+    "manageWallets": "Manage",
+    "unpriced": "Hidden tokens",
+    "unpricedCount_one": "{{count}} without a price",
+    "unpricedCount_other": "{{count}} without a price",
+    "locked": "{{amount}} locked as reserve"
   },
   "market": {
     "title": "Market mood",
@@ -342,5 +354,60 @@
     "auto": "Check automatically",
     "autoHint": "Look for new releases on startup and every few hours.",
     "desktopOnly": "Updates are available in the desktop app."
+  },
+  "wallets": {
+    "addTitle": "Add a wallet",
+    "addDescription": "Paste a public address, an ENS or SNS name, or a Bitcoin extended public key.",
+    "addressLabel": "Address, name or xpub",
+    "nameLabel": "Name",
+    "namePlaceholder": "Optional, e.g. Cold storage",
+    "supported": "EVM (0x… or .eth), Solana (base58 or .sol), Bitcoin (address or xpub/ypub/zpub), TRON (T…) and XRP Ledger (r… or X…).",
+    "watchOnlyNote": "Watch-only: Chainfolio only reads public balances. Never paste a seed phrase or private key.",
+    "families": {
+      "evm": "EVM",
+      "solana": "Solana",
+      "bitcoin": "Bitcoin",
+      "tron": "TRON",
+      "xrpl": "XRP Ledger"
+    },
+    "kinds": {
+      "address": "{{family}} address",
+      "ens": "ENS name",
+      "sns": "SNS name",
+      "xpub": "Bitcoin extended key"
+    },
+    "scansChains_one": "Scans {{chains}}",
+    "scansChains_other": "Scans {{count}} chains: {{chains}}",
+    "cancel": "Cancel",
+    "save": "Save",
+    "resolving": "Resolving…",
+    "added": "{{label}} added",
+    "loadingBalances": "Loading balances in the background.",
+    "syncing": "Syncing…",
+    "syncFailed": "Couldn't refresh balances",
+    "syncPartial_one": "{{count}} source failed to refresh; showing its last known balances.",
+    "syncPartial_other": "{{count}} sources failed to refresh; showing their last known balances.",
+    "neverSynced": "Not synced yet",
+    "copyAddress": "Copy address",
+    "actions": "Wallet actions",
+    "refresh": "Refresh",
+    "rename": "Rename",
+    "renameTitle": "Rename wallet",
+    "remove": "Remove",
+    "removeTitle": "Remove {{label}}?",
+    "removeDescription": "Its balances are deleted from this device. You can add the address again at any time.",
+    "removed": "{{label}} removed",
+    "desktopOnly": "Wallets are stored by the desktop app. Run Chainfolio with `pnpm tauri dev` to add one."
+  },
+  "errors": {
+    "invalidAddress": "Not a valid EVM, Solana, Bitcoin, TRON or XRP Ledger address.",
+    "badChecksum": "Checksum mismatch. Check for typos in the address.",
+    "nameNotFound": "This name doesn't resolve to an address.",
+    "duplicate": "This wallet is already being tracked.",
+    "notFound": "Wallet not found.",
+    "emptyLabel": "The name can't be empty.",
+    "network": "Network error. Check your connection and try again.",
+    "storage": "Couldn't save to the local database.",
+    "unknown": "Something went wrong."
   }
 }
