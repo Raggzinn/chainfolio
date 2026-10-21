@@ -14,7 +14,7 @@ use crate::{
     error::{Error, Result},
 };
 
-const RPCS: &[&str] = &[
+pub(crate) const RPCS: &[&str] = &[
     "https://api.mainnet-beta.solana.com",
     "https://solana-rpc.publicnode.com",
 ];

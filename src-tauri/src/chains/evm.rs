@@ -114,6 +114,16 @@ fn config(chain: Chain) -> ChainConfig {
     }
 }
 
+/// Public JSON-RPC endpoints of an EVM chain, in fallback order.
+pub fn rpcs(chain: Chain) -> &'static [&'static str] {
+    config(chain).rpcs
+}
+
+/// Keyless Blockscout instance of an EVM chain, when one is reachable.
+pub fn blockscout(chain: Chain) -> Option<&'static str> {
+    config(chain).blockscout
+}
+
 /// ABI-encoded `balanceOf(address)` call data.
 fn balance_of(owner: &str) -> String {
     format!(
