@@ -87,6 +87,13 @@ export interface RefreshReport {
   portfolio: Portfolio;
 }
 
+export interface SecurityStatus {
+  /** A master password protects the database. */
+  encrypted: boolean;
+  /** The database is closed until `unlock` succeeds. */
+  locked: boolean;
+}
+
 export const ERROR_CODES = [
   "invalidAddress",
   "badChecksum",
@@ -94,6 +101,9 @@ export const ERROR_CODES = [
   "duplicate",
   "notFound",
   "emptyLabel",
+  "locked",
+  "wrongPassword",
+  "weakPassword",
   "network",
   "storage",
 ] as const;
@@ -138,4 +148,10 @@ export const api = {
   getPortfolio: () => call<Portfolio>("get_portfolio"),
   refreshBalances: (walletId?: number) =>
     call<RefreshReport>("refresh_balances", { walletId: walletId ?? null }),
+  securityStatus: () => call<SecurityStatus>("security_status"),
+  unlock: (password: string) => call<void>("unlock", { password }),
+  lock: () => call<void>("lock"),
+  /** `newPassword: null` removes the master password. */
+  setMasterPassword: (currentPassword: string | null, newPassword: string | null) =>
+    call<void>("set_master_password", { currentPassword, newPassword }),
 };
