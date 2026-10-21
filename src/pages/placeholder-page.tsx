@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { EmptyState } from "@/components/layout/empty-state";
 import { PageHeader } from "@/components/layout/page-header";
 
-type PageKey = "assets" | "transactions" | "analytics" | "defi" | "risk" | "taxes" | "alerts";
+type PageKey = "assets" | "transactions" | "analytics" | "defi" | "risk" | "taxes";
 
 export function PlaceholderPage({ page }: { page: PageKey }) {
   const { t } = useTranslation();

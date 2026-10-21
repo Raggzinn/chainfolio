@@ -25,7 +25,7 @@ const XRPL: &str = "rMwNibdiFaEzsTaFCG1NnmAM3Rv3vHUy5L";
 const SOLANA: &str = "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM";
 
 fn state() -> AppState {
-    AppState::new(db::open_in_memory().unwrap()).unwrap()
+    AppState::new(Some(db::open_in_memory().unwrap()), ":memory:".into()).unwrap()
 }
 
 #[tokio::test]
@@ -162,7 +162,7 @@ fn add(conn: &mut Connection, family: Family, kind: InputKind, address: &str) ->
 async fn full_refresh_prices_every_family() {
     let state = state();
     {
-        let mut db = state.db();
+        let mut db = state.db().unwrap();
         add(&mut db, Family::Evm, InputKind::Address, VITALIK);
         add(&mut db, Family::Solana, InputKind::Address, SOLANA);
         add(&mut db, Family::Bitcoin, InputKind::Xpub, ZPUB);
@@ -205,6 +205,7 @@ async fn full_refresh_prices_every_family() {
     );
     let used = state
         .db()
+        .unwrap()
         .query_row(
             "SELECT COUNT(*) FROM wallet_addresses WHERE derivation IS NOT NULL",
             [],

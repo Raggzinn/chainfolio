@@ -87,6 +87,73 @@ export interface RefreshReport {
   portfolio: Portfolio;
 }
 
+export interface SecurityStatus {
+  /** A master password protects the database. */
+  encrypted: boolean;
+  /** The database is closed until `unlock` succeeds. */
+  locked: boolean;
+}
+
+export type Direction = "up" | "down" | "either";
+
+/** What an alert watches. Ratios are fractions (0.05 = 5%), money is USD. */
+export type AlertCondition =
+  | { kind: "priceAbove"; priceKey: string; symbol: string; price: Decimal }
+  | { kind: "priceBelow"; priceKey: string; symbol: string; price: Decimal }
+  | { kind: "portfolioChange"; direction: Direction; ratio: Decimal }
+  | { kind: "balanceChange"; walletId: number | null; direction: Direction; usd: Decimal }
+  | { kind: "depeg"; ratio: Decimal };
+
+export type AlertKind = AlertCondition["kind"];
+
+export interface AlertRule {
+  id: number;
+  condition: AlertCondition;
+  enabled: boolean;
+  /** False while a level condition that already fired still holds. */
+  armed: boolean;
+  createdAt: number;
+  lastTriggeredAt: number | null;
+}
+
+export interface AlertEvent {
+  id: number;
+  ruleId: number | null;
+  condition: AlertCondition;
+  /** Price, 24h change ratio, or USD moved (negative = out). */
+  value: Decimal;
+  /** Depegged symbol, or the wallet id of a balance change. */
+  subject: string | null;
+  triggeredAt: number;
+}
+
+export interface WatchableAsset {
+  priceKey: string;
+  symbol: string;
+  name: string;
+  priceUsd: Decimal | null;
+  held: boolean;
+}
+
+export type ApiProvider = "etherscan" | "helius" | "coingecko" | "trongrid";
+
+export interface ApiKeyStatus {
+  provider: ApiProvider;
+  configured: boolean;
+  /** Last four characters of the stored key. */
+  hint: string | null;
+}
+
+/** Backend settings (`settings.json`) plus the OS launch-at-login flag. */
+export interface AppSettings {
+  closeToTray: boolean;
+  /** 0 turns background refresh off. */
+  syncIntervalMinutes: number;
+  notifications: boolean;
+  locale: string;
+  launchAtLogin: boolean;
+}
+
 export const ERROR_CODES = [
   "invalidAddress",
   "badChecksum",
@@ -94,6 +161,12 @@ export const ERROR_CODES = [
   "duplicate",
   "notFound",
   "emptyLabel",
+  "locked",
+  "wrongPassword",
+  "weakPassword",
+  "invalidAlert",
+  "invalidApiKey",
+  "keychain",
   "network",
   "storage",
 ] as const;
@@ -138,4 +211,30 @@ export const api = {
   getPortfolio: () => call<Portfolio>("get_portfolio"),
   refreshBalances: (walletId?: number) =>
     call<RefreshReport>("refresh_balances", { walletId: walletId ?? null }),
+  securityStatus: () => call<SecurityStatus>("security_status"),
+  unlock: (password: string) => call<void>("unlock", { password }),
+  lock: () => call<void>("lock"),
+  listAlertRules: () => call<AlertRule[]>("list_alert_rules"),
+  createAlertRule: (condition: AlertCondition) => call<number>("create_alert_rule", { condition }),
+  updateAlertRule: (id: number, condition: AlertCondition) =>
+    call<void>("update_alert_rule", { id, condition }),
+  setAlertRuleEnabled: (id: number, enabled: boolean) =>
+    call<void>("set_alert_rule_enabled", { id, enabled }),
+  deleteAlertRule: (id: number) => call<void>("delete_alert_rule", { id }),
+  listAlertEvents: (limit?: number) =>
+    call<AlertEvent[]>("list_alert_events", { limit: limit ?? null }),
+  clearAlertEvents: () => call<void>("clear_alert_events"),
+  alertAssets: () => call<WatchableAsset[]>("alert_assets"),
+  listApiKeys: () => call<ApiKeyStatus[]>("list_api_keys"),
+  setApiKey: (provider: ApiProvider, key: string) => call<void>("set_api_key", { provider, key }),
+  removeApiKey: (provider: ApiProvider) => call<void>("remove_api_key", { provider }),
+  /** Tests `key`, or the stored key when omitted. */
+  testApiKey: (provider: ApiProvider, key?: string) =>
+    call<void>("test_api_key", { provider, key: key ?? null }),
+  getAppSettings: () => call<AppSettings>("get_app_settings"),
+  updateAppSettings: (update: AppSettings) => call<AppSettings>("update_app_settings", { update }),
+  setTrayPrivacy: (hidden: boolean) => call<void>("set_tray_privacy", { hidden }),
+  /** `newPassword: null` removes the master password. */
+  setMasterPassword: (currentPassword: string | null, newPassword: string | null) =>
+    call<void>("set_master_password", { currentPassword, newPassword }),
 };

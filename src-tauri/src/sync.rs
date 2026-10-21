@@ -35,7 +35,7 @@ pub struct RefreshReport {
 pub async fn refresh(state: &AppState, wallet_id: Option<i64>) -> Result<RefreshReport> {
     let _running = state.sync.lock().await;
     let wallets = {
-        let db = state.db();
+        let db = state.db()?;
         match wallet_id {
             Some(id) => vec![repo::get_wallet(&db, id)?],
             None => repo::list_wallets(&db)?,
@@ -64,7 +64,7 @@ pub async fn refresh(state: &AppState, wallet_id: Option<i64>) -> Result<Refresh
         }
     }
 
-    let mut keys = repo::held_price_keys(&state.db())?;
+    let mut keys = repo::held_price_keys(&*state.db()?)?;
     keys.extend(
         write
             .balances
@@ -83,7 +83,7 @@ pub async fn refresh(state: &AppState, wallet_id: Option<i64>) -> Result<Refresh
         }),
     }
 
-    let mut db = state.db();
+    let mut db = state.db()?;
     repo::save_sync(&mut db, &write)?;
     Ok(RefreshReport {
         issues,

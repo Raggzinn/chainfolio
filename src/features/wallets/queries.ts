@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { type ApiError, api, type RefreshReport } from "@/lib/api";
 import { IS_TAURI } from "@/lib/platform";
 
-const PORTFOLIO_KEY = ["portfolio"] as const;
+export const PORTFOLIO_KEY = ["portfolio"] as const;
 /** Balances older than this are refreshed automatically on launch. */
 const STALE_MS = 10 * 60_000;
 

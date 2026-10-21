@@ -18,6 +18,8 @@ interface PreferencesState {
   welcomeCompleted: boolean;
   /** Look for a new release on startup and every few hours. */
   autoCheckUpdates: boolean;
+  /** Lock an encrypted database after this many idle minutes; 0 = never. */
+  autoLockMinutes: number;
   setTheme: (theme: Theme) => void;
   setCurrency: (currency: Currency) => void;
   togglePrivacyMode: () => void;
@@ -26,6 +28,7 @@ interface PreferencesState {
   toggleSidebar: () => void;
   setWelcomeCompleted: (completed: boolean) => void;
   setAutoCheckUpdates: (enabled: boolean) => void;
+  setAutoLockMinutes: (minutes: number) => void;
 }
 
 /**
@@ -43,6 +46,7 @@ export const usePreferences = create<PreferencesState>()(
       sidebarCollapsed: false,
       welcomeCompleted: false,
       autoCheckUpdates: true,
+      autoLockMinutes: 15,
       setTheme: (theme) => set({ theme }),
       setCurrency: (currency) => set({ currency }),
       togglePrivacyMode: () => set((s) => ({ privacyMode: !s.privacyMode })),
@@ -51,6 +55,7 @@ export const usePreferences = create<PreferencesState>()(
       toggleSidebar: () => set((s) => ({ sidebarCollapsed: !s.sidebarCollapsed })),
       setWelcomeCompleted: (welcomeCompleted) => set({ welcomeCompleted }),
       setAutoCheckUpdates: (autoCheckUpdates) => set({ autoCheckUpdates }),
+      setAutoLockMinutes: (autoLockMinutes) => set({ autoLockMinutes }),
     }),
     {
       name: "chainfolio.preferences",
