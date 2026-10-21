@@ -323,5 +323,24 @@
         "body": "Idioma, tema, moeda base, módulos opcionais e este tour sempre que você precisar."
       }
     }
+  },
+  "updates": {
+    "title": "Atualizações",
+    "version": "Chainfolio v{{version}}",
+    "checkNow": "Verificar agora",
+    "checking": "Procurando atualizações…",
+    "upToDate": "Você está na versão mais recente",
+    "available": "Chainfolio {{version}} está disponível",
+    "availableHint": "Uma nova versão está pronta para instalar.",
+    "install": "Atualizar e reiniciar",
+    "later": "Depois",
+    "downloading": "Baixando atualização…",
+    "restarting": "Instalando e reiniciando…",
+    "failed": "Não foi possível verificar atualizações: {{error}}",
+    "never": "Ainda não verificado",
+    "lastChecked": "Última verificação às {{time}}",
+    "auto": "Verificar automaticamente",
+    "autoHint": "Procura novas versões ao abrir o app e a cada poucas horas.",
+    "desktopOnly": "Atualizações ficam disponíveis no app desktop."
   }
 }

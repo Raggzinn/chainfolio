@@ -323,5 +323,24 @@
         "body": "Language, theme, base currency, optional modules, and this tour whenever you need it again."
       }
     }
+  },
+  "updates": {
+    "title": "Updates",
+    "version": "Chainfolio v{{version}}",
+    "checkNow": "Check now",
+    "checking": "Checking for updates…",
+    "upToDate": "You're on the latest version",
+    "available": "Chainfolio {{version}} is available",
+    "availableHint": "A new version is ready to install.",
+    "install": "Update and restart",
+    "later": "Later",
+    "downloading": "Downloading update…",
+    "restarting": "Installing and restarting…",
+    "failed": "Couldn't check for updates: {{error}}",
+    "never": "Not checked yet",
+    "lastChecked": "Last checked at {{time}}",
+    "auto": "Check automatically",
+    "autoHint": "Look for new releases on startup and every few hours.",
+    "desktopOnly": "Updates are available in the desktop app."
   }
 }
