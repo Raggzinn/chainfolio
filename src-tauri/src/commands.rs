@@ -6,8 +6,13 @@ use tauri::State;
 use crate::{
     address::{self, Detection, InputKind},
     chains::{evm, solana},
+    db::history::{self as store, TxPage, TxQuery},
     db::repo::{self, NewWallet, Portfolio, WalletSummary},
     error::{Error, Result},
+    history::{
+        self,
+        sync::{HistoryPoint, HistoryReport},
+    },
     state::AppState,
     sync::{self, RefreshReport},
 };
@@ -97,6 +102,85 @@ pub async fn refresh_balances(
     wallet_id: Option<i64>,
 ) -> Result<RefreshReport> {
     sync::refresh(&state, wallet_id).await
+}
+
+/// Pulls new transactions (and a bit more of the older backlog) for one
+/// wallet, or all when `wallet_id` is omitted.
+#[tauri::command]
+pub async fn sync_history(
+    state: State<'_, AppState>,
+    wallet_id: Option<i64>,
+) -> Result<HistoryReport> {
+    history::sync::sync(&state, wallet_id).await
+}
+
+#[tauri::command]
+pub fn list_transactions(state: State<'_, AppState>, query: TxQuery) -> Result<TxPage> {
+    store::list_transactions(&state.db(), &query)
+}
+
+/// Overrides the category of a wallet's view of a transaction and/or sets a
+/// note. `None` clears either.
+#[tauri::command]
+pub fn update_transaction(
+    state: State<'_, AppState>,
+    tx_id: String,
+    wallet_id: i64,
+    kind: Option<String>,
+    note: Option<String>,
+) -> Result<()> {
+    store::update_entry(
+        &state.db(),
+        &tx_id,
+        wallet_id,
+        kind.as_deref(),
+        note.as_deref(),
+    )
+}
+
+/// CSV of every transaction matching `query`.
+#[tauri::command]
+pub fn export_transactions_csv(state: State<'_, AppState>, query: TxQuery) -> Result<String> {
+    store::transactions_csv(&state.db(), &query)
+}
+
+/// Portfolio value over time, optionally for some assets only.
+#[tauri::command]
+pub async fn portfolio_history(
+    state: State<'_, AppState>,
+    from: i64,
+    to: i64,
+    asset_ids: Option<Vec<String>>,
+) -> Result<Vec<HistoryPoint>> {
+    history::sync::portfolio_history(&state, from, to, asset_ids).await
+}
+
+#[derive(serde::Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ApiKeyStatus {
+    pub etherscan: bool,
+}
+
+/// Which optional provider keys are set. Values never leave the backend.
+#[tauri::command]
+pub fn get_api_keys(state: State<'_, AppState>) -> Result<ApiKeyStatus> {
+    Ok(ApiKeyStatus {
+        etherscan: store::get_setting(&state.db(), history::sync::ETHERSCAN_KEY)?.is_some(),
+    })
+}
+
+/// Stores (or clears, with an empty value) an optional provider key.
+#[tauri::command]
+pub fn set_api_key(
+    state: State<'_, AppState>,
+    provider: String,
+    key: Option<String>,
+) -> Result<()> {
+    let setting = match provider.as_str() {
+        "etherscan" => history::sync::ETHERSCAN_KEY,
+        _ => return Err(Error::provider(format!("unknown provider {provider}"))),
+    };
+    store::set_setting(&state.db(), setting, key.as_deref())
 }
 
 #[cfg(test)]

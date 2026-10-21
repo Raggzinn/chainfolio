@@ -114,6 +114,16 @@ fn config(chain: Chain) -> ChainConfig {
     }
 }
 
+/// The chain's native coin (ETH, POL, BNB, AVAX).
+pub fn native_asset(chain: Chain) -> AssetMeta {
+    let Native {
+        symbol,
+        name,
+        gecko_id,
+    } = config(chain).native;
+    AssetMeta::native(chain, symbol, name, 18, gecko_id)
+}
+
 /// ABI-encoded `balanceOf(address)` call data.
 fn balance_of(owner: &str) -> String {
     format!(

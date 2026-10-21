@@ -21,6 +21,8 @@ export const CHAINS: Record<ChainId, ChainInfo> = {
   xrp: { id: "xrp", name: "XRP Ledger", color: "#7B8794" },
 };
 
+export const CHAIN_IDS = Object.keys(CHAINS) as ChainId[];
+
 export const FAMILY_NAMES: Record<Family, string> = {
   evm: "EVM",
   solana: "Solana",

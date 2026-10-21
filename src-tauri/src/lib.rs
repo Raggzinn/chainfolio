@@ -2,7 +2,9 @@ mod address;
 mod chains;
 mod commands;
 mod db;
+mod engine;
 mod error;
+mod history;
 #[cfg(test)]
 mod live_tests;
 mod prices;
@@ -22,6 +24,7 @@ pub fn run() {
         .plugin(tauri_plugin_process::init());
 
     builder
+        .plugin(tauri_plugin_opener::init())
         .setup(|app| {
             let dir = app.path().app_data_dir()?;
             std::fs::create_dir_all(&dir)?;
@@ -37,6 +40,13 @@ pub fn run() {
             commands::remove_wallet,
             commands::get_portfolio,
             commands::refresh_balances,
+            commands::sync_history,
+            commands::list_transactions,
+            commands::update_transaction,
+            commands::export_transactions_csv,
+            commands::portfolio_history,
+            commands::get_api_keys,
+            commands::set_api_key,
         ])
         .run(tauri::generate_context!())
         .expect("error while running Chainfolio");

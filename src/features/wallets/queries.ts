@@ -2,6 +2,7 @@ import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/
 import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { useSyncHistory } from "@/features/transactions/queries";
 import { type ApiError, api, type RefreshReport } from "@/lib/api";
 import { IS_TAURI } from "@/lib/platform";
 
@@ -39,11 +40,14 @@ export function useDetectAddress(input: string) {
 export function useRefreshBalances() {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
+  const syncHistory = useSyncHistory();
   return useMutation<RefreshReport, ApiError, number | undefined>({
     mutationKey: ["refresh"],
     mutationFn: (walletId) => api.refreshBalances(walletId),
-    onSuccess: (report) => {
+    onSuccess: (report, walletId) => {
       queryClient.setQueryData(PORTFOLIO_KEY, report.portfolio);
+      // Transactions follow fresh balances, in the background.
+      syncHistory.mutate(walletId);
       if (report.issues.length > 0) {
         toast.warning(t("wallets.syncPartial", { count: report.issues.length }), {
           description: report.issues.map((i) => i.chain ?? i.message).join(", "),

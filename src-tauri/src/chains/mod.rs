@@ -4,7 +4,7 @@
 pub mod bitcoin;
 pub mod evm;
 mod evm_tokens;
-mod rpc;
+pub(crate) mod rpc;
 pub mod solana;
 pub mod tron;
 pub mod xrpl;

@@ -17,7 +17,7 @@ use super::{AssetMeta, Chain, ChainAdapter, Holding};
 use crate::error::{Error, Result};
 
 /// Esplora-compatible APIs, tried in turn.
-const APIS: [&str; 2] = ["https://mempool.space/api", "https://blockstream.info/api"];
+pub const APIS: [&str; 2] = ["https://mempool.space/api", "https://blockstream.info/api"];
 
 /// Consecutive unused addresses after which a derivation chain is considered
 /// exhausted (BIP44).
@@ -191,9 +191,13 @@ impl BitcoinAdapter {
     }
 }
 
+pub fn btc_asset() -> AssetMeta {
+    AssetMeta::native(Chain::Bitcoin, "BTC", "Bitcoin", 8, "bitcoin")
+}
+
 pub fn btc_holding(sats: i128) -> Option<Holding> {
     (sats > 0).then(|| Holding {
-        asset: AssetMeta::native(Chain::Bitcoin, "BTC", "Bitcoin", 8, "bitcoin"),
+        asset: btc_asset(),
         amount: Decimal::from_i128_with_scale(sats, 8).normalize(),
         locked: None,
     })

@@ -213,3 +213,102 @@ async fn full_refresh_prices_every_family() {
         .unwrap();
     println!("xpub used addresses: {used}");
 }
+
+// -------------------------------------------------------------------- history
+
+use crate::history::{self as hist, ApiKeys, HistoryAdapter};
+
+async fn first_page(adapter: &dyn HistoryAdapter, owner: &str) -> hist::Page {
+    let page = adapter.page(&[owner.to_string()], None).await.unwrap();
+    println!(
+        "{}: {} txs, next={:?}, first={:?}",
+        adapter.chain(),
+        page.txs.len(),
+        page.next.as_deref().map(|n| &n[..n.len().min(40)]),
+        page.txs
+            .first()
+            .map(|t| (&t.hash, t.timestamp, t.deltas.len(), t.fee.is_some()))
+    );
+    page
+}
+
+#[tokio::test]
+#[ignore = "network"]
+async fn history_pages_from_every_source() {
+    let state = state();
+    let keys = ApiKeys::default();
+    let http = &state.http;
+    for chain in [Chain::Ethereum, Chain::Optimism, Chain::Avalanche] {
+        let source = hist::evm::source(chain, &keys).unwrap();
+        let page = first_page(
+            &hist::evm::EvmHistory::new(chain, source, http.clone()),
+            VITALIK,
+        )
+        .await;
+        assert!(!page.txs.is_empty(), "{chain} returned no history");
+        assert!(page.txs.iter().all(|t| t.timestamp > 1_400_000_000_000));
+    }
+    let page = first_page(&hist::solana::SolanaHistory::new(http.clone()), SOLANA).await;
+    assert!(!page.txs.is_empty());
+    let page = first_page(&hist::tron::TronHistory::new(http.clone()), TRON).await;
+    assert!(!page.txs.is_empty());
+    let page = first_page(&hist::xrpl::XrplHistory::new(http.clone()), XRPL).await;
+    assert!(!page.txs.is_empty());
+    let page = first_page(
+        &hist::bitcoin::BitcoinHistory::new(http.clone()),
+        "bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq",
+    )
+    .await;
+    assert!(!page.txs.is_empty());
+}
+
+#[tokio::test]
+#[ignore = "network"]
+async fn full_history_sync_and_chart() {
+    let state = state();
+    {
+        let mut db = state.db();
+        repo::insert_wallet(
+            &mut db,
+            &NewWallet {
+                label: "Vitalik",
+                family: Family::Evm,
+                kind: repo::WalletKind::Address,
+                address: VITALIK,
+                input: VITALIK,
+            },
+        )
+        .unwrap();
+    }
+    sync::refresh(&state, None).await.unwrap();
+    let report = hist::sync::sync(&state, None).await.unwrap();
+    println!(
+        "new={} issues={:?} missing={} backfilling={}",
+        report.new_transactions,
+        report.issues,
+        report.missing.len(),
+        report.backfilling
+    );
+    assert!(report.new_transactions > 0);
+    let page =
+        db::history::list_transactions(&state.db(), &db::history::TxQuery::default()).unwrap();
+    let kinds: std::collections::BTreeMap<_, usize> =
+        page.items.iter().fold(Default::default(), |mut m, i| {
+            *m.entry(i.kind.as_str()).or_default() += 1;
+            m
+        });
+    println!("total={} kinds={kinds:?}", page.total);
+    let now = db::now_ms();
+    let chart = hist::sync::portfolio_history(&state, now - 30 * 86_400_000, now, None)
+        .await
+        .unwrap();
+    println!(
+        "chart points={} first={:?} last={:?}",
+        chart.len(),
+        chart.first(),
+        chart.last()
+    );
+    assert!(chart.len() > 20);
+    // Unused import guard for the shared helper above.
+    let _ = Connection::open_in_memory();
+}

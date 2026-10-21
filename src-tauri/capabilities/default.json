@@ -12,6 +12,14 @@
     "core:window:allow-toggle-maximize",
     "core:window:allow-close",
     "updater:default",
-    "process:allow-restart"
+    "process:allow-restart",
+    {
+      "identifier": "opener:allow-open-url",
+      "allow": [
+        {
+          "url": "https://*"
+        }
+      ]
+    }
   ]
 }

@@ -11,6 +11,7 @@ import { demoAssetRows, liveAssetRows } from "@/features/portfolio/model";
 import { Onboarding } from "@/features/portfolio/onboarding";
 import { RiskCard } from "@/features/portfolio/risk-card";
 import { TopAssetsCard } from "@/features/portfolio/top-assets-card";
+import { RecentActivityCard } from "@/features/transactions/recent-activity-card";
 import { usePortfolio } from "@/features/wallets/queries";
 import type { Portfolio } from "@/lib/api";
 import { usePreferences } from "@/stores/preferences";
@@ -40,6 +41,7 @@ function LiveDashboard({ portfolio }: { portfolio: Portfolio }) {
         <TopAssetsCard rows={rows} />
         <AllocationCard rows={rows} />
       </div>
+      <RecentActivityCard />
     </>
   );
 }

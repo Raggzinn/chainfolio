@@ -12,6 +12,8 @@ pub struct AppState {
     pub http: reqwest::Client,
     /// Serializes refreshes so two syncs never race on the same rows.
     pub sync: tokio::sync::Mutex<()>,
+    /// Same for transaction history, which runs on its own (slower) schedule.
+    pub history: tokio::sync::Mutex<()>,
 }
 
 impl AppState {
@@ -29,6 +31,7 @@ impl AppState {
             db: Mutex::new(conn),
             http,
             sync: tokio::sync::Mutex::new(()),
+            history: tokio::sync::Mutex::new(()),
         })
     }
 

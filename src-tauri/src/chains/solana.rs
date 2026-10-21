@@ -163,11 +163,7 @@ fn parse_token_accounts(accounts: Vec<TokenAccount>) -> Vec<Holding> {
         .into_iter()
         .filter(|(_, (_, amount))| !amount.is_zero())
         .map(|(mint, (decimals, amount))| {
-            let known = KNOWN_MINTS.iter().find(|(m, _, _)| *m == mint);
-            let asset = AssetMeta::token(Chain::Solana, mint, decimals).with_names(
-                known.map(|(_, symbol, _)| symbol.to_string()),
-                known.map(|(_, _, name)| name.to_string()),
-            );
+            let asset = mint_asset(mint, decimals);
             Holding {
                 asset,
                 amount,
@@ -176,6 +172,21 @@ fn parse_token_accounts(accounts: Vec<TokenAccount>) -> Vec<Holding> {
         })
         .collect()
 }
+
+/// SPL token asset, named when the mint is a well-known one.
+pub fn mint_asset(mint: String, decimals: u32) -> AssetMeta {
+    let known = KNOWN_MINTS.iter().find(|(m, _, _)| *m == mint);
+    AssetMeta::token(Chain::Solana, mint, decimals).with_names(
+        known.map(|(_, symbol, _)| symbol.to_string()),
+        known.map(|(_, _, name)| name.to_string()),
+    )
+}
+
+pub fn sol_asset() -> AssetMeta {
+    AssetMeta::native(Chain::Solana, "SOL", "Solana", 9, "solana")
+}
+
+pub const SOLANA_RPCS: &[&str] = RPCS;
 
 #[derive(Deserialize)]
 struct SnsResponse {

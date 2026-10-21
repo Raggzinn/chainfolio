@@ -87,6 +87,95 @@ export interface RefreshReport {
   portfolio: Portfolio;
 }
 
+export const TX_KINDS = [
+  "receive",
+  "send",
+  "swap",
+  "internal",
+  "contract",
+  "failed",
+  "income",
+  "reward",
+  "airdrop",
+  "gift",
+  "spam",
+] as const;
+export type TxKind = (typeof TX_KINDS)[number];
+
+export interface TxQuery {
+  walletId?: number | null;
+  chain?: ChainId | null;
+  assetId?: string | null;
+  kind?: TxKind | null;
+  /** Unix ms, inclusive. */
+  from?: number | null;
+  to?: number | null;
+  search?: string | null;
+  includeSpam?: boolean;
+  limit?: number;
+  offset?: number;
+}
+
+export interface TxAsset {
+  id: string;
+  chain: ChainId;
+  symbol: string;
+  name: string;
+  logoUrl: string | null;
+}
+
+export interface TxLeg {
+  asset: TxAsset;
+  /** Positive received, negative sent; fees excluded. */
+  amount: Decimal;
+  /** Value at the transaction date, when a daily price is known. */
+  valueUsd: Decimal | null;
+  counterparty: string | null;
+}
+
+export interface TxFee {
+  asset: TxAsset;
+  amount: Decimal;
+  valueUsd: Decimal | null;
+}
+
+export interface TxItem {
+  id: string;
+  chain: ChainId;
+  hash: string;
+  timestamp: number;
+  walletId: number;
+  walletLabel: string;
+  family: Family;
+  kind: TxKind;
+  autoKind: TxKind;
+  note: string | null;
+  failed: boolean;
+  legs: TxLeg[];
+  fee: TxFee | null;
+}
+
+export interface TxPage {
+  items: TxItem[];
+  total: number;
+}
+
+export interface HistoryReport {
+  newTransactions: number;
+  issues: { walletId: number; chain: ChainId; message: string }[];
+  missing: { walletId: number; chain: ChainId; reason: "etherscanKey" }[];
+  backfilling: boolean;
+}
+
+export interface HistoryPoint {
+  t: number;
+  valueUsd: Decimal;
+}
+
+export interface ApiKeyStatus {
+  etherscan: boolean;
+}
+
 export const ERROR_CODES = [
   "invalidAddress",
   "badChecksum",
@@ -138,4 +227,15 @@ export const api = {
   getPortfolio: () => call<Portfolio>("get_portfolio"),
   refreshBalances: (walletId?: number) =>
     call<RefreshReport>("refresh_balances", { walletId: walletId ?? null }),
+  syncHistory: (walletId?: number) =>
+    call<HistoryReport>("sync_history", { walletId: walletId ?? null }),
+  listTransactions: (query: TxQuery) => call<TxPage>("list_transactions", { query }),
+  updateTransaction: (txId: string, walletId: number, kind: TxKind | null, note: string | null) =>
+    call<void>("update_transaction", { txId, walletId, kind, note }),
+  exportTransactionsCsv: (query: TxQuery) => call<string>("export_transactions_csv", { query }),
+  portfolioHistory: (from: number, to: number, assetIds?: string[] | null) =>
+    call<HistoryPoint[]>("portfolio_history", { from, to, assetIds: assetIds ?? null }),
+  getApiKeys: () => call<ApiKeyStatus>("get_api_keys"),
+  setApiKey: (provider: "etherscan", key: string | null) =>
+    call<void>("set_api_key", { provider, key }),
 };
