@@ -1,5 +1,6 @@
 //! SQLite storage. Everything lives in one file in the app data directory.
 
+pub mod history;
 pub mod repo;
 
 use std::path::Path;

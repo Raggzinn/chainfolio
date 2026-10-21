@@ -238,7 +238,7 @@ pub fn save_sync(conn: &mut Connection, write: &SyncWrite) -> Result<()> {
 
 /// Inserts or refreshes an asset. A provider symbol wins over the price
 /// provider's; when neither exists the contract is shortened into one.
-fn upsert_asset(
+pub(crate) fn upsert_asset(
     tx: &rusqlite::Transaction<'_>,
     asset: &AssetMeta,
     quote: Option<&Quote>,
@@ -363,7 +363,7 @@ struct BalanceRow {
     change: Option<Decimal>,
 }
 
-fn decimal_column(value: Option<String>) -> Option<Decimal> {
+pub(crate) fn decimal_column(value: Option<String>) -> Option<Decimal> {
     value.and_then(|v| Decimal::from_str(&v).ok())
 }
 
