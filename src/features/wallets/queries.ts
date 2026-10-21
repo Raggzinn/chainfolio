@@ -6,6 +6,12 @@ import { type ApiError, api, type RefreshReport } from "@/lib/api";
 import { IS_TAURI } from "@/lib/platform";
 
 const PORTFOLIO_KEY = ["portfolio"] as const;
+/** Queries derived from balances: DeFi positions and the risk report. */
+const DERIVED_KEYS = [["positions"], ["risk"]] as const;
+
+function invalidateDerived(queryClient: ReturnType<typeof useQueryClient>) {
+  for (const queryKey of DERIVED_KEYS) queryClient.invalidateQueries({ queryKey });
+}
 /** Balances older than this are refreshed automatically on launch. */
 const STALE_MS = 10 * 60_000;
 
@@ -44,6 +50,7 @@ export function useRefreshBalances() {
     mutationFn: (walletId) => api.refreshBalances(walletId),
     onSuccess: (report) => {
       queryClient.setQueryData(PORTFOLIO_KEY, report.portfolio);
+      invalidateDerived(queryClient);
       if (report.issues.length > 0) {
         toast.warning(t("wallets.syncPartial", { count: report.issues.length }), {
           description: report.issues.map((i) => i.chain ?? i.message).join(", "),
@@ -81,7 +88,10 @@ export function useRemoveWallet() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: number) => api.removeWallet(id),
-    onSettled: () => queryClient.invalidateQueries({ queryKey: PORTFOLIO_KEY }),
+    onSettled: () => {
+      invalidateDerived(queryClient);
+      return queryClient.invalidateQueries({ queryKey: PORTFOLIO_KEY });
+    },
   });
 }
 

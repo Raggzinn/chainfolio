@@ -399,6 +399,128 @@
     "removed": "{{label}} removed",
     "desktopOnly": "Wallets are stored by the desktop app. Run Chainfolio with `pnpm tauri dev` to add one."
   },
+  "defi": {
+    "empty": "No DeFi or staking positions found",
+    "emptyHint": "Chainfolio reads Aave v3, Compound v3, Uniswap v3, liquid staking (stETH, wstETH, rETH, cbETH, mSOL, JitoSOL, sAVAX) and native Solana staking. Positions refresh with every sync.",
+    "noWalletsHint": "Add a wallet to see its lending, liquidity and staking positions.",
+    "filter": "Position type",
+    "kinds": {
+      "all": "All",
+      "lending": "Lending",
+      "liquidity": "Liquidity",
+      "staking": "Staking"
+    },
+    "roles": {
+      "supplied": "Supplied",
+      "borrowed": "Borrowed",
+      "pooled": "Pooled",
+      "fees": "Fees",
+      "staked": "Staked"
+    },
+    "summary": {
+      "total": "Value in DeFi",
+      "apy": "Average APY",
+      "yearly": "Estimated yearly yield",
+      "health": "Lowest health factor"
+    },
+    "positionsCount_one": "{{count}} position",
+    "positionsCount_other": "{{count}} positions",
+    "noneOfKind": "No positions of this type.",
+    "apy": "APY",
+    "health": "Health",
+    "il": "IL vs hold",
+    "na": "n/a",
+    "ilHint": "Impermanent loss compares the position with simply holding the deposited tokens. It needs the original deposit, which arrives with transaction history.",
+    "inHoldings": "In holdings",
+    "inHoldingsHint": "This token is already part of your holdings, so it isn't added to the total again.",
+    "inRange": "In range",
+    "outOfRange": "Out of range",
+    "current": "now"
+  },
+  "risk": {
+    "scan": "Scan now",
+    "scanning": "Scanning approvals and tokens…",
+    "scannedAt": "Scanned {{when}}",
+    "scanFailed": "Couldn't finish the risk scan",
+    "scanPartial_one": "{{count}} check couldn't finish; showing the last known results.",
+    "scanPartial_other": "{{count}} checks couldn't finish; showing the last known results.",
+    "empty": "No risk report yet",
+    "noWalletsHint": "Add a wallet to score its concentration, depeg exposure, suspicious tokens and approvals.",
+    "nothingYet": "Nothing to measure yet.",
+    "scoreHint": "0 is safest, 100 riskiest.",
+    "higherIsRiskier": "higher means riskier",
+    "breakdown": "What drives the score",
+    "breakdownHint": "Each factor scores 0–100; the total is their weighted average.",
+    "weight": "{{weight}}% weight",
+    "factors": {
+      "concentration": {
+        "title": "Concentration",
+        "hint": "How much of the portfolio sits in a single asset (Herfindahl–Hirschman index and top share).",
+        "detail": "{{symbol}} is {{share}} of your holdings · HHI {{hhi}}"
+      },
+      "depeg": {
+        "title": "Stablecoin depeg",
+        "hint": "Stablecoins trading more than 1% away from $1, weighted by how far off and how much you hold.",
+        "detail": "{{count}} stablecoin holdings, all on peg",
+        "detailBad": "Off peg: {{symbols}}"
+      },
+      "suspicious": {
+        "title": "Suspicious tokens",
+        "hint": "Honeypots, airdrop scams and high-tax tokens found by GoPlus. Spam is hidden from your portfolio.",
+        "detail": "{{flagged}} risky · {{spam}} hidden as spam"
+      },
+      "approvals": {
+        "title": "Open approvals",
+        "hint": "Contracts allowed to move your tokens. Unlimited allowances weigh the most.",
+        "detail": "{{count}} open · {{unlimited}} unlimited"
+      },
+      "exposure": {
+        "title": "Chain & protocol exposure",
+        "hint": "Share held in DeFi contracts, in a single protocol or on a single chain, and how close loans are to liquidation.",
+        "detail": "{{share}} of the portfolio in DeFi",
+        "detailHealth": "{{share}} in DeFi · lowest health factor {{hf}}"
+      }
+    },
+    "approvals": {
+      "title": "Token approvals",
+      "hint": "ERC-20 allowances granted by your wallets on {{chains}}, for tokens with a market price.",
+      "token": "Token",
+      "spender": "Spender",
+      "allowance": "Allowance",
+      "unlimited": "Unlimited",
+      "unknownSpender": "Unknown contract",
+      "revoke": "Revoke",
+      "none": "No open approvals found.",
+      "notScanned": "Run a scan to list your open approvals.",
+      "neverSigns": "Revoking happens on revoke.cash with your own wallet. Chainfolio never signs transactions."
+    },
+    "flagged": {
+      "title": "Flagged tokens",
+      "hint": "Token contract checks by GoPlus Security.",
+      "none": "No suspicious tokens found.",
+      "hidden": "Hidden"
+    },
+    "reasons": {
+      "honeypot": "Honeypot",
+      "cannotSellAll": "Can't sell all",
+      "airdropScam": "Airdrop scam",
+      "highTax": "High tax",
+      "blacklist": "Owner can blacklist"
+    },
+    "stables": {
+      "title": "Stablecoins",
+      "hint": "Depegged when more than 1% away from $1.",
+      "none": "No stablecoins held.",
+      "pegged": "On peg"
+    },
+    "exposure": {
+      "title": "Exposure",
+      "hint": "Where your value lives.",
+      "chains": "By chain",
+      "protocols": "By protocol",
+      "noProtocols": "No DeFi positions."
+    }
+  },
   "errors": {
     "invalidAddress": "Not a valid EVM, Solana, Bitcoin, TRON or XRP Ledger address.",
     "badChecksum": "Checksum mismatch. Check for typos in the address.",

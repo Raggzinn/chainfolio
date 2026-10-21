@@ -7,7 +7,9 @@ use crate::{
     address::{self, Detection, InputKind},
     chains::{evm, solana},
     db::repo::{self, NewWallet, Portfolio, WalletSummary},
+    defi::{self, Position},
     error::{Error, Result},
+    risk::{self, RiskReport, RiskScan},
     state::AppState,
     sync::{self, RefreshReport},
 };
@@ -97,6 +99,25 @@ pub async fn refresh_balances(
     wallet_id: Option<i64>,
 ) -> Result<RefreshReport> {
     sync::refresh(&state, wallet_id).await
+}
+
+/// DeFi and staking positions from the local cache, largest first. They are
+/// refreshed together with the balances.
+#[tauri::command]
+pub fn get_positions(state: State<'_, AppState>) -> Result<Vec<Position>> {
+    defi::store::list(&state.db())
+}
+
+/// Risk report from local data; instant and offline.
+#[tauri::command]
+pub fn get_risk_report(state: State<'_, AppState>) -> Result<RiskReport> {
+    risk::report(&state.db())
+}
+
+/// Re-checks token security and open approvals over the network.
+#[tauri::command]
+pub async fn scan_risk(state: State<'_, AppState>) -> Result<RiskScan> {
+    risk::scan(&state).await
 }
 
 #[cfg(test)]

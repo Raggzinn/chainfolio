@@ -73,7 +73,119 @@ export interface Portfolio {
   chains: ChainTotal[];
   wallets: WalletSummary[];
   unpricedCount: number;
+  /** Net value of DeFi and staking positions not already in `assets`; part of `totalUsd`. */
+  defiUsd: Decimal;
+  /** Tokens flagged as spam by the risk scan and hidden. */
+  spamCount: number;
   syncedAt: number | null;
+}
+
+export type PositionKind = "lending" | "liquidity" | "staking";
+export type TokenRole = "supplied" | "borrowed" | "pooled" | "fees" | "staked";
+
+export interface PositionToken {
+  symbol: string;
+  contract: string | null;
+  priceKey: string;
+  role: TokenRole;
+  amount: Decimal;
+  valueUsd: Decimal | null;
+  /** Yearly yield (or borrow cost) as a ratio. */
+  apy: Decimal | null;
+  liquidationThreshold?: Decimal;
+}
+
+/** Concentrated liquidity range, in token1 per token0. */
+export interface LpRange {
+  lower: Decimal;
+  upper: Decimal;
+  current: Decimal;
+  inRange: boolean;
+}
+
+export interface Position {
+  walletId: number;
+  chain: ChainId;
+  /** e.g. `aave-v3`, `compound-v3`, `uniswap-v3`, `lido`, `solana-staking`. */
+  protocol: string;
+  kind: PositionKind;
+  name: string;
+  tokens: PositionToken[];
+  /** Net value (assets minus debt). */
+  valueUsd: Decimal | null;
+  apy: Decimal | null;
+  healthFactor: Decimal | null;
+  /** Already counted in the wallet balances (liquid staking tokens). */
+  inBalances: boolean;
+  receipts: string[];
+  range?: LpRange;
+  feeTier?: number;
+  /** Needs cost basis; `null` shows as "n/a". */
+  impermanentLoss: Decimal | null;
+}
+
+export type RiskFactorKey = "concentration" | "depeg" | "suspicious" | "approvals" | "exposure";
+export type TokenFlagReason =
+  | "honeypot"
+  | "cannotSellAll"
+  | "airdropScam"
+  | "highTax"
+  | "blacklist";
+
+export interface RiskReport {
+  /** 0–100, higher is riskier. */
+  score: number;
+  factors: { key: RiskFactorKey; score: number; weight: Decimal }[];
+  totalUsd: Decimal;
+  concentration: {
+    hhi: Decimal;
+    topSymbol: string | null;
+    topShare: Decimal;
+    assets: number;
+  };
+  stablecoins: {
+    symbol: string;
+    chain: ChainId;
+    priceUsd: Decimal;
+    deviation: Decimal;
+    valueUsd: Decimal;
+    depegged: boolean;
+  }[];
+  flagged: {
+    assetId: string;
+    chain: ChainId;
+    symbol: string;
+    name: string;
+    reasons: TokenFlagReason[];
+    spam: boolean;
+    valueUsd: Decimal | null;
+  }[];
+  approvals: {
+    walletId: number;
+    owner: string;
+    chain: ChainId;
+    token: string;
+    tokenSymbol: string | null;
+    spender: string;
+    spenderName: string | null;
+    /** Whole tokens; `null` when unlimited or unknown. */
+    amount: Decimal | null;
+    unlimited: boolean;
+    revokeUrl: string | null;
+  }[];
+  approvalChains: ChainId[];
+  exposure: {
+    chains: { key: ChainId; valueUsd: Decimal; share: Decimal }[];
+    protocols: { key: string; valueUsd: Decimal; share: Decimal }[];
+    defiShare: Decimal;
+    minHealthFactor: Decimal | null;
+  };
+  scannedAt: number | null;
+}
+
+export interface RiskScan {
+  report: RiskReport;
+  issues: SyncIssue[];
 }
 
 export interface SyncIssue {
@@ -138,4 +250,7 @@ export const api = {
   getPortfolio: () => call<Portfolio>("get_portfolio"),
   refreshBalances: (walletId?: number) =>
     call<RefreshReport>("refresh_balances", { walletId: walletId ?? null }),
+  getPositions: () => call<Position[]>("get_positions"),
+  getRiskReport: () => call<RiskReport>("get_risk_report"),
+  scanRisk: () => call<RiskScan>("scan_risk"),
 };

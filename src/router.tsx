@@ -6,8 +6,10 @@ import {
   redirect,
 } from "@tanstack/react-router";
 import { AppLayout } from "@/components/layout/app-layout";
+import { DefiPage } from "@/pages/defi";
 import { PlaceholderPage } from "@/pages/placeholder-page";
 import { PortfolioPage } from "@/pages/portfolio";
+import { RiskPage } from "@/pages/risk";
 import { SettingsPage } from "@/pages/settings";
 import { WalletsPage } from "@/pages/wallets";
 import { usePreferences } from "@/stores/preferences";
@@ -30,9 +32,9 @@ const routeTree = rootRoute.addChildren([
   page("/", PortfolioPage),
   page("/assets", () => <PlaceholderPage page="assets" />),
   page("/transactions", () => <PlaceholderPage page="transactions" />),
-  page("/defi", () => <PlaceholderPage page="defi" />),
+  page("/defi", DefiPage),
   page("/analytics", () => <PlaceholderPage page="analytics" />),
-  page("/risk", () => <PlaceholderPage page="risk" />),
+  page("/risk", RiskPage),
   taxesRoute,
   page("/alerts", () => <PlaceholderPage page="alerts" />),
   page("/wallets", WalletsPage),
