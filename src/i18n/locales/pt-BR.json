@@ -399,6 +399,128 @@
     "removed": "{{label}} removida",
     "desktopOnly": "As carteiras ficam no app desktop. Rode o Chainfolio com `pnpm tauri dev` para adicionar uma."
   },
+  "defi": {
+    "empty": "Nenhuma posição de DeFi ou staking encontrada",
+    "emptyHint": "O Chainfolio lê Aave v3, Compound v3, Uniswap v3, staking líquido (stETH, wstETH, rETH, cbETH, mSOL, JitoSOL, sAVAX) e staking nativo de Solana. As posições atualizam a cada sincronização.",
+    "noWalletsHint": "Adicione uma carteira para ver suas posições de empréstimo, liquidez e staking.",
+    "filter": "Tipo de posição",
+    "kinds": {
+      "all": "Todas",
+      "lending": "Empréstimo",
+      "liquidity": "Liquidez",
+      "staking": "Staking"
+    },
+    "roles": {
+      "supplied": "Depositado",
+      "borrowed": "Emprestado",
+      "pooled": "Na pool",
+      "fees": "Taxas",
+      "staked": "Em staking"
+    },
+    "summary": {
+      "total": "Valor em DeFi",
+      "apy": "APY médio",
+      "yearly": "Rendimento anual estimado",
+      "health": "Menor fator de saúde"
+    },
+    "positionsCount_one": "{{count}} posição",
+    "positionsCount_other": "{{count}} posições",
+    "noneOfKind": "Nenhuma posição deste tipo.",
+    "apy": "APY",
+    "health": "Saúde",
+    "il": "IL vs holdar",
+    "na": "n/d",
+    "ilHint": "A perda impermanente compara a posição com simplesmente manter os tokens depositados. Ela precisa do depósito original, que chega com o histórico de transações.",
+    "inHoldings": "Já nos ativos",
+    "inHoldingsHint": "Este token já faz parte dos seus ativos, então não é somado ao total de novo.",
+    "inRange": "Na faixa",
+    "outOfRange": "Fora da faixa",
+    "current": "agora"
+  },
+  "risk": {
+    "scan": "Verificar agora",
+    "scanning": "Verificando aprovações e tokens…",
+    "scannedAt": "Verificado {{when}}",
+    "scanFailed": "Não foi possível concluir a verificação de risco",
+    "scanPartial_one": "{{count}} verificação não terminou; mostrando os últimos resultados conhecidos.",
+    "scanPartial_other": "{{count}} verificações não terminaram; mostrando os últimos resultados conhecidos.",
+    "empty": "Ainda não há relatório de risco",
+    "noWalletsHint": "Adicione uma carteira para avaliar concentração, exposição a depeg, tokens suspeitos e aprovações.",
+    "nothingYet": "Nada para medir ainda.",
+    "scoreHint": "0 é o mais seguro, 100 o mais arriscado.",
+    "higherIsRiskier": "quanto maior, mais arriscado",
+    "breakdown": "O que compõe a nota",
+    "breakdownHint": "Cada fator vai de 0 a 100; o total é a média ponderada.",
+    "weight": "peso {{weight}}%",
+    "factors": {
+      "concentration": {
+        "title": "Concentração",
+        "hint": "Quanto da carteira está em um único ativo (índice Herfindahl–Hirschman e maior fatia).",
+        "detail": "{{symbol}} é {{share}} dos seus ativos · HHI {{hhi}}"
+      },
+      "depeg": {
+        "title": "Depeg de stablecoins",
+        "hint": "Stablecoins negociadas a mais de 1% de US$ 1, ponderadas pelo desvio e pelo quanto você tem.",
+        "detail": "{{count}} posições em stablecoins, todas pareadas",
+        "detailBad": "Fora da paridade: {{symbols}}"
+      },
+      "suspicious": {
+        "title": "Tokens suspeitos",
+        "hint": "Honeypots, golpes de airdrop e tokens com taxa alta detectados pelo GoPlus. Spam fica oculto da carteira.",
+        "detail": "{{flagged}} arriscados · {{spam}} ocultos como spam"
+      },
+      "approvals": {
+        "title": "Aprovações abertas",
+        "hint": "Contratos autorizados a movimentar seus tokens. Aprovações ilimitadas pesam mais.",
+        "detail": "{{count}} abertas · {{unlimited}} ilimitadas"
+      },
+      "exposure": {
+        "title": "Exposição a redes e protocolos",
+        "hint": "Parcela em contratos DeFi, em um único protocolo ou em uma única rede, e o quão perto os empréstimos estão da liquidação.",
+        "detail": "{{share}} da carteira em DeFi",
+        "detailHealth": "{{share}} em DeFi · menor fator de saúde {{hf}}"
+      }
+    },
+    "approvals": {
+      "title": "Aprovações de tokens",
+      "hint": "Permissões ERC-20 concedidas pelas suas carteiras em {{chains}}, para tokens com preço de mercado.",
+      "token": "Token",
+      "spender": "Autorizado",
+      "allowance": "Limite",
+      "unlimited": "Ilimitada",
+      "unknownSpender": "Contrato desconhecido",
+      "revoke": "Revogar",
+      "none": "Nenhuma aprovação aberta encontrada.",
+      "notScanned": "Faça uma verificação para listar suas aprovações abertas.",
+      "neverSigns": "A revogação acontece no revoke.cash com a sua própria carteira. O Chainfolio nunca assina transações."
+    },
+    "flagged": {
+      "title": "Tokens sinalizados",
+      "hint": "Análise de contratos pelo GoPlus Security.",
+      "none": "Nenhum token suspeito encontrado.",
+      "hidden": "Oculto"
+    },
+    "reasons": {
+      "honeypot": "Honeypot",
+      "cannotSellAll": "Não vende tudo",
+      "airdropScam": "Golpe de airdrop",
+      "highTax": "Taxa alta",
+      "blacklist": "Dono pode bloquear"
+    },
+    "stables": {
+      "title": "Stablecoins",
+      "hint": "Em depeg quando a mais de 1% de US$ 1.",
+      "none": "Nenhuma stablecoin na carteira.",
+      "pegged": "Pareada"
+    },
+    "exposure": {
+      "title": "Exposição",
+      "hint": "Onde está o seu patrimônio.",
+      "chains": "Por rede",
+      "protocols": "Por protocolo",
+      "noProtocols": "Nenhuma posição em DeFi."
+    }
+  },
   "errors": {
     "invalidAddress": "Não é um endereço EVM, Solana, Bitcoin, TRON ou XRP Ledger válido.",
     "badChecksum": "Checksum inválido. Confira se há erros de digitação no endereço.",
