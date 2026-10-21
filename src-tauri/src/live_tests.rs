@@ -3,6 +3,7 @@
 //! `cargo test -- --ignored --nocapture`
 
 use rusqlite::Connection;
+use rust_decimal::Decimal;
 
 use crate::{
     address::{self, InputKind},
@@ -11,6 +12,7 @@ use crate::{
         self,
         repo::{self, NewWallet},
     },
+    engine::ledger::Method,
     state::AppState,
     sync,
 };
@@ -309,6 +311,24 @@ async fn full_history_sync_and_chart() {
         chart.last()
     );
     assert!(chart.len() > 20);
+
+    for method in [Method::Fifo, Method::Average] {
+        let pnl = crate::analytics::pnl_report(&state.db(), method, now).unwrap();
+        println!(
+            "{method:?}: value={} cost={} realized={} unrealized={} income={} fees={} assets={} disposals={}",
+            pnl.totals.value.round_dp(2),
+            pnl.totals.cost_basis.round_dp(2),
+            pnl.totals.realized.round_dp(2),
+            pnl.totals.unrealized.round_dp(2),
+            pnl.totals.income.round_dp(2),
+            pnl.totals.fees.round_dp(2),
+            pnl.assets.len(),
+            pnl.disposals.len()
+        );
+        // Lots are reconciled with balances, so the value matches the dashboard.
+        let dashboard = repo::portfolio(&state.db()).unwrap().total_usd;
+        assert!((pnl.totals.value - dashboard).abs() < Decimal::ONE);
+    }
     // Unused import guard for the shared helper above.
     let _ = Connection::open_in_memory();
 }
