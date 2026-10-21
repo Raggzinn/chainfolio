@@ -11,6 +11,9 @@ use crate::{
         self,
         repo::{self, NewWallet},
     },
+    defi,
+    prices::{PriceProvider, defillama::DefiLlama},
+    risk,
     state::AppState,
     sync,
 };
@@ -212,4 +215,201 @@ async fn full_refresh_prices_every_family() {
         )
         .unwrap();
     println!("xpub used addresses: {used}");
+}
+
+/// An Ethereum address borrowing on Aave v3 (found via recent Pool calls).
+const AAVE_BORROWER: &str = "0xb85e268154C86D7Ea9d7318a0E2Ac306d430f8FD";
+/// An Ethereum address holding Uniswap v3 position NFTs.
+const UNISWAP_LP: &str = "0xE819A1745C1C811C557649a7AcC9062728e974ED";
+/// An Ethereum address borrowing USDC from Compound v3.
+const COMPOUND_BORROWER: &str = "0xe7f525dd1bc6d748AE4D7F21D31e54741e05e110";
+
+async fn evm_positions(state: &AppState, address: &str, source: &str) -> Vec<defi::Position> {
+    let adapter = defi::adapters(Family::Evm, &state.http)
+        .into_iter()
+        .find(|a| a.source() == source)
+        .unwrap();
+    let positions = adapter.positions(address).await.unwrap();
+    let prices = DefiLlama::new(state.http.clone())
+        .quotes(
+            &positions
+                .iter()
+                .flat_map(|p| &p.tokens)
+                .map(|t| t.price_key.clone())
+                .collect::<Vec<_>>(),
+        )
+        .await
+        .unwrap()
+        .into_iter()
+        .map(|(k, q)| (k, q.price_usd))
+        .collect();
+    positions
+        .into_iter()
+        .map(|mut p| {
+            p.value_with(&prices);
+            println!(
+                "{} {} {:?}: ${:?} apy {:?} hf {:?} range {:?}",
+                p.protocol, p.chain, p.name, p.value_usd, p.apy, p.health_factor, p.range
+            );
+            for t in &p.tokens {
+                println!(
+                    "    {:?} {} {} ${:?} apy {:?}",
+                    t.role, t.amount, t.symbol, t.value_usd, t.apy
+                );
+            }
+            p
+        })
+        .collect()
+}
+
+#[tokio::test]
+#[ignore = "network"]
+async fn reads_aave_positions() {
+    let state = state();
+    let positions = evm_positions(&state, AAVE_BORROWER, "aave-v3:ethereum").await;
+    let aave = &positions[0];
+    assert!(aave.health_factor.is_some());
+    assert!(
+        aave.tokens
+            .iter()
+            .any(|t| t.role == defi::TokenRole::Borrowed)
+    );
+    assert!(!aave.receipts.is_empty());
+}
+
+#[tokio::test]
+#[ignore = "network"]
+async fn reads_uniswap_positions() {
+    let state = state();
+    let positions = evm_positions(&state, UNISWAP_LP, "uniswap-v3:ethereum").await;
+    assert!(!positions.is_empty());
+    assert!(
+        positions
+            .iter()
+            .all(|p| p.range.is_some() && p.fee_tier.is_some())
+    );
+}
+
+#[tokio::test]
+#[ignore = "network"]
+async fn reads_compound_positions() {
+    let state = state();
+    let positions = evm_positions(&state, COMPOUND_BORROWER, "compound-v3:ethereum").await;
+    let market = &positions[0];
+    assert!(
+        market
+            .tokens
+            .iter()
+            .any(|t| t.role == defi::TokenRole::Borrowed)
+    );
+    assert!(market.health_factor.is_some());
+}
+
+#[tokio::test]
+#[ignore = "network"]
+async fn reads_every_position_source_for_vitalik() {
+    let state = state();
+    for adapter in defi::adapters(Family::Evm, &state.http) {
+        match adapter.positions(VITALIK).await {
+            Ok(p) => println!("{}: {} positions", adapter.source(), p.len()),
+            Err(e) => panic!("{}: {e}", adapter.source()),
+        }
+    }
+}
+
+#[tokio::test]
+#[ignore = "network"]
+async fn reads_solana_stake_accounts() {
+    let state = state();
+    let adapter = defi::adapters(Family::Solana, &state.http).remove(0);
+    let positions = adapter.positions(SOLANA).await.unwrap();
+    println!("{positions:?}");
+    assert_eq!(positions[0].tokens[0].symbol, "SOL");
+}
+
+#[tokio::test]
+#[ignore = "network"]
+async fn loads_staking_yields() {
+    let state = state();
+    let yields = defi::yields::load(&state.http).await.unwrap();
+    let lido = yields.staking("lido", "Ethereum").unwrap();
+    println!("lido apy {lido}");
+    assert!(lido > rust_decimal::Decimal::ZERO);
+}
+
+#[tokio::test]
+#[ignore = "network"]
+async fn lists_vitalik_approvals() {
+    let state = state();
+    let open = risk::approvals::scan(&state.http, Chain::Ethereum, VITALIK)
+        .await
+        .unwrap();
+    let unlimited = open.iter().filter(|a| a.unlimited).count();
+    println!("{} open approvals, {unlimited} unlimited", open.len());
+    for a in open.iter().take(10) {
+        println!(
+            "  {:?} → {:?} ({}) {}",
+            a.token_symbol, a.spender_name, a.spender, a.amount
+        );
+    }
+}
+
+#[tokio::test]
+#[ignore = "network"]
+async fn checks_token_security() {
+    let state = state();
+    // PEPE: not on GoPlus' trust list and its owner can blacklist holders.
+    let outcome = risk::goplus::check(
+        &state.http,
+        Chain::Ethereum,
+        "0x6982508145454ce325ddbe47a25d4ec3d2311933",
+    )
+    .await
+    .unwrap();
+    let risk::goplus::Outcome::Checked(Some(verdict)) = outcome else {
+        panic!("no verdict");
+    };
+    println!("{verdict:?}");
+    assert!(!verdict.spam);
+}
+
+#[tokio::test]
+#[ignore = "network"]
+async fn scans_risk_for_vitalik() {
+    let state = state();
+    repo::insert_wallet(
+        &mut state.db(),
+        &NewWallet {
+            label: "vitalik.eth",
+            family: Family::Evm,
+            kind: repo::WalletKind::Address,
+            address: VITALIK,
+            input: "vitalik.eth",
+        },
+    )
+    .unwrap();
+    let refresh = sync::refresh(&state, None).await.unwrap();
+    for issue in &refresh.issues {
+        println!("issue: {:?} {}", issue.chain, issue.message);
+    }
+    println!(
+        "total ${} (defi ${})",
+        refresh.portfolio.total_usd, refresh.portfolio.defi_usd
+    );
+    let scan = risk::scan(&state).await.unwrap();
+    for issue in &scan.issues {
+        println!("issue: {:?} {}", issue.chain, issue.message);
+    }
+    let r = scan.report;
+    println!("score {} {:?}", r.score, r.factors);
+    println!("concentration {:?}", r.concentration);
+    println!(
+        "{} approvals, {} flagged",
+        r.approvals.len(),
+        r.flagged.len()
+    );
+    for f in &r.flagged {
+        println!("  flagged {} {:?} spam={}", f.symbol, f.reasons, f.spam);
+    }
+    assert!(r.scanned_at.is_some());
 }
