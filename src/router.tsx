@@ -9,6 +9,7 @@ import { AppLayout } from "@/components/layout/app-layout";
 import { PlaceholderPage } from "@/pages/placeholder-page";
 import { PortfolioPage } from "@/pages/portfolio";
 import { SettingsPage } from "@/pages/settings";
+import { TransactionsPage } from "@/pages/transactions";
 import { WalletsPage } from "@/pages/wallets";
 import { usePreferences } from "@/stores/preferences";
 
@@ -29,7 +30,7 @@ const taxesRoute = createRoute({
 const routeTree = rootRoute.addChildren([
   page("/", PortfolioPage),
   page("/assets", () => <PlaceholderPage page="assets" />),
-  page("/transactions", () => <PlaceholderPage page="transactions" />),
+  page("/transactions", TransactionsPage),
   page("/defi", () => <PlaceholderPage page="defi" />),
   page("/analytics", () => <PlaceholderPage page="analytics" />),
   page("/risk", () => <PlaceholderPage page="risk" />),
