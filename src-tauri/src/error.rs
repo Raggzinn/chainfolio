@@ -22,6 +22,8 @@ pub enum Error {
     WrongPassword,
     #[error("password must be at least 8 characters")]
     WeakPassword,
+    #[error("this alert can never fire; check its threshold")]
+    InvalidAlert,
     #[error("{0}")]
     Provider(String),
     #[error(transparent)]
@@ -47,6 +49,7 @@ impl Error {
             Self::Locked => "locked",
             Self::WrongPassword => "wrongPassword",
             Self::WeakPassword => "weakPassword",
+            Self::InvalidAlert => "invalidAlert",
             Self::Provider(_) | Self::Http(_) => "network",
             Self::Db(_) | Self::Migration(_) | Self::Io(_) => "storage",
         }

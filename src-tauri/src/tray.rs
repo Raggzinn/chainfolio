@@ -106,6 +106,13 @@ pub fn relabel(app: &AppHandle, locale: &str) {
     let _ = menu.quit.set_text(s.quit);
 }
 
+/// Whether "Hide balances" is on, so notifications leave amounts out.
+pub fn privacy_on(app: &AppHandle) -> bool {
+    app.try_state::<TrayMenu>()
+        .and_then(|menu| menu.privacy.is_checked().ok())
+        .unwrap_or(false)
+}
+
 /// Mirrors privacy mode toggled from inside the app.
 #[tauri::command]
 pub fn set_tray_privacy(menu: State<'_, TrayMenu>, hidden: bool) {

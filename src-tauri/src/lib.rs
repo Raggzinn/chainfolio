@@ -1,4 +1,5 @@
 mod address;
+mod alerts;
 mod background;
 mod chains;
 mod commands;
@@ -39,6 +40,7 @@ pub fn run() {
         ));
 
     builder
+        .plugin(tauri_plugin_notification::init())
         .setup(|app| {
             let dir = app.path().app_data_dir()?;
             std::fs::create_dir_all(&dir)?;
@@ -80,6 +82,14 @@ pub fn run() {
             commands::remove_wallet,
             commands::get_portfolio,
             commands::refresh_balances,
+            alerts::commands::list_alert_rules,
+            alerts::commands::create_alert_rule,
+            alerts::commands::update_alert_rule,
+            alerts::commands::set_alert_rule_enabled,
+            alerts::commands::delete_alert_rule,
+            alerts::commands::list_alert_events,
+            alerts::commands::clear_alert_events,
+            alerts::commands::alert_assets,
             security::security_status,
             security::unlock,
             security::lock,
