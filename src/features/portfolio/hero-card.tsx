@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import type { DateRange } from "react-day-picker";
 import { useTranslation } from "react-i18next";
-import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { ChangePill } from "@/components/change-pill";
 import { AnimatedNumber } from "@/components/effects/animated-number";
 import { SegmentedControl } from "@/components/segmented-control";
@@ -17,11 +16,15 @@ import { useMoney } from "@/hooks/use-money";
 import { cn } from "@/lib/utils";
 import { AssetFilter } from "./asset-filter";
 import { DateRangePicker } from "./date-range-picker";
+import { demoAssetRows } from "./model";
+import { ValueChart } from "./value-chart";
+
+const DEMO_ROWS = demoAssetRows();
 
 const HOURLY_RANGES: Range[] = ["1D", "1W"];
 
 export function HeroCard() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { format, hidden } = useMoney();
   const [range, setRange] = useState<Range>("1M");
   const [customRange, setCustomRange] = useState<DateRange>();
@@ -48,16 +51,6 @@ export function HeroCard() {
   const current = selected.reduce((sum, a) => sum + assetValue(a), 0);
   const pnl = current - costBasis;
   const chains = new Set(selected.map((a) => a.chain)).size;
-
-  const dateFormat = useMemo(
-    () =>
-      new Intl.DateTimeFormat(i18n.resolvedLanguage, {
-        ...(!custom && HOURLY_RANGES.includes(range)
-          ? { hour: "2-digit", minute: "2-digit", day: "numeric", month: "short" }
-          : { day: "numeric", month: "short", year: "numeric" }),
-      }),
-    [custom, range, i18n.resolvedLanguage],
-  );
 
   const periodLabel = custom ? t("filters.inPeriod") : t(`filters.ranges.${range}`);
 
@@ -97,7 +90,7 @@ export function HeroCard() {
             }}
           />
           <div className="flex items-center gap-2">
-            <AssetFilter value={symbols} onChange={setSymbols} />
+            <AssetFilter rows={DEMO_ROWS} value={symbols} onChange={setSymbols} />
             <DateRangePicker
               value={customRange}
               active={Boolean(custom)}
@@ -110,51 +103,12 @@ export function HeroCard() {
         </div>
       </div>
 
-      <div className="relative mt-4 h-[260px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <AreaChart
-            key={`${custom?.from?.getTime() ?? range}-${symbols.join()}`}
-            data={data}
-            margin={{ top: 10, right: 0, bottom: 0, left: 0 }}
-          >
-            <defs>
-              <linearGradient id="hero-fill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#1E6BFF" stopOpacity={0.22} />
-                <stop offset="60%" stopColor="#1E6BFF" stopOpacity={0.08} />
-                <stop offset="100%" stopColor="#1E6BFF" stopOpacity={0} />
-              </linearGradient>
-            </defs>
-            <XAxis dataKey="t" hide />
-            <YAxis hide domain={["dataMin * 0.985", "dataMax * 1.01"]} />
-            <Tooltip
-              cursor={{
-                stroke: "var(--muted-foreground)",
-                strokeOpacity: 0.35,
-                strokeDasharray: "4 4",
-              }}
-              content={({ active, payload }) => {
-                const point = payload?.[0]?.payload as { t: number; value: number } | undefined;
-                if (!active || !point) return null;
-                return (
-                  <div className="surface-raised rounded-xl px-3 py-2 text-xs">
-                    <p className="text-muted-foreground">{dateFormat.format(point.t)}</p>
-                    <p className="tabular mt-0.5 font-semibold text-sm">{format(point.value)}</p>
-                  </div>
-                );
-              }}
-            />
-            <Area
-              type="monotone"
-              dataKey="value"
-              stroke="var(--primary)"
-              strokeWidth={2.5}
-              fill="url(#hero-fill)"
-              animationDuration={1100}
-              animationEasing="ease-out"
-              activeDot={{ r: 5, fill: "var(--primary)", stroke: "var(--card)", strokeWidth: 3 }}
-            />
-          </AreaChart>
-        </ResponsiveContainer>
+      <div className="mt-4">
+        <ValueChart
+          data={data.map((p) => ({ t: p.t, value: p.value }))}
+          hourly={!custom && HOURLY_RANGES.includes(range)}
+          animationKey={`${custom?.from?.getTime() ?? range}-${symbols.join()}`}
+        />
       </div>
 
       <div className="relative grid grid-cols-3 divide-x divide-border border-t">
