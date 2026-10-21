@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 
 /// Transaction categories. The auto classifier only produces the first six;
 /// the rest are labels a user can pick to refine one (they matter for PnL and
-/// taxes: income is acquired at market value, a gift has no proceeds…).
+/// taxes: income is acquired at market value, a sale realizes a gain…).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum Kind {
@@ -22,11 +22,12 @@ pub enum Kind {
     Reward,
     Airdrop,
     Gift,
+    Sale,
     Spam,
 }
 
 impl Kind {
-    pub const ALL: [Kind; 11] = [
+    pub const ALL: [Kind; 12] = [
         Kind::Receive,
         Kind::Send,
         Kind::Swap,
@@ -37,6 +38,7 @@ impl Kind {
         Kind::Reward,
         Kind::Airdrop,
         Kind::Gift,
+        Kind::Sale,
         Kind::Spam,
     ];
 
@@ -52,6 +54,7 @@ impl Kind {
             Kind::Reward => "reward",
             Kind::Airdrop => "airdrop",
             Kind::Gift => "gift",
+            Kind::Sale => "sale",
             Kind::Spam => "spam",
         }
     }
