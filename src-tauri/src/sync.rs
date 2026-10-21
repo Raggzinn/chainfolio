@@ -8,6 +8,7 @@ use serde::Serialize;
 use crate::{
     chains::{self, Chain, Family, Holding, bitcoin::BitcoinAdapter},
     db::repo::{self, ChainBalances, Portfolio, SyncWrite, Wallet, WalletKind},
+    defi,
     error::Result,
     prices::{PriceProvider, defillama::DefiLlama},
     state::AppState,
@@ -64,7 +65,18 @@ pub async fn refresh(state: &AppState, wallet_id: Option<i64>) -> Result<Refresh
         }
     }
 
+    // DeFi and staking positions; a failed source keeps its stored positions.
+    let positions = defi::fetch(&state.http, &wallets).await;
+    issues.extend(positions.failures.iter().map(|f| SyncIssue {
+        wallet_id: Some(f.wallet_id),
+        chain: Some(f.chain),
+        message: f.message.clone(),
+    }));
+    // Pool and staking APYs are a nice-to-have; positions save without them.
+    let yields = defi::yields::load(&state.http).await.ok();
+
     let mut keys = repo::held_price_keys(&state.db())?;
+    keys.extend(positions.price_keys());
     keys.extend(
         write
             .balances
@@ -85,6 +97,7 @@ pub async fn refresh(state: &AppState, wallet_id: Option<i64>) -> Result<Refresh
 
     let mut db = state.db();
     repo::save_sync(&mut db, &write)?;
+    defi::store::save(&mut db, positions, yields.as_deref())?;
     Ok(RefreshReport {
         issues,
         portfolio: repo::portfolio(&db)?,

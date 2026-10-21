@@ -344,6 +344,11 @@ pub struct Portfolio {
     pub wallets: Vec<WalletSummary>,
     /// Held tokens with no trustworthy price, most of them spam.
     pub unpriced_count: usize,
+    /// Net value of DeFi and staking positions not already in `assets`;
+    /// part of `total_usd`.
+    pub defi_usd: Decimal,
+    /// Held tokens flagged as spam by the risk scan and hidden.
+    pub spam_count: usize,
     pub synced_at: Option<i64>,
 }
 
@@ -416,14 +421,27 @@ fn balance_rows(conn: &Connection) -> Result<Vec<BalanceRow>> {
 pub fn portfolio(conn: &Connection) -> Result<Portfolio> {
     let wallets = list_wallets(conn)?;
     let rows = balance_rows(conn)?;
+    let adjust = crate::defi::store::adjustments(conn)?;
 
     let mut assets: BTreeMap<String, PortfolioAsset> = BTreeMap::new();
     let mut unpriced = BTreeSet::new();
+    let mut spam = BTreeSet::new();
     let mut wallet_totals: HashMap<i64, Decimal> = HashMap::new();
     let mut wallet_chains: HashMap<i64, BTreeMap<Chain, Decimal>> = HashMap::new();
     let mut chain_totals: BTreeMap<Chain, Decimal> = BTreeMap::new();
 
     for row in rows {
+        if adjust.spam.contains(&row.asset_id) {
+            spam.insert(row.asset_id);
+            continue;
+        }
+        // aTokens, debt tokens and the like are counted through their position.
+        if adjust
+            .receipts
+            .contains(&(row.wallet_id, row.asset_id.clone()))
+        {
+            continue;
+        }
         let Some(price) = row.price else {
             unpriced.insert(row.asset_id);
             continue;
@@ -459,7 +477,19 @@ pub fn portfolio(conn: &Connection) -> Result<Portfolio> {
         asset.value_usd += value;
     }
 
-    let total_usd: Decimal = assets.values().map(|a| a.value_usd).sum();
+    let mut defi_usd = Decimal::ZERO;
+    for (wallet_id, chain, value) in adjust.extra {
+        defi_usd += value;
+        *wallet_totals.entry(wallet_id).or_default() += value;
+        *wallet_chains
+            .entry(wallet_id)
+            .or_default()
+            .entry(chain)
+            .or_default() += value;
+        *chain_totals.entry(chain).or_default() += value;
+    }
+
+    let total_usd: Decimal = assets.values().map(|a| a.value_usd).sum::<Decimal>() + defi_usd;
     let change_24h_usd: Decimal = assets
         .values()
         .filter_map(|a| {
@@ -531,6 +561,8 @@ pub fn portfolio(conn: &Connection) -> Result<Portfolio> {
         chains,
         wallets,
         unpriced_count: unpriced.len(),
+        defi_usd: defi_usd.round_dp(8).normalize(),
+        spam_count: spam.len(),
         synced_at,
     })
 }
