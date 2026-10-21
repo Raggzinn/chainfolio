@@ -40,6 +40,8 @@ const emptyPortfolio: Portfolio = {
   chains: [],
   wallets: [wallet],
   unpricedCount: 0,
+  defiUsd: "0",
+  spamCount: 0,
   syncedAt: null,
 };
 
