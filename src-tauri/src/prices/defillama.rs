@@ -53,6 +53,90 @@ impl DefiLlama {
     }
 }
 
+/// DefiLlama rejects `/chart` requests asking for more than this many points
+/// in total (coins × span).
+const CHART_MAX_POINTS: u32 = 500;
+
+#[derive(Debug, Deserialize)]
+struct ChartResponse {
+    coins: HashMap<String, ChartCoin>,
+}
+
+#[derive(Debug, Deserialize)]
+struct ChartCoin {
+    prices: Vec<ChartPoint>,
+}
+
+#[derive(Debug, Deserialize)]
+struct ChartPoint {
+    timestamp: i64,
+    price: serde_json::Number,
+}
+
+impl DefiLlama {
+    async fn chart_request(&self, url: String) -> Result<ChartResponse> {
+        let response = self.http.get(url).send().await?.error_for_status()?;
+        Ok(response.json().await?)
+    }
+
+    /// Historical USD prices for `keys`: `points` samples every `period_secs`
+    /// starting at `start_secs`. Returns `(unix seconds, price)` per key.
+    pub async fn chart(
+        &self,
+        keys: &[String],
+        start_secs: i64,
+        points: u32,
+        period_secs: i64,
+    ) -> Result<HashMap<String, Vec<(i64, Decimal)>>> {
+        let period = match period_secs {
+            s if s >= 86_400 => format!("{}d", s / 86_400),
+            s if s >= 3_600 => format!("{}h", s / 3_600),
+            s => format!("{}m", (s / 60).max(1)),
+        };
+        let mut windows = Vec::new();
+        let mut start = start_secs;
+        let mut left = points;
+        while left > 0 {
+            let span = left.min(CHART_MAX_POINTS);
+            windows.push((start, span));
+            start += i64::from(span) * period_secs;
+            left -= span;
+        }
+        let urls: Vec<String> = windows
+            .iter()
+            .flat_map(|&(start, span)| {
+                let per_request = (CHART_MAX_POINTS / span).clamp(1, 25) as usize;
+                let period = &period;
+                keys.chunks(per_request).map(move |chunk| {
+                    let joined = chunk.join(",");
+                    format!("{API}/chart/{joined}?start={start}&span={span}&period={period}")
+                })
+            })
+            .collect();
+        let responses: Vec<ChartResponse> = stream::iter(urls)
+            .map(|url| self.chart_request(url))
+            .buffer_unordered(CONCURRENCY)
+            .try_collect()
+            .await?;
+        let mut out: HashMap<String, Vec<(i64, Decimal)>> = HashMap::new();
+        for response in responses {
+            for (key, coin) in response.coins {
+                let series = out.entry(key).or_default();
+                series.extend(coin.prices.into_iter().filter_map(|p| {
+                    Decimal::from_str(&p.price.to_string())
+                        .ok()
+                        .map(|price| (p.timestamp, price))
+                }));
+            }
+        }
+        for series in out.values_mut() {
+            series.sort_by_key(|(t, _)| *t);
+            series.dedup_by_key(|(t, _)| *t);
+        }
+        Ok(out)
+    }
+}
+
 #[async_trait]
 impl PriceProvider for DefiLlama {
     async fn quotes(&self, keys: &[String]) -> Result<HashMap<String, Quote>> {
