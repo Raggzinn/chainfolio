@@ -8,6 +8,7 @@ mod error;
 #[cfg(test)]
 mod live_tests;
 mod prices;
+mod secrets;
 mod security;
 mod settings;
 mod state;
@@ -90,6 +91,10 @@ pub fn run() {
             alerts::commands::list_alert_events,
             alerts::commands::clear_alert_events,
             alerts::commands::alert_assets,
+            secrets::list_api_keys,
+            secrets::set_api_key,
+            secrets::remove_api_key,
+            secrets::test_api_key,
             security::security_status,
             security::unlock,
             security::lock,

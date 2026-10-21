@@ -24,6 +24,10 @@ pub enum Error {
     WeakPassword,
     #[error("this alert can never fire; check its threshold")]
     InvalidAlert,
+    #[error("the API key was rejected")]
+    InvalidApiKey,
+    #[error("keychain: {0}")]
+    Keychain(String),
     #[error("{0}")]
     Provider(String),
     #[error(transparent)]
@@ -50,6 +54,8 @@ impl Error {
             Self::WrongPassword => "wrongPassword",
             Self::WeakPassword => "weakPassword",
             Self::InvalidAlert => "invalidAlert",
+            Self::InvalidApiKey => "invalidApiKey",
+            Self::Keychain(_) => "keychain",
             Self::Provider(_) | Self::Http(_) => "network",
             Self::Db(_) | Self::Migration(_) | Self::Io(_) => "storage",
         }
